@@ -1,0 +1,107 @@
+/*
+ * Standard Skin Stylesheet
+ *
+ * NOTE: Since this CSS will be included directly in the simulator page and not
+ * externally, references to the image directory should be "images/", not "../images/".
+ */
+
+/*
+ * Puyo Field
+ */
+ 
+#simulator-field {
+	border: 12px solid transparent;
+	border-image: url('images/standard/field_border.png') 12 repeat;
+	-moz-border-image: url('images/standard/field_border.png') 12 repeat;
+	-webkit-border-image: url('images/standard/field_border.png') 12 repeat;
+	
+	position: relative;
+	float: left;
+	display: block;
+}
+#simulator-field.alternate-border {
+	padding: 12px;
+	border: 0px;
+}
+
+#field-content {
+	position: relative;
+	margin: -4px;
+	padding: 0px 12px 12px 12px;
+}
+
+#field-content #field-bg {
+	position: absolute;
+	top: 0px; left: 0px; bottom: 0px; right: 0px;
+	background-color: #A57B4A;
+}
+
+#field-content #field-chalkboard {
+	position: absolute;
+	top: 32px; left: 12px; bottom: 12px; right: 12px;
+	background-color: #4A5A3A;
+}
+
+#field-content #field {
+	position: relative;
+}
+
+#field #field-cursor {
+	position: absolute;
+	background: url('images/standard/cursor.png') no-repeat;
+	z-index: 2;
+
+	width: 44px;
+	height: 44px;
+	margin: -6px;
+	cursor: pointer;
+}
+#field #field-cursor.left-mouse-down {
+	background-position: -44px 0px;
+}
+#field #field-cursor.right-mouse-down {
+	background-position: -88px 0px;
+}
+
+#nuisance-tray {
+	background: url('images/standard/nuisance_tray.png') no-repeat;
+}
+
+/*
+ * Field Borders (border-image workaround)
+ */
+
+#simulator-field > .border-top-left,
+#simulator-field > .border-top-right,
+#simulator-field > .border-bottom-left,
+#simulator-field > .border-bottom-right {
+	position: absolute;
+	background: url('images/standard/field_border_alt_corners.png') no-repeat;
+	width: 12px;
+	height: 12px;
+}
+#simulator-field > .border-top,
+#simulator-field > .border-bottom {
+	position: absolute;
+	background: url('images/standard/field_border_alt_horizontal.png') repeat-x;
+	left: 12px; right: 12px;
+	height: 8px;
+}
+#simulator-field > .border-left,
+#simulator-field > .border-right {
+	position: absolute;
+	background: url('images/standard/field_border_alt_vertical.png') repeat-y;
+	top: 12px; bottom: 12px;
+	width: 8px;
+}
+
+#simulator-field > .border-top-left { background-position: top left; top: 0px; left: 0px; }
+#simulator-field > .border-top-right { background-position: top right; top: 0px; right: 0px; }
+#simulator-field > .border-bottom-left { background-position: bottom left; bottom: 0px; left: 0px; }
+#simulator-field > .border-bottom-right { background-position: bottom right; bottom: 0px; right: 0px; }
+
+#simulator-field > .border-top { background-position: top left; top: 0px; }
+#simulator-field > .border-bottom { background-position: bottom left; bottom: 0px; }
+
+#simulator-field > .border-left { background-position: top left; left: 0px; }
+#simulator-field > .border-right { background-position: top right; right: 0px; }

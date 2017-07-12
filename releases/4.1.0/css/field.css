@@ -1,0 +1,289 @@
+/*
+ * Field Stylesheet
+ *
+ * Contains all the declatations for all three styles.
+ */
+
+#simulator-field {
+	position: relative;
+	float: left;
+	display: block;
+}
+#field-content #field {
+	position: relative;
+}
+#field-content {
+	position: relative;
+}
+#field #field-cursor {
+	position: absolute;
+	z-index: 2;
+	cursor: pointer;
+}
+
+#simulator-field .border-top-left, #simulator-field .border-top-right,
+#simulator-field .border-bottom-left, #simulator-field .border-bottom-right,
+#simulator-field .border-top, #simulator-field .border-bottom ,
+#simulator-field .border-left, #simulator-field .border-right {
+	position: absolute;
+}
+
+#simulator-field .border-top-left { background-position: top left !important; top: 0px; left: 0px; }
+#simulator-field .border-top-right { background-position: top right !important; top: 0px; right: 0px; }
+#simulator-field .border-bottom-left { background-position: bottom left !important; bottom: 0px; left: 0px; }
+#simulator-field .border-bottom-right { background-position: bottom right !important; bottom: 0px; right: 0px; }
+
+#simulator-field .border-top { background-position: top left !important; top: 0px; }
+#simulator-field .border-bottom { background-position: bottom left !important; bottom: 0px; }
+
+#simulator-field .border-left { background-position: top left !important; left: 0px; }
+#simulator-field .border-right { background-position: top right !important; right: 0px; }
+
+/*
+ * Basic Skin Stylesheet
+ */
+
+/*
+ * Puyo Field
+ */
+ 
+.field-basic #simulator-field {
+	border: 32px solid transparent;
+	border-top: 0;
+
+	-o-border-image: url('../images/basic/field_border.png') 32 round;
+	-moz-border-image: url('../images/basic/field_border.png') 32 round;
+	-webkit-border-image: url('../images/basic/field_border.png') 32 round;
+	border-image: url('../images/basic/field_border.png') 32 round;
+}
+.field-basic #simulator-field.alternate-border {
+	padding: 32px;
+	padding-top: 0;
+	border: 0;
+}
+
+.field-basic #field-content {
+	background-color: #444;
+}
+
+.field-basic #field-content #hidden-row {
+	background-color: #444;
+	position: absolute;
+	top: 0; left: -32px; right: -32px;
+	height: 32px;
+}
+
+.field-basic #field #field-cursor {
+	border: 3px solid #FFF;
+	width: 32px;
+	height: 32px;
+	margin: -3px;
+	border-radius: 3px;
+}
+.field-basic #field #field-cursor.left-mouse-down {
+	border-color: #CCC;
+}
+.field-basic #field #field-cursor.right-mouse-down {
+	border-color: #990000;
+}
+
+.field-basic #nuisance-tray {
+	background-color: #A7AAE7;
+	border: 1px solid #1D259E;
+	border-radius: 3px;
+}
+
+/*
+ * Field Borders (border-image workaround)
+ */
+
+.field-basic #simulator-field > .border-bottom-left,
+.field-basic #simulator-field > .border-bottom-right {
+	background: url('../images/basic/field_border_alt.png') no-repeat;
+	width: 32px;
+	height: 32px;
+}
+.field-basic #simulator-field > .border-top {
+	left: 32px; right: 32px;
+	height: 0;
+}
+.field-basic #simulator-field > .border-bottom {
+	background: url('../images/basic/field_border_alt.png') repeat-x;
+	left: 32px; right: 32px;
+	height: 32px;
+}
+.field-basic #simulator-field > .border-left,
+.field-basic #simulator-field > .border-right {
+	background: url('../images/basic/field_border_alt.png') repeat-y;
+	top: 32px; bottom: 32px;
+	width: 32px;
+}
+
+/*
+ * Standard Skin Stylesheet
+ */
+
+/*
+ * Puyo Field
+ */
+ 
+.field-standard #simulator-field {
+	border: 12px solid transparent;
+
+	-o-border-image: url('../images/standard/field_border.png') 12 repeat;
+	-moz-border-image: url('../images/standard/field_border.png') 12 repeat;
+	-webkit-border-image: url('../images/standard/field_border.png') 12 repeat;
+	border-image: url('../images/standard/field_border.png') 12 repeat;
+}
+.field-standard #simulator-field.alternate-border {
+	padding: 12px;
+	border: 0;
+}
+
+.field-standard #field-content {
+	margin: -4px;
+	padding: 0 12px 12px 12px;
+}
+
+.field-standard #field-content #field-bg {
+	position: absolute;
+	top: 0; left: 0; bottom: 0; right: 0;
+	background-color: #A57B4A;
+}
+
+.field-standard #field-content #field-chalkboard {
+	position: absolute;
+	top: 32px; left: 12px; bottom: 12px; right: 12px;
+	background-color: #4A5A3A;
+}
+
+.field-standard #field #field-cursor {
+	background: url('../images/standard/cursor.png') no-repeat;
+
+	width: 44px;
+	height: 44px;
+	margin: -6px;
+}
+.field-standard #field #field-cursor.left-mouse-down {
+	background-position: -44px 0;
+}
+.field-standard #field #field-cursor.right-mouse-down {
+	background-position: -88px 0;
+}
+
+.field-standard #nuisance-tray {
+	background: url('../images/standard/nuisance_tray.png') no-repeat;
+}
+
+/*
+ * Field Borders (border-image workaround)
+ */
+
+.field-standard #simulator-field > .border-top-left,
+.field-standard #simulator-field > .border-top-right,
+.field-standard #simulator-field > .border-bottom-left,
+.field-standard #simulator-field > .border-bottom-right {
+	background: url('../images/standard/field_border_alt_corners.png') no-repeat;
+	width: 12px;
+	height: 12px;
+}
+.field-standard #simulator-field > .border-top,
+.field-standard #simulator-field > .border-bottom {
+	background: url('../images/standard/field_border_alt_horizontal.png') repeat-x;
+	left: 12px; right: 12px;
+	height: 8px;
+}
+.field-standard #simulator-field > .border-left,
+.field-standard #simulator-field > .border-right {
+	background: url('../images/standard/field_border_alt_vertical.png') repeat-y;
+	top: 12px; bottom: 12px;
+	width: 8px;
+}
+
+/*
+ * Eye Candy Skin Stylesheet
+ */
+
+/*
+ * Puyo Field
+ */
+ 
+.field-eyecandy #simulator-field {
+	border: 10px solid transparent;
+
+	-o-border-image: url('../images/eyecandy/field_border.png') 10 repeat;
+	-moz-border-image: url('../images/eyecandy/field_border.png') 10 repeat;
+	-webkit-border-image: url('../images/eyecandy/field_border.png') 10 repeat;
+	border-image: url('../images/eyecandy/field_border.png') 10 repeat;
+}
+.field-eyecandy #simulator-field.alternate-border {
+	padding: 10px;
+	border: 0;
+}
+
+.field-eyecandy #field-content {
+	margin: -4px;
+	padding: 0 32px 32px 32px;
+}
+
+.field-eyecandy #field-content #field-stage-bg {
+	position: absolute;
+	top: 0; left: 0; bottom: 0; right: 0;
+}
+
+.field-eyecandy #field-content.alternate #field-stage-bg {
+	background-image: none !important;
+	background-color: #59394A;
+}
+
+.field-eyecandy #field-content #field-char-bg {
+	position: absolute;
+	top: 32px; left: 32px; bottom: 32px; right: 32px;
+}
+
+.field-eyecandy #field-content.alternate #field-char-bg {
+	background-image: url('../images/eyecandy/alt_bg.png') !important;
+}
+
+.field-eyecandy #field #field-cursor {
+	background: url('../images/eyecandy/cursor.png') no-repeat;
+
+	width: 44px;
+	height: 44px;
+	margin: -6px;
+}
+.field-eyecandy #field #field-cursor.left-mouse-down {
+	background-position: -44px 0;
+}
+.field-eyecandy #field #field-cursor.right-mouse-down {
+	background-position: -88px 0;
+}
+
+.field-eyecandy #nuisance-tray {
+	background: url('../images/eyecandy/nuisance_tray.png') no-repeat;
+}
+
+/*
+ * Field Borders (border-image workaround)
+ */
+
+.field-eyecandy #simulator-field > .border-top-left,
+.field-eyecandy #simulator-field > .border-top-right,
+.field-eyecandy #simulator-field > .border-bottom-left,
+.field-eyecandy #simulator-field > .border-bottom-right {
+	background: url('../images/eyecandy/field_border_alt_corners.png') no-repeat;
+	width: 10px;
+	height: 10px;
+}
+.field-eyecandy #simulator-field > .border-top,
+.field-eyecandy #simulator-field > .border-bottom {
+	background: url('../images/eyecandy/field_border_alt_horizontal.png') repeat-x;
+	left: 10px; right: 10px;
+	height: 6px;
+}
+.field-eyecandy #simulator-field > .border-left,
+.field-eyecandy #simulator-field > .border-right {
+	background: url('../images/eyecandy/field_border_alt_vertical.png') repeat-y;
+	top: 10px; bottom: 10px;
+	width: 6px;
+}

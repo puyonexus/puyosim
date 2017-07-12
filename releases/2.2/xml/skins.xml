@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8" ?>  
+<skins>
+	<chainimage>
+		<set id="chainsim">
+			<name>Chain Simulator</name>
+			<skin id="default" image="default.png">Default Skin</skin>
+			<skin id="random" image="random.png" random="true">Random Skin</skin>
+		</set>
+		
+		<set id="nazopuyo">
+			<name>Nazo Puyo</name>
+			<skin id="wood_jungle" image="wood_jungle.png">Wood Jungle</skin>
+		</set>
+
+		<set id="pp1">
+			<name>Puyo Puyo</name>
+			<skin id="color_blocks" image="colorful_blocks.png">Colorful Blocks</skin>
+			<skin id="underground_rocks" image="underground_rocks.png">Underground Rocks</skin>
+			<skin id="stone_field" image="stone_field.png">Stone Field</skin>
+			<!--<skin id="satan_stone_field" image="satan_stone_field.png">Satan's Stone Field</skin>-->
+		</set>
+		
+		<set id="pp2">
+			<name>Puyo Puyo 2</name>
+			<skin id="red_metal" image="red_metal.png">Red Metal</skin>
+			<skin id="golden_rocks" image="golden_rocks.png">Golden Rocks</skin>
+			<skin id="green_machine" image="green_machine.png">Green Machine</skin>
+			<skin id="gray_hand" image="gray_hand.png">Gray Hand</skin>
+			<skin id="pipe_dream" image="pipe_dream.png">Pipe Dream</skin>
+			<skin id="schezo_jungle" image="schezo_jungle.png">Schezo's Jungle</skin>
+			<skin id="rulue_gold" image="rulue_gold.png">Rulue's Gold</skin>
+			<skin id="satan_tower" image="satan_tower.png">Satan's Tower</skin>
+			<skin id="wood_field" image="wood_field.png">Wood Field</skin>
+			<skin id="colorful_shapes" image="colorful_shapes.png">Colorful Shapes</skin>
+			<skin id="midnight_statues" image="midnight_statues.png">Midnight Statues</skin>
+		</set>
+		
+		<set id="pp3">
+			<name>Puyo Puyo Sun</name>
+			<skin id="arle_prarie" image="arle_prarie.png">Arle's Prarie</skin>
+			<skin id="draco_forest" image="draco_forest.png">Draco's Forest</skin>
+			<skin id="schezo_rock" image="schezo_rock.png">Schezo's Rock</skin>
+		</set>
+		
+		<set id="pp4">
+			<name>Puyo Puyo~n</name>
+			<skin id="the_circus" image="the_circus.png">The Circus</skin>
+		</set>
+		
+		<set id="ppf">
+			<name>Puyo Puyo Fever</name>
+			<skin id="red_fever" image="red_fever.png">Red Fever</skin>
+			<skin id="green_fever" image="green_fever.png">Green Fever</skin>
+			<skin id="blue_fever" image="blue_fever.png">Blue Fever</skin>
+			<skin id="yellow_fever" image="yellow_fever.png">Yellow Fever</skin>
+			<skin id="purple_fever" image="purple_fever.png">Purple Fever</skin>
+			<!--<skin id="inside_school" image="inside_school.png">Inside School</skin>-->
+		</set>
+	</chainimage>
+	<smallpuyo>
+		<skin id="pp1" />
+		<skin id="pp3" />
+		<skin id="pp4_chibi" />
+	</smallpuyo>
+</skins>

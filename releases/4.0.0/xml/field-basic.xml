@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<simulator>
+	<css href="field-basic.css" />
+
+	<field> <!-- Field Content (#simulator-field) -->
+	<![CDATA[
+		<div id="field-content">
+			<div id="hidden-row"></div>
+			<div id="field"></div>
+		</div>
+	]]>
+	</field>
+	
+	<scripts>
+	<![CDATA[
+	]]>
+	</scripts>
+</simulator>

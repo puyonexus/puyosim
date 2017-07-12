@@ -1,0 +1,26 @@
+.button
+{
+	padding-left: 0px;
+	padding-right: 0px;
+}
+
+.majorb
+{
+	width: 135px;
+}
+
+#tabs_main a
+{
+	padding-top: 0px;
+	padding-bottom: 0px;
+}
+
+fieldset
+{
+	padding: 8px;
+}
+
+fieldset legend
+{
+	padding: 0px;
+}

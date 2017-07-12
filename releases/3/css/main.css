@@ -1,0 +1,332 @@
+/*
+ * Global
+ */
+ 
+* { /* Reset the margin on all elements */
+	margin: 0px;
+	padding: 0px;
+}
+
+button::-moz-focus-inner,
+input[type="button"]::-moz-focus-inner { /* Reset padding on input buttons (Firefox hack :o) */
+	padding: 0px;
+	border: none;
+}
+
+body {
+	background-color: #E7DEEB;
+	font-family: Tahoma, Geneva, sans-serif;
+	font-size: 10pt;
+}
+
+input[type="button"] {
+	padding: 2px;
+}
+
+.center {
+	text-align: center;
+	margin-left: auto;
+	margin-right: auto;
+}
+
+/*
+ * Header
+ */
+ 
+#header {
+	background: url('../images/header-bg.png');
+	background-repeat: repeat-x;
+	width: auto;
+	height: 48px;
+	border-bottom: 2px solid #000;
+	padding: 8px;
+
+	font-family: Georgia, serif;
+	font-size: 12pt;
+	color: #FFF;
+}
+
+#header #back-to-pn-link {
+	float: right;
+}
+
+#header #back-to-pn-link a:link, #header #back-to-pn-link a:visited {
+	color: #FFF;
+	text-decoration: none;
+}
+#header #back-to-pn-link a:hover, #header #back-to-pn-link a:active {
+	color: #FFF;
+	text-decoration: underline;
+}
+
+/*
+ * Main Content
+ */
+
+#content {
+	margin: 16px;
+}
+
+#style-select {
+	font-weight: bold;
+	text-align: right;
+	margin-bottom: 16px;
+}
+
+#style-select > select {
+	width: 128px;
+}
+
+/*
+ * Simulator
+ */
+.puyo {
+	width: 32px;
+	height: 32px;
+	background-repeat: no-repeat;
+}
+
+#simulator-wrapper { /* Used to center the simulator */
+	float: right;
+	left: -50%;
+	position: relative;
+	clear: both;
+}
+
+#simulator {
+	left: 50%;
+	position: relative;
+}
+
+/*
+ * Options Panel
+ */
+ 
+#simulator-options-panel {
+	width: 416px;
+	float: left;
+	position: relative;
+	margin-left: 8px;
+}
+
+#simulator-options-panel ul.tabs {
+	margin-left: 16px;
+	margin-bottom: -2px;
+	list-style-type: none;
+	overflow: hidden;
+}
+#simulator-options-panel ul.tabs > li {
+	float: left;
+	margin-right: 4px;
+	
+	border: 2px solid #826146;
+	border-top-left-radius: 4px;
+	border-top-right-radius: 4px;
+	-moz-border-radius-topleft: 4px;
+	-moz-border-radius-topright: 4px;
+	-webkit-border-top-left-radius: 4px;
+	-webkit-border-top-right-radius: 4px;
+
+	background-color: #FFF;
+}
+#simulator-options-panel ul.tabs > li.tab-active {
+	border-bottom: 2px solid #FFF;
+}
+#simulator-options-panel ul.tabs > li > a{
+	font-size: 8pt;
+	padding: 4px;
+}
+#options-panel-content {
+	border-radius: 8px;
+	-moz-border-radius: 8px;
+	-webkit-border-radius: 8px;
+	border: 2px solid #826146;
+	background-color: #FFF;
+	padding: 8px;
+}
+
+#options-panel-content hr {
+	color: #826146;
+	background-color: #826146;
+	border: 0px;
+	height: 1px;
+	margin: 4px 0px;
+}
+
+/*
+ * Saved Chains
+ */
+
+#tab-saved-chains {
+	max-height: 512px;
+	overflow: auto;
+}
+#tab-saved-chains #save-chain-name {
+	width: 70%;
+}
+
+#saved-chains-list {
+	list-style: none;
+}
+#saved-chains-list > li {
+	padding: 4px 0px;
+	border-top: 1px dotted #826146;
+	overflow: hidden;
+}
+#saved-chains-list > li:first-child {
+	border-top: 0px;
+}
+#saved-chains-list > li dl > dd {
+	width: 60%;
+	float: left;
+}
+#saved-chains-list > li dl > dt {
+	width: 35%;
+	float: right;
+	text-align: right;
+}
+
+/*
+ * Premade Chains
+ */
+#tab-premade-chains #premade-chains-group-select {
+	width: 100%;
+	font-size: 8pt;
+}
+#tab-premade-chains #premade-chains-group-select optgroup {
+	font-weight: bold;
+	font-style: normal;
+	color: #FFF;
+	background-color: #826146;
+}
+#tab-premade-chains #premade-chains-group-select optgroup > option {
+	font-weight: normal;
+	color: #000;
+	background-color: #FFF;
+	padding-left: 16px;
+}
+
+#premade-chains-list {
+	list-style: none;
+}
+#premade-chains-list > li {
+	padding: 4px 0px;
+	border-top: 1px dotted #826146;
+	overflow: hidden;
+}
+#premade-chains-list > li:first-child {
+	border-top: 0px;
+}
+#premade-chains-list > li dl > dd {
+	width: 45%;
+	float: left;
+}
+#premade-chains-list > li dl > dt {
+	width: 50%;
+	float: right;
+	text-align: right;
+}
+#premade-chains-list > li select {
+	margin-left: 2px;
+}
+
+/*
+ * Linking Codes
+ */
+#tab-linking-codes textarea {
+	width: 100%;
+	height: 64px;
+}
+
+/*
+ * Settings
+ */
+#tab-settings input[type="radio"] {
+	margin: 4px;
+	cursor: pointer;
+}
+#tab-settings label {
+	cursor: pointer;
+}
+#tab-settings dl {
+	padding: 4px 0px;
+	overflow: hidden;
+}
+#tab-settings dl > dd, #tab-settings dl > dt {
+	padding: 0px 4px;
+}
+#tab-settings dl > dt {
+	width: 96px;
+	float: left;
+}
+#tab-settings dl > dd {
+	margin-left: 108px;
+}
+#tab-settings dl > dd select {
+	width: 64px;
+}
+#tab-settings dl > dd #chain-power {
+	width: 224px;
+}
+
+/*
+ * Puyo Skin
+ */
+#puyo-skin-selection {
+	list-style: none;
+}
+#puyo-skin-selection input[type="radio"] {
+	height: 32px;
+	margin: 0px 4px;
+}
+#puyo-skin-selection .puyo-skin {
+	width: 212px;
+	height: 32px;
+	display: inline-block;
+	background-image: url('../images/puyo-skins.png');
+}
+#puyo-skin-selection input[type="radio"],
+#puyo-skin-selection label {
+	cursor: pointer;
+}
+
+/*
+ * About
+ */
+#tab-about a:link, #tab-about a:visited {
+	color: #826146;
+	text-decoration: none;
+	border-bottom: 1px dotted #826146;
+}
+#tab-about a:hover, #tab-about a:active {
+	border-bottom: 1px solid #826146;
+}
+#release-archive {
+	border: 0px;
+}
+#release-archive legend {
+	font-weight: bold;
+}
+#release-archive ul {
+	list-style: square;
+	margin-left: 16px;
+}
+#release-archive ul > li {
+	padding: 1px 0px;
+}
+
+/*
+ * Tabs
+ */
+.tab-container .tab-content {
+	display: none;
+}
+.tab-container .tab-content.content-active {
+	display: block;
+}
+ul.tabs > li > a {
+	display: block;
+}
+ul.tabs > li > a:hover {
+	cursor: pointer;
+}

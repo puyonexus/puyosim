@@ -1,0 +1,121 @@
+/********************
+/* Global Styles
+/*******************/
+/* Main */
+body
+{
+	background-color: #D8CADF;
+	font-family: Verdana, Arial, sans-serif;
+	font-size: small;
+	margin: 0px;
+	padding: 0px;
+}
+#content
+{
+	margin: 8px auto;
+	width: 760px;
+	overflow: hidden;
+}
+.clear
+{
+	clear: both;
+	height: 0px;
+	overflow: hidden;
+}
+
+/* Links */
+a:link, a:visited
+{
+	color: #5A4169;
+	text-decoration: none;
+}
+a:hover, a:active
+{
+	color: #000;
+	text-decoration: underline;
+}
+
+/* Images */
+img
+{
+	border: 0px;
+	vertical-align: bottom;
+}
+
+/* Dividers */
+hr
+{
+	height: 1px;
+	margin: 4px;
+	padding: 0px;
+	border: 0px;
+	border-bottom: 1px dotted #000;
+}
+
+/* Text */
+.small  { font-size: 0.75em; }
+.large  { font-size: 1.25em; }
+.strong { font-weight: bold; }
+.center
+{
+	text-align: center;
+	margin-left: auto;
+	margin-right: auto;
+}
+
+/* Display */
+.hidden   { display: none; }
+.overflow { overflow: auto; }
+
+/* Fieldset */
+fieldset
+{
+	border: 1px solid #C79ED6;
+	padding: 8px;
+}
+fieldset legend
+{
+	color: #5A4169;
+	font-weight: bold;
+}
+
+/* Puyo Sizes */
+.puyo_small
+{
+	background-repeat: no-repeat;
+	height: 16px;
+	width: 16px;
+}
+.puyo_large
+{
+	background-repeat: no-repeat;
+	height: 32px;
+	width: 32px;
+}
+.puyo
+{
+	background-repeat: no-repeat;
+}
+
+/* Puyo Display */
+.puyo_display span
+{
+	display: block;
+	float: left;
+}
+
+/* Copyright */
+#copyright
+{
+	background-color: #5A4169;
+	color: #FFF;
+	font-size: .75em;
+	padding: 8px 0px;
+	text-align: center;
+	width: 100%;
+}
+#copyright a
+{
+	color: #FFF;
+	text-decoration: underline;
+}

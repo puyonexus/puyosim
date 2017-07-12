@@ -1,0 +1,220 @@
+/********************
+/* WidgetStyles
+/*******************/
+.widget .header
+{
+	background-color: #5A4169;
+	color: #FFF;
+	height: 24px;
+	font-weight: bold;
+	line-height: 24px;
+	text-align: center;
+	width: 100%;
+}
+
+.widget .header a:link, .widget .header a:visited
+{
+	color: #FFF;
+	text-decoration: none;
+}
+
+.widget .header a:hover, .widget .header a:active
+{
+	text-decoration: underline;
+}
+
+.widget .block { display: block; }
+
+.widget .content
+{
+	background-color: #FFF;
+	width: 100%;
+}
+
+.widget .main_content
+{
+	margin: 4px;
+}
+
+.widget .tabs
+{
+	font-size: .75em;
+	font-weight: bold;
+	height: 24px;
+	line-height: 24px;
+	list-style-type: none;
+	margin: 0px;
+	padding: 0px;
+	width: 100%;
+}
+
+.widget .tabs li
+{
+	border-right: 1px solid #FFF;
+	display: block;
+	float: left;
+	text-align: center;
+}
+
+.widget .tabs li.last
+{
+	border-right: 0px;
+}
+
+.widget .tabs li a
+{
+	background-color: #DDC4E6;
+	background-image: url('../images/tab_bg.png');
+	background-position: 0px 0px;
+	background-repeat: repeat-x;
+	display: block;
+	height: 24px;
+	width: 100%;
+}
+
+.widget .tabs li a:link, .widget .tabs li a:visited
+{
+	color: #000;
+	text-decoration: none;
+}
+
+.widget .tabs li a:hover, .widget .tabs li a:active, .widget .tabs li.selected a
+{
+	background-color: #B37AC5;
+	/*background-image: url('../images/tab_bg_hover.png');*/
+	background-position: 0px -24px;
+	color: #FFF;
+}
+
+.widget fieldset.linking_codes
+{
+	border: 0px;
+	margin: 0px;
+	padding: 0px;
+}
+
+.widget fieldset.linking_codes input
+{
+	width: 100%;
+}
+
+/********************
+/* Chains Widget
+/*******************/
+#widget-chains
+{
+	display: block;
+	float: right;
+	width: 316px;
+	margin-left: 16px;
+}
+#widget-chains .content { height: 432px; }
+
+#widget-chains .tabs img { margin: 4px 0px; }
+#widget-chains .tabs .colors-3 { width: 105px; }
+#widget-chains .tabs .colors-4 { width: 104px; }
+#widget-chains .tabs .colors-5 { width: 105px; }
+
+#widget-chains select
+{
+	width: 100%;
+	font-size: x-small;
+}
+#widget-chains select optgroup
+{
+	font-style: normal;
+	font-weight: bold;
+	background-color: #5A4169;
+	color: #FFF;
+}
+#widget-chains select optgroup > option
+{
+	font-weight: normal;
+	background-color: #FFF;
+	color: #000;
+}
+
+#widget-chains-chain-select { height: 370px; }
+#widget-chains-chain-select fieldset ul
+{
+	width: 100%;
+	list-style-type: none;
+	margin: 2px;
+	padding: 0px;
+}
+#widget-chains-chain-select fieldset ul li
+{
+	display: block;
+	float: left;
+	text-align: center;
+	width: 20px;
+	font-size: small;
+}
+
+/********************
+/* Options Widget
+/*******************/
+#widget_options
+{
+	margin: 0px auto;
+	padding: 8px 0px;
+	width: 632px;
+	clear: both;
+}
+
+#widget_options .content
+{
+	height: 348px;
+}
+
+#widget_options .main_content
+{
+	overflow: auto;
+	height: 316px;
+}
+
+#widget_options .tabs li
+{
+	width: 157px;
+}
+
+#widget_options .tabs li.last
+{
+	width: 158px;
+}
+
+#widget_options input.linking_code
+{
+	font-size: .75em;
+	margin-bottom: 8px;
+	width: 618px;
+}
+#puyo_skin_selection { overflow: hidden; }
+#puyo_skin_selection fieldset
+{
+	display: block;
+	float: left;
+	margin: 8px;
+	width: 42%;
+}
+#form_chain_image_skins
+{
+	width: 448px;
+	margin: 0px auto;
+	overflow: hidden;
+}
+#chain_image_skins .column
+{
+	float: left;
+	width: 160px;
+}
+#chain_image_skins_aside
+{
+	float: left;
+	width: 128px;
+}
+#chain_image_skins_preview
+{
+	width: 128px;
+	height: 224px;
+}

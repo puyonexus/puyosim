@@ -1,0 +1,229 @@
+/********************
+/* Global Styles
+/*******************/
+
+/* Body */
+body
+{
+	background-color: #D8CADF;
+	font-family: Verdana, Arial, sans-serif;
+	font-size: .8em;
+	margin: 0px;
+	padding: 0px;
+}
+
+#content
+{
+	margin: 8px auto;
+	width: 760px;
+}
+
+/* Links */
+a:link, a:visited
+{
+	color: #5A4169;
+	text-decoration: none;
+}
+
+a:hover, a:active
+{
+	color: #000;
+	text-decoration: underline;
+}
+
+/* Images */
+img
+{
+	border: 0px;
+	vertical-align: bottom;
+}
+
+/* Dividers */
+hr
+{
+	height: 1px;
+	margin: 4px;
+	padding: 0px;
+	border: 0px;
+	border-bottom: 1px dotted #000;
+}
+
+.divider
+{
+	border-bottom: 1px dotted #000;
+	height: 1px;
+	margin: 4px;
+}
+
+/* Text */
+.small
+{
+	font-size: .75em;
+}
+
+.strong
+{
+	font-weight: bold;
+}
+
+.center
+{
+	text-align: center;
+	margin-left: auto;
+	margin-right: auto;
+}
+
+/* Content modifiers */
+.clear
+{
+	clear: both;
+	height: 0px;
+	overflow: hidden;
+}
+
+.hidden
+{
+	display: none;
+}
+
+.overflow
+{
+	overflow: auto;
+}
+
+/* Fieldset */
+fieldset
+{
+	border: 1px solid #C79ED6;
+	padding: 8px;
+}
+
+fieldset legend
+{
+	color: #5A4169;
+	font-weight: bold;
+}
+
+/* Puyo Sizes */
+.puyo_small
+{
+	background-repeat: no-repeat;
+	height: 16px;
+	width: 16px;
+}
+
+.puyo_large
+{
+	background-repeat: no-repeat;
+	height: 32px;
+	width: 32px;
+}
+
+.puyo
+{
+	background-repeat: no-repeat;
+}
+
+/* Puyo Display */
+.puyo_display span
+{
+	display: block;
+	float: left;
+}
+
+/* Copyright */
+#copyright
+{
+	background-color: #5A4169;
+	color: #FFF;
+	font-size: .75em;
+	padding: 8px 0px;
+	text-align: center;
+	width: 100%;
+}
+
+#copyright a
+{
+	color: #FFF;
+	text-decoration: underline;
+}
+
+/* Puyo Nexus Logo (Purple)
+---------------------------------------- */
+#puyonexus, #puyonexus_top, #puyonexus_bottom
+{
+	width: auto;
+}
+
+#puyonexus_links
+{
+	display: block;
+	list-style-type: none;
+	margin: 0px;
+	padding: 0px;
+}
+#puyonexus_links li
+{
+	float: left;
+}
+#puyonexus_links a:link, #puyonexus_links a:visited
+{
+	color: #FFF;
+	text-decoration: none;
+	border-bottom: 0px;
+}
+#puyonexus_links a:hover, #puyonexus_links a:active
+{
+	text-decoration: none;
+	border-bottom: 1px dotted #FFF;
+}
+
+#puyonexus_top
+{
+	background-image: url('/images/header/bg_main_purple.png');
+	background-position: 0px 0px;
+	background-repeat: repeat-x;
+	height: 52px;
+}
+#puyonexus_top #puyonexus_logo
+{
+	background-image: url('/images/header/logo_purple.png');
+	background-repeat: no-repeat;
+	display: block;
+	margin-left: 8px;
+	width: 249px;
+	height: 52px;
+}
+
+#puyonexus_bottom #puyonexus_links
+{
+	background-image: url('/images/header/bg_links_purple.png');
+	background-repeat: repeat-x;
+	color: #FFF;
+	font-weight: bold;
+	font-family: Verdana, sans-serif;
+	font-size: x-small;
+	display: block;
+	float: left;
+	padding-left: 12px;
+	height: 40px;
+	line-height: 32px;
+}
+#puyonexus_bottom #puyonexus_curve
+{
+	background-image: url('/images/header/curve_purple.png');
+	background-repeat: no-repeat;
+	display: block;
+	float: left;
+	width: 68px;
+	height: 40px;
+}
+#puyonexus_bottom #puyonexus_shadow
+{
+	background-image: url('/images/header/bg_main_purple.png');
+	background-position: 0px -52px;
+	background-repeat: repeat-x;
+	margin-bottom: 32px;
+	width: auto;
+	height: 8px;
+}

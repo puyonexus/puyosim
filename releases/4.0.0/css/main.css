@@ -1,0 +1,546 @@
+/*
+ * Puyo Puyo Chain Simulator
+ * Main Stylesheet
+ *
+ * Contains the styles of everything except field styles.
+ */
+ 
+/*
+ * Global (anything that's not part of something specific)
+ */
+
+html, body, ul, li, input, select, textarea, dl, dd, dt, p,
+hr, fieldset, h3, h4, optgroup option { /* Reset margins & padding */
+	margin: 0px;
+	padding: 0px;
+}
+
+button::-moz-focus-inner,
+input[type="button"]::-moz-focus-inner { /* Resets padding on input buttons (Firefox hack... WTF???) */
+	padding: 0px;
+	border: none;
+}
+
+input[type="text"], input[type="button"] {
+	padding: 2px;
+}
+
+select {
+	padding: 1px;
+}
+
+.center {
+	text-align: center;
+	margin-left: auto;
+	margin-right: auto;
+}
+
+body {
+	background-color: #E7DEEB;
+	font-family: Tahoma, Geneva, sans-serif;
+	font-size: 10pt;
+}
+
+/*
+ * Header
+ */
+ 
+#header {
+	background: url('../images/header_bg.png') repeat-x;
+	width: auto;
+	height: 72px;
+	border-bottom: 2px solid #000;
+	padding: 4px;
+}
+
+#header-content {
+	max-width: 960px;
+	min-width: 600px;
+	margin: 0px auto;
+	position: relative;
+}
+
+#logo {
+	width: 315px;
+	height: 71px;
+	background: url('../images/logo.png') no-repeat;
+}
+
+#style-select {
+	padding: 4px;
+	background-color: #E7DEEB;
+	font-weight: bold;
+	position: absolute;
+	right: 8px;
+	bottom: 8px;
+	border-radius: 6px;
+	-moz-border-radius: 6px;
+	-webkit-border-radius: 6px;
+	
+	display: none; /* Don't show initally */
+}
+
+#style-select > select {
+	width: 128px;
+}
+
+/*
+ * Main Content
+ */
+
+#content {
+	margin: 16px;
+	overflow: hidden;
+}
+
+/*
+ * Simulator
+ */
+.puyo {
+	width: 32px;
+	height: 32px;
+	background-repeat: no-repeat;
+}
+
+#simulator-wrapper { /* Used to center the simulator */
+	float: right;
+	left: -50%;
+	position: relative;
+	clear: both;
+}
+
+#simulator {
+	left: 50%;
+	position: relative;
+}
+
+#loading {
+	background: url('../images/loading_big.gif') no-repeat;
+	width: 32px;
+	height: 32px;
+	margin: 64px auto 0px auto;
+}
+
+/*
+ * Field
+ */
+
+#field-DOM .puyo {
+	position: absolute;
+}
+
+/*
+ * Puyo Field Editor Controls
+ */
+
+#simulator-controls {
+	width: 272px;
+	float: left;
+	position: relative;
+	margin-left: 8px;
+}
+#simulator-controls hr {
+	border: 0px;
+	border-bottom: 1px dotted #826146;
+	height: 1px;
+	margin: 4px 0px;
+}
+#controls-puyo-selection,
+#controls-simulation,
+#controls-score-display {
+	border-radius: 8px;
+	-moz-border-radius: 8px;
+	-webkit-border-radius: 8px;
+	border: 2px solid #826146;
+	background-color: #FFF;
+	margin-bottom: 8px;
+	padding: 8px;
+}
+
+#controls-puyo-selection input[type="checkbox"] {
+	margin: 4px;
+	cursor: pointer;
+}
+#controls-puyo-selection label {
+	cursor: pointer;
+}
+#puyo-selection {
+	width: 216px;
+}
+#puyo-selection ul {
+	list-style: none;
+	overflow: hidden;
+}
+#puyo-selection ul > li {
+	display: block;
+	float: left;
+	padding: 2px;
+}
+#puyo-selection .puyo {
+	display: block;
+	cursor: pointer;
+}
+#puyo-selection .selected {
+	background: url('../images/puyo_selected.png') no-repeat;
+}
+
+#nuisance-tray {
+	width: 192px;
+	height: 34px;
+	margin: 8px auto 16px auto;
+	padding: 0px 5px;
+	position: relative;
+}
+
+#nuisance-tray span {
+	display: block;
+	width: 64px;
+	height: 64px;
+	margin: -15px -11px;
+	position: absolute;
+	top: 0px;
+}
+
+#controls-score-display dl {
+	overflow: hidden;
+	margin: 2px 0px;
+}
+#controls-score-display dl > dt {
+	width: 64px;
+	float: left;
+}
+#controls-score-display dl > dd {
+	margin-left: 72px;
+}
+
+
+/*
+ * Puyo Positions
+ */
+
+.puyo-red { background-position: 0px 0px; }
+.puyo-green { background-position: 0px -32px; }
+.puyo-blue{ background-position: 0px -64px; }
+.puyo-yellow { background-position: 0px -96px; }
+.puyo-purple { background-position: 0px -128px; }
+
+.puyo-nuisance { background-position: 0px -160px; }
+.puyo-point { background-position: 0px -192px; }
+.puyo-hard { background-position: 0px -224px; }
+.puyo-iron { background-position: -32px -224px; }
+.puyo-wall { background-position: -64px -224px; }
+
+.puyo-none { background-image: url('../images/puyo_erase.png'); }
+.puyo-delete { background-image: url('../images/puyo_delete.png'); }
+
+/*
+ * Simulator Options
+ */
+ 
+#simulator-options {
+	width: 432px;
+	float: left;
+	position: relative;
+	margin-left: 8px;
+
+	border-radius: 8px;
+	-moz-border-radius: 8px;
+	-webkit-border-radius: 8px;
+	border: 2px solid #826146;
+	background-color: #FFF;
+	padding: 0px 8px 8px 8px;
+}
+
+#options-tab-wrapper {
+	width: 100%;
+	overflow: hidden;
+	padding: 2px 0px;
+	border-bottom: 1px dotted #000;
+}
+
+#options-tab-wrapper ul.tabs {
+	position: relative;
+	left: 50%;
+	float: left;
+	list-style-type: none;
+}
+#options-tab-wrapper ul.tabs > li {
+	margin: 0px 4px;
+	
+	position: relative;
+	right: 50%;
+	float: left;
+}
+#options-tab-wrapper ul.tabs > li > a {
+	font-size: 8pt;
+	padding: 4px;
+}
+#options-tab-wrapper ul.tabs > li > a:hover {
+	background-color: #E7DEEB;
+	border-radius: 4px;
+	-moz-border-radius: 4px;
+	-webkit-border-radius: 4px;
+}
+#options-tab-wrapper ul.tabs > li.tab-active > a {
+	background-color: #C6AFCF;
+	border-radius: 4px;
+	-moz-border-radius: 4px;
+	-webkit-border-radius: 4px;
+}
+#options-panel-content {
+	padding-top: 4px;
+}
+
+#options-panel-content hr {
+	color: #826146;
+	background-color: #826146;
+	border: 0px;
+	height: 1px;
+	margin: 4px 0px;
+}
+
+/*
+ * Tabs
+ */
+
+.tab-container .tab-content {
+	display: none;
+}
+.tab-container .tab-content.content-active {
+	display: block;
+}
+ul.tabs > li > a {
+	display: block;
+}
+ul.tabs > li > a:hover {
+	cursor: pointer;
+}
+
+/*
+ * "Saved Chains" tab
+ */
+
+#tab-saved-chains {
+	max-height: 512px;
+	overflow: auto;
+}
+#tab-saved-chains #save-chain-name {
+	width: 70%;
+}
+
+#saved-chains-list {
+	list-style: none;
+}
+#saved-chains-list > li {
+	padding: 4px 0px;
+	border-top: 1px dotted #826146;
+	overflow: hidden;
+}
+#saved-chains-list > li:first-child {
+	border-top: 0px;
+}
+#saved-chains-list > li dl > dd {
+	width: 80%;
+	float: left;
+}
+#saved-chains-list > li dl > dt {
+	width: 20%;
+	float: right;
+	text-align: right;
+}
+#saved-chains-list > li dl > dd .chain-name {
+	border-bottom: 1px dotted #826146;
+	cursor: pointer;
+}
+#saved-chains-list > li dl > dd .chain-name:hover {
+	color: #826146;
+	border-bottom: 1px solid #826146;
+}
+#saved-chains-list > li dl > dt .icon-delete {
+	background-image: url('../images/icon_delete.png');
+	width: 16px;
+	height: 16px;
+	display: block;
+	float: right;
+	cursor: pointer;
+}
+
+/*
+ * "Preset Chains" tab
+ */
+
+#tab-preset-chains #preset-chains-group-select {
+	width: 100%;
+}
+#tab-preset-chains #preset-chains-group-select optgroup {
+	font-style: normal;
+	border-top: 1px dotted #000;
+}
+#tab-preset-chains #preset-chains-group-select optgroup:first-child {
+	border-top: 0px;
+}
+#tab-preset-chains #preset-chains-group-select option:before {
+	content: "\00A0\00B7\00A0";
+}
+#preset-chains-list {
+	list-style: none;
+}
+#preset-chains-list > li {
+	padding: 4px 0px;
+	border-top: 1px dotted #826146;
+	overflow: hidden;
+}
+#preset-chains-list > li:first-child {
+	border-top: 0px;
+}
+#preset-chains-list > li dl > dd {
+	width: 45%;
+	float: left;
+}
+#preset-chains-list > li dl > dt {
+	width: 50%;
+	float: right;
+	text-align: right;
+}
+#preset-chains-list > li select {
+	margin-left: 2px;
+}
+#preset-chains-loading {
+	width: 16px;
+	height: 16px;
+	margin: 8px auto;
+	background: url('../images/loading.gif') no-repeat;
+}
+
+/*
+ * "Simulator" tab
+ */
+
+#tab-simulator input[type="radio"] {
+	margin: 4px;
+	cursor: pointer;
+}
+#tab-simulator label {
+	cursor: pointer;
+}
+#tab-simulator dl {
+	padding: 4px 0px;
+	overflow: hidden;
+}
+#tab-simulator dl > dd, #tab-simulator dl > dt {
+	padding: 0px 4px;
+}
+#tab-simulator dl > dt {
+	width: 96px;
+	float: left;
+}
+#tab-simulator dl > dd {
+	margin-left: 108px;
+}
+#tab-simulator dl > dd select {
+	width: 64px;
+}
+#tab-simulator dl > dd #chain-powers {
+	width: 224px;
+}
+#tab-simulator dl > dd #chain-powers optgroup {
+	font-style: normal;
+}
+#tab-simulator dl > dd #chain-powers option:before {
+	content: "\00A0\00B7\00A0";
+}
+#chain-powers-loading {
+	width: 16px;
+	height: 16px;
+	background: url('../images/loading.gif') no-repeat;
+}
+
+/*
+ * "Links" tab
+ */
+
+#tab-links textarea {
+	width: 100%;
+	height: 64px;
+}
+#tab-links label {
+	cursor: pointer;
+}
+#tab-links #shorten-links {
+	float: right;
+	font-size: 8pt;
+}
+
+/*
+ * "Puyo Skin" tab
+ */
+
+#puyo-skin-selection {
+	list-style: none;
+}
+#puyo-skin-selection input[type="radio"] {
+	height: 32px;
+	margin: 0px 4px;
+}
+#puyo-skin-selection .puyo-skin {
+	width: 212px;
+	height: 32px;
+	display: inline-block;
+	background: url('../images/puyo_skins.png') no-repeat;
+}
+#puyo-skin-selection input[type="radio"],
+#puyo-skin-selection label {
+	cursor: pointer;
+}
+
+/*
+ * "Settings" tab
+ */
+
+#tab-settings input[type="radio"] {
+	margin: 4px;
+	cursor: pointer;
+}
+#tab-settings label {
+	cursor: pointer;
+}
+#tab-settings dl {
+	padding: 4px 0px;
+	overflow: hidden;
+}
+#tab-settings dl > dd, #tab-settings dl > dt {
+	padding: 0px 4px;
+}
+#tab-settings dl > dt {
+	width: 96px;
+	float: left;
+}
+#tab-settings dl > dd {
+	margin-left: 108px;
+}
+
+/*
+ * "About" tab
+ */
+
+#tab-about a:link, #tab-about a:visited {
+	color: #826146;
+	text-decoration: none;
+	border-bottom: 1px dotted #826146;
+}
+#tab-about a:hover, #tab-about a:active {
+	border-bottom: 1px solid #826146;
+}
+#release-archive {
+	border: 0px;
+}
+#release-archive legend {
+	font-weight: bold;
+}
+#release-archive ul {
+	list-style: square;
+	margin-left: 16px;
+}
+#release-archive ul > li {
+	padding: 1px 0px;
+}

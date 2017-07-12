@@ -1,0 +1,178 @@
+/*************************
+** Puyo Panel
+*************************/
+#puyo_panel
+{
+	float: left;
+	display: block;
+	background-color: #FFF;
+	padding: 4px;
+}
+
+/* Puyo Field */
+#puyo_field
+{
+	padding: 12px 20px 20px 20px;
+	float: left;
+	display: block;
+	position: relative;
+}
+
+#puyo_field .main_field
+{
+	background-color: #4A5A3A;
+	width: 100%;
+}
+
+#puyo_field a
+{
+	background-position: 0px;
+	display: block;
+	float: left;
+	position: relative;
+	z-index: 1;
+}
+
+/*#puyo_field .classX
+{
+	background-position: 0px;
+	float: left;
+	height: 32px;
+	margin-left: 0px;
+	width: 32px;
+	position: relative;
+	top: -384px;
+}*/
+
+#puyo_field .classX
+{
+	height: 32px;
+	left: 64px;
+	position: relative;
+	top: -384px;
+	width: 64px;
+}
+
+#puyo_field .classX span
+{
+	background-position: 0px;
+	display: block;
+	float: left;
+	height: 32px;
+	width: 32px;
+}
+
+/* Puyo Selection */
+#puyo_controls
+{
+	width: 188px;
+	float: left;
+	display: block;
+}
+
+#puyo_selection
+{
+	background-repeat: no-repeat;
+	margin-left: 4px;
+	padding: 5px;
+	width: 100%;
+}
+
+/*#puyo_selection div
+{
+	padding: 1px;
+	margin: 0px 1px 1px 0px;
+	float: left;
+	display: block;
+	background-position: 1px 1px;
+	background-repeat: no-repeat;
+}*/
+
+#puyo_selection span
+{
+	margin: 0px 1px 1px 0px;
+	padding: 1px;
+}
+
+
+
+/*#puyo_selection div.clear
+{
+	clear: both;
+	float: none;
+	height: 0px;
+	margin: 0px;
+	overflow: hidden;
+	padding: 0px;
+}*/
+
+#puyo_selection .selected
+{
+	background-color: #532600;
+}
+
+#puyo_selection .insert
+{
+	width: 96px;
+	margin-left: 5px;
+	text-align: right;
+	font-size: .75em;
+	font-weight: bold;
+}
+
+#puyo_selection span a
+{
+	display: block;
+}
+
+/* Lists in the puyo controls panel */
+#puyo_controls ul
+{
+	font-weight: bold;
+	list-style-type: none;
+	margin: 8px;
+	padding: 0px;
+}
+
+#puyo_controls ul li
+{
+	display: block;
+}
+
+#puyo_controls ul li a:link, #puyo_controls ul li a:visited
+{
+	color: #A57B4A;
+	text-decoration: none;
+}
+
+#puyo_controls ul li a:hover, #puyo_controls ul li a:active
+{
+	color: #000;
+	text-decoration: none;
+}
+
+/* Nuisance indicator */
+#nuisance_indicator
+{
+	background-image: url('../images/nuisance_indicator.png');
+	background-position: 14px 8px;
+	background-repeat: no-repeat;
+	height: 42px;
+	margin: 0px 0px 8px 4px;
+	padding: 0px 4px;
+	width: 224px;
+}
+
+#nuisance_indicator span
+{
+	display: block;
+	float: right;
+	height: 50px;
+	margin-right: -32px;
+	width: 64px;
+}
+
+#nuisance_indicator span.first
+{
+	margin-right: 0px;
+}

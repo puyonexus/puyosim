@@ -1,0 +1,133 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+	<title>Puyo Puyo Chain Simulator v2.2</title>
+
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+
+	<link rel="stylesheet" type="text/css" href="css/style.css" media="screen" />
+	<link rel="stylesheet" type="text/css" href="css/style_small.css" title="Small Puyo Skin" />
+	<link rel="alternate stylesheet" type="text/css" href="css/style_large.css" title="Large Puyo Skin" />
+
+	<script type="text/javascript" src="js/functions.js"></script>
+	<script type="text/javascript" src="js/variables.js"></script>
+	<script type="text/javascript" src="js/content.js"></script>
+	<script type="text/javascript" src="js/chains.js"></script>
+	<script type="text/javascript" src="js/characterpowers.js"></script>
+	<script type="text/javascript" src="js/skins.js"></script>
+	<script type="text/javascript" src="js/ajax.js"></script>
+	<script type="text/javascript">
+	// <![CDATA[
+		init();
+		window.onload = function() { // Onload events
+			init_puyoAnimations();  // Start puyo animations
+			init_puyoAnimation_X(); // Start the X animation
+		}
+	// ]]>
+	</script>
+
+</head>
+<body>
+<!-- Display error if Javascript isn't enabled -->
+<noscript>
+	<div class="center strong">
+		You need Javascript enabled to use the Puyo Puyo Chain Simulator.
+	</div>
+</noscript>
+
+<!-- Page Content -->
+<div id="content">
+
+	<!-- Panel -->
+	<div id="nuisance_indicator"></div> <!-- Nuisance Indicator -->
+	<div id="puyo_panel"> <!-- The actual panel -->
+		<div id="puyo_field"></div> <!-- Puyo Field -->
+		<div id="puyo_controls"> <!-- Controls/Aside -->
+			<div id="puyo_selection" class="puyo_display"></div> <!-- Selection -->
+			<hr />
+			<ul class="center"> <!-- Field Options -->
+				<li><a href="#" onclick="editChain(); return false;">Edit Mode</a></li>
+				<li><a href="#" onclick="advanceChain(); return false;">Advance a Step</a></li>
+				<li class="space-bottom"><a href="#" onclick="startChain(); return false;">Start/Stop Simulation</a></li>
+				<li><a href="#" onclick="clearBoard(); return false;">Clear Board</a></li>
+				<li><a href="#" onclick="useChainInURL(); return false;">Use Chain in URL</a></li>
+			</ul>
+			<hr />
+			<ul> <!-- Score -->
+				<li>Chains: <span id="label_chains">0</span></li>
+				<li>Score: <span id="label_score">0</span></li>
+				<li>Nuisance: <span id="label_nuisance">0</span></li>
+				<li>Bonus: <span id="label_bonus"></span></li>
+			</ul>
+		</div>
+	</div>
+	<script type="text/javascript">
+	// <![CDATA[
+		// Scripts for the panel
+		displayNuisanceIndicator();
+		displayPuyoField();
+		displayPuyoSelection();
+	// ]]>
+	</script>
+	
+	<!-- Chains Widget -->
+	<div id="widget-chains" class="widget">
+		<div class="header"> <!-- Header -->
+			<a href="#" onclick="toggleWidget('widget-chains-content'); return false;">Chains Widget</a>
+		</div>
+		<div id="widget-chains-content" class="content"> <!-- Content -->
+			<ul id="widget-fever-tabs" class="tabs"> <!-- Tabs (Amount of Colors) -->
+				<li class="colors-3"><a href="#" onclick="chainsWidget.setColors(3, this.parentNode); return false;"><img src="images/puyo_colors_3.png" alt="" /></a></li>
+				<li class="colors-4" id="widget-fever-default-tab"><a href="#" onclick="chainsWidget.setColors(4, this.parentNode); return false;"><img src="images/puyo_colors_4.png" alt="" /></a></li>
+				<li class="colors-5 last"><a href="#" onclick="chainsWidget.setColors(5, this.parentNode); return false;"><img src="images/puyo_colors_5.png" alt="" /></a></li>
+			</ul>
+			<div class="main_content"> <!-- Main Content -->
+				<div id="widget-chains-group-select"></div> <!-- Group Selection -->
+				<hr />
+				<div id="widget-chains-chain-select" class="overflow"></div> <!-- Chain Selection -->
+			</div>
+		</div>
+	</div>
+	<script type="text/javascript">
+	// <![CDATA[
+		// Scripts for the Chains Widget
+		chainsWidget.setColors(chainsWidget.getColors(), getObject('widget-fever-default-tab'));
+		chainsWidget.displayGroupSelectionBox(1);
+		chainsWidget.displayGroupSelection(1, 4);
+	// ]]>
+	</script>
+	
+	<!-- Options Widget -->
+	<div id="widget_options" class="widget">
+		<div class="header"> <!-- Header -->
+			<a href="javascript: void(0);" onclick="toggleWidget('widget_options_content');">Options Widget</a>
+		</div>
+		<div id="widget_options_content" class="content"> <!-- Content -->
+			<ul id="widget_options_tabs" class="tabs"> <!-- Tabs -->
+				<li id="options_widget_linking_codes"><a href="javascript: void(0);" onclick="widget_options_change_tab(TAB_LINKING_CODES);">Linking Codes</a></li>
+				<li id="options_widget_settings"><a href="javascript: void(0);" onclick="widget_options_change_tab(TAB_SETTINGS);">Settings</a></li>
+				<li id="options_widget_my_profile"><a href="javascript: void(0);" onclick="widget_options_change_tab(TAB_MY_PROFILE);">My Profile</a></li>
+				<li id="options_widget_download" class="last"><a href="javascript: void(0);" onclick="widget_options_change_tab(TAB_DOWNLOAD);">Download</a></li>
+			</ul>
+			<div id="widget_options_main_content" class="main_content"></div> <!--Main Content -->
+		</div>
+	</div>
+	<script type="text/javascript">
+	// <![CDATA[
+		// Scripts for the options widget
+		loadOptions();
+		widget_options_change_tab(widget_options_tab);
+	// ]]>
+	</script>
+</div>
+
+<!-- Copyright -->
+<div id="copyright">
+	This Puyo Puyo Chain Simulator is &copy; <a href="http://www.puyonexus.net">Puyo Nexus.</a><br />
+	Based off of <a href="http://www.inosendo.com/puyo/rensim/">Inosendo's Chain Simulator</a>.<br />
+	<strong>Tested &amp; Works On:</strong> Firefox, Opera, Chrome, Safari, Internet Explorer (8 &amp; above)<br />
+	<strong>Chain Simulator Version:</strong> 2.2
+</div>
+
+</body>
+</html>

@@ -1,0 +1,9 @@
+body {
+    font: 16px/24px -apple-system, system-ui, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+}
+
+.container {
+    padding: 0 15px;
+    margin: 0 auto;
+    max-width: 1170px;
+}

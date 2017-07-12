@@ -1,0 +1,118 @@
+<!-- Linking Codes -->
+<div id="options_widget_linking_codes_content" class="hidden">
+	<div class="center strong">
+		<a href="#" onclick="generateLinkingCodes(); return false;">Generate Linking Codes</a>
+	</div>
+	<hr />
+	<div id="linking_codes"></div>
+</div>
+
+<!-- Settings -->
+<div id="options_widget_settings_content" class="hidden">
+	<div class="strong center">Settings can only be changed when you are in Edit Mode.</div>
+	<fieldset> <!-- Field Size -->
+		<legend>Field Size</legend>
+		<input type="text" id="input_fieldWidth" class="text" style="width: 32px;" /> x <input type="text" id="input_fieldHeight" class="text" style="width: 32px;" />
+		<input type="button" onclick="setFieldSize(getObject('input_fieldWidth').value, getObject('input_fieldHeight').value);" value="Set Field Size" />&nbsp;<span class="small">(3x6 to 16x26 only)</span><br />
+		Select from default sizes: <select id="input_fieldSizes_defaults" onchange="getObject('input_fieldWidth').value = fieldSizes[this.selectedIndex].size.width; getObject('input_fieldHeight').value = fieldSizes[this.selectedIndex].size.height;"></select>
+	</fieldset>
+	<fieldset> <!-- Target Points -->
+		<legend>Target Points</legend>
+		<div class="strong">Current Value: <span id="label_targetPoints"></span></div><br />
+		Set Target Points: <input type="text" id="input_setTargetPoints" maxlength="4" class="text" />&nbsp;<input type="button" onclick="setTargetPoints(getObject('input_setTargetPoints').value);" value="Set Target Points" /><br />
+		(0.01 to 9999, Default: 120)
+	</fieldset>
+	<fieldset> <!-- Puyo Needed to Make a Chain -->
+		<legend>Puyo Needed to Make a Chain</legend>
+		<div class="b">Current Value: <span id="label_puyoToChain"></span></div><br />
+		Set Target Points: <input type="text" id="input_setPuyoToChain" maxlength="2" class="text" />&nbsp;<input type="button" onclick="setPuyoToChain(getObject('input_setPuyoToChain').value);" value="Set Puyo Needed to Make a Chain" /><br />
+		(2 to 72, Default: 4)
+	</fieldset>
+	<fieldset> <!-- Popping Speed -->
+		<legend>Popping Speed</legend>
+		<form name="form_puyo_popping_speed">
+			<input name="input_puyo_popping_speed" type="radio" value="0" onclick="setPopSpeed(this.value);" />&nbsp;Slow<br />
+			<input name="input_puyo_popping_speed" type="radio" value="1" onclick="setPopSpeed(this.value);" checked="checked" />&nbsp;Normal<br />
+			<input name="input_puyo_popping_speed" type="radio" value="2" onclick="setPopSpeed(this.value);" />&nbsp;Fast<br />
+		</form>
+	</fieldset>
+	<fieldset> <!-- Character Powers -->
+		<legend>Character Power</legend>
+		<div class="b">Current Value: <span id="label_characterPower"></span></div><br />
+		<select id="input_characterPower" onchange="setCharacterPower(this.selectedIndex);">
+		</select>&nbsp;<input type="button" onclick="setCharacterPower(getObject('input_characterPower').selectedIndex);" value="Set Character Power" />
+	</fieldset>
+</div>
+
+<!-- My Profile -->
+<div id="options_widget_my_profile_content" class="hidden">
+	<div class="center strong"> <!-- Switch Style -->
+		<a href="#" onclick="switchStyle(); return false;" id="switch_style_text"></a>
+	</div>
+	<hr />
+	<div id="puyo_skin_selection" class="center"> <!-- Small & Large Puyo Skin -->
+		<fieldset>
+			<legend>Small Puyo Skin</legend>
+			<div id="puyo_skin_selection_smallPuyo"></div>
+		</fieldset>
+		<fieldset>
+			<legend>Large Puyo Skin</legend>
+			<div id="puyo_skin_selection_largePuyo"></div>
+		</fieldset>
+	</div>
+	<fieldset> <!-- Chain Image Skin -->
+		<legend>Chain Image Skin</legend>
+		<form id="form_chain_image_skins">
+			<div id="chain_image_skins"></div>
+			<div id="chain_image_skins_aside">
+				<img id="chain_image_skins_preview" alt="" /><br />
+				<input type="button" value="Make this my skin" onclick="setChainImageSkin(getRadioValue(getObject('form_chain_image_skins').elements.chain_image_skins_selection));" />
+			</div>
+		</form>
+	</fieldset>
+</div>
+
+<!-- Download -->
+<div id="options_widget_download_content" class="hidden">
+	<div class="strong center">
+		Legal Jargon:
+	</div>
+	<p>This Puyo Puyo Chain Simulator is licensed under <a href="http://creativecommons.org/licenses/by/3.0/">Creative Commons Attribution 3.0</a>. In a nutshell, you can do whatever you want with it as long as you leave credit and use it for non-commercial purposes.</p>
+	<div class="strong center">
+		<a href="http://www.puyonexus.net/chainsim/download/chain_simulator_v2.2.zip">Download Chain Simulator v2.2</a>
+	</div>
+	<hr />
+	<div>
+		<strong>All Versions:</strong><br />
+		v2.2: (<a href="http://www.puyonexus.net/chainsim/versions/v2.2/">Online</a>) (<a href="http://www.puyonexus.net/chainsim/download/chain_simulator_v2.2.zip">Download</a>)<br />
+		v2.1: (<a href="http://www.puyonexus.net/chainsim/versions/v2.1/">Online</a>) (<a href="http://www.puyonexus.net/chainsim/download/chain_simulator_v2.1.zip">Download</a>)<br />
+		v2: (<a href="http://www.puyonexus.net/chainsim/versions/v2/">Online</a>) (<del>Download</del>)<br />
+		v1: (<a href="http://www.puyonexus.net/chainsim/versions/v1/">Online</a>) (<del>Download</del>)<br />
+	</div>
+</div>
+
+<!-- Options Scripts -->
+<script type="text/javascript">
+// <![CDATA[
+	// Linking Codes
+	displayLinkingCodes();
+		
+	// Settings
+	getObject('input_fieldWidth').value  = fieldWidth;
+	getObject('input_fieldHeight').value = fieldHeight - 1;
+	addFieldSizes();
+	setTargetPoints(targetPoints);
+	setPuyoToChain(puyoToChain);
+	initalizeCharacterPowers();
+	addCharacterPowers();
+	setCharacterPower(1);
+		
+	//My Profile
+	getObject('switch_style_text').innerHTML = (style == STYLE_STANDARD ? STYLE_SWITCH_EYE_CANDY : STYLE_SWITCH_STANDARD);
+	displayPuyoSkins_small();
+	displayPuyoSkins_large();
+	initalizeChainImageSkins();
+	displayChainImageSkins();
+	setChainImageSkinPreview(getSkinNumberFromSkinId(readCookie('chainsim_chain_image_set'), readCookie('chainsim_chain_image_skin')));
+// ]]>
+</script>

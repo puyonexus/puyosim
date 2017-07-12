@@ -1,0 +1,40 @@
+/* Stylesheet used for small (16x16) puyo */
+.puyo
+{
+	width: 16px;
+	height: 16px;
+}
+
+#nuisance_indicator
+{
+	display: none;
+}
+
+#puyo_panel #puyo_field
+{
+	background-image: url('../images/field_bg_small.png');
+	height: 208px;
+	width: 96px;
+}
+
+#puyo_panel #puyo_controls #puyo_selection
+{
+	background-image: url('../images/puyoSelection_bg_small.png');
+	height: 56px;
+	line-height: 16px;
+	/*width: 96px;
+	width: 160px;*/
+}
+
+#puyo_selection .insert
+{
+	width: 92px;
+	font-size: .75em;
+	height: 16px;
+	margin-top: -6px;
+}
+
+.classX
+{
+	display: none;
+}

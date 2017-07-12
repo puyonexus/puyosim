@@ -1,0 +1,220 @@
+/*
+ * Standard Skin Stylesheet
+ */
+
+/*
+ * Puyo Field
+ */
+ 
+#simulator-field {
+	border: 12px solid transparent;
+	border-image: url('../images/standard/field-border.png') 12 repeat;
+	-moz-border-image: url('../images/standard/field-border.png') 12 repeat;
+	-webkit-border-image: url('../images/standard/field-border.png') 12 repeat;
+	
+	position: relative;
+	float: left;
+	display: block;
+}
+#simulator-field.alternate-border {
+	padding: 12px;
+	border: 0px;
+}
+
+#field-content {
+	position: relative;
+	margin: -4px;
+	padding: 0px 12px 12px 12px;
+}
+
+#field-content #field-bg {
+	position: absolute;
+	top: 0px; left: 0px; bottom: 0px; right: 0px;
+	background-color: #A57B4A;
+}
+
+#field-content #field-chalkboard {
+	position: absolute;
+	top: 32px; left: 12px; bottom: 12px; right: 12px;
+	background-color: #4A5A3A;
+}
+
+#field-content #field {
+	position: relative;
+}
+
+#field .row {
+	display: block;
+	height: 32px;
+}
+
+#field .row .puyo {
+	display: inline-block;
+}
+
+#field .row:first-child {
+	-ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=50)"; /* Putting it here fixes a bug in IE */
+}
+
+#field .row:first-child .puyo {
+	opacity: 0.5;
+}
+
+#field #field-cursor {
+	position: absolute;
+	background-image: url('../images/standard/cursor.png');
+	z-index: 2;
+
+	visibility: hidden;
+	width: 44px;
+	height: 44px;
+	margin: -6px;
+	cursor: pointer;
+}
+
+/*
+ * Puyo Field Editor Controls
+ */
+
+#simulator-controls {
+	width: 272px;
+	float: left;
+	position: relative;
+	margin-left: 8px;
+}
+#simulator-controls hr {
+	border: 0px;
+	border-bottom: 1px dotted #826146;
+	height: 1px;
+	margin: 4px 0px;
+}
+#controls-puyo-selection,
+#controls-simulation,
+#controls-score-display {
+	border-radius: 8px;
+	-moz-border-radius: 8px;
+	-webkit-border-radius: 8px;
+	border: 2px solid #826146;
+	background-color: #FFF;
+	margin-bottom: 8px;
+	padding: 8px;
+}
+
+#controls-puyo-selection input[type="checkbox"] {
+	margin: 4px;
+	cursor: pointer;
+}
+#controls-puyo-selection label {
+	cursor: pointer;
+}
+#puyo-selection {
+	width: 216px;
+}
+#puyo-selection ul {
+	list-style: none;
+	overflow: hidden;
+}
+#puyo-selection ul > li {
+	display: block;
+	float: left;
+	padding: 2px;
+}
+#puyo-selection .puyo {
+	display: block;
+	cursor: pointer;
+}
+#puyo-selection .selected {
+	background-color: #826146;
+}
+
+#nuisance-indicator {
+	width: 192px;
+	height: 34px;
+	margin: 8px auto 16px auto;
+	padding: 0px 5px;
+
+	background-image: url('../images/standard/nuisance-indicator.png');
+	background-repeat: no-repeat;
+}
+
+#nuisance-indicator span {
+	display: block;
+	float: right;
+	width: 64px;
+	height: 64px;
+	margin: -15px -16px;
+}
+
+#controls-score-display dl {
+	overflow: hidden;
+	margin: 2px 0px;
+}
+#controls-score-display dl > dt {
+	width: 64px;
+	float: left;
+}
+#controls-score-display dl > dd {
+	margin-left: 72px;
+}
+
+
+/*
+ * Puyo Positions
+ */
+
+.puyo-red { background-position: 0px 0px; }
+.puyo-green { background-position: 0px -32px; }
+.puyo-blue{ background-position: 0px -64px; }
+.puyo-yellow { background-position: 0px -96px; }
+.puyo-purple { background-position: 0px -128px; }
+
+.puyo-nuisance { background-position: 0px -160px; }
+.puyo-point { background-position: 0px -192px; }
+.puyo-hard { background-position: 0px -224px; }
+.puyo-iron { background-position: -32px -224px; }
+.puyo-wall { background-position: -64px -224px; }
+
+.puyo-none { background-image: url('../images/standard/puyo-erase.png'); }
+.puyo-delete { background-image: url('../images/standard/puyo-delete.png'); }
+
+/*
+ * Field Borders (border-image workaround)
+ */
+
+#simulator-field > .border-top-left,
+#simulator-field > .border-top-right,
+#simulator-field > .border-bottom-left,
+#simulator-field > .border-bottom-right {
+	position: absolute;
+	background-image: url('../images/standard/field-border-alt-corners.png');
+	background-repeat: no-repeat;
+	width: 12px;
+	height: 12px;
+}
+#simulator-field > .border-top,
+#simulator-field > .border-bottom {
+	position: absolute;
+	background-image: url('../images/standard/field-border-alt-horizontal.png');
+	background-repeat: repeat-x;
+	left: 12px; right: 12px;
+	height: 8px;
+}
+#simulator-field > .border-left,
+#simulator-field > .border-right {
+	position: absolute;
+	background-image: url('../images/standard/field-border-alt-vertical.png');
+	background-repeat: repeat-y;
+	top: 12px; bottom: 12px;
+	width: 8px;
+}
+
+#simulator-field > .border-top-left { background-position: top left; top: 0px; left: 0px; }
+#simulator-field > .border-top-right { background-position: top right; top: 0px; right: 0px; }
+#simulator-field > .border-bottom-left { background-position: bottom left; bottom: 0px; left: 0px; }
+#simulator-field > .border-bottom-right { background-position: bottom right; bottom: 0px; right: 0px; }
+
+#simulator-field > .border-top { background-position: top left; top: 0px; }
+#simulator-field > .border-bottom { background-position: bottom left; bottom: 0px; }
+
+#simulator-field > .border-left { background-position: top left; left: 0px; }
+#simulator-field > .border-right { background-position: top right; right: 0px; }

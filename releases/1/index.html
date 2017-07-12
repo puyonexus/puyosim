@@ -1,0 +1,120 @@
+<!DOCTYPE html
+PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" 
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta http-equiv="Content-Script-Type" content="text/javascript" />
+
+<title>Puyo Puyo Chain Simulator</title>
+
+<!--<link rel="shortcut icon" href="/images/favicon_B.ico" type="image/vnd.microsoft.icon" />-->
+
+<script type="text/javascript" src="c_functions.js"></script>
+<script type="text/javascript" src="c_variables.js"></script>
+<script type="text/javascript" src="c_feverchain.js"></script>
+<script type="text/javascript" src="c_content.js"></script>
+
+<link rel="stylesheet" type="text/css" href="stylesheet.css" media="screen" />
+
+<!-- BEGIN Fix Internet Explorer Issues -->
+	<!--[if IE]>
+	<link rel="stylesheet" type="text/css" href="ie_stylesheet.css" media="screen" />
+	<![endif]-->
+<!-- END Fix Internet Explorer Issues -->
+
+</head>
+<body> 
+
+<table id="table_page">
+	<tr>
+		<td valign="top">
+			<table id="main">
+				<tr>
+					<td id="field" valign="bottom" rowspan="2">
+					</td>
+					<td valign="top" id="side_field">
+					</td>
+				</tr>
+				<tr>
+					<td id="switch_mode" class="center b">
+					</td>
+				</tr>
+			</table>
+			
+			<script type="text/javascript">
+				init();
+			</script>
+
+		</td>
+		<td valign="top">
+			<div class="infobox">
+				<div class="top">
+					Information
+				</div>
+				<div class="box">
+					Welcome to the Puyo Puyo Chain Simulator. This chain simulator will allow you construct chains, similar to Puyo Puyo, and test them. This chain simulator also contains a large amount of fever chains, from Puyo Puyo Fever and Puyo Puyo! 15th Anniversary.<br /><br />
+
+					There are 2 versions of this Puyo Puyo Chain Simulator:<br /><br />
+					<span class="b">Standard Mode:</span> Standard Mode is designed to be simple yet look more improved then the versions this chain simulator is based off of.<br />
+					<span class="b">Eye Candy Mode:</span> Eye Candy Mode is designed for people who have a fast connection and want to have a lot of pretty &amp; colorful graphics. This mode features colored backgrounds similar to fever mode in Puyo Puyo Fever.
+				</div>
+			</div>
+			
+			<!--<div class="infobox" style="margin-top: 4px;">
+				<div class="top">
+					Linking Codes
+				</div>
+				<div class="box">
+					<div class="center">
+						<input type="button" class="button" onclick="writeurl();" name="get_linking_codes" value="Get Linking Codes" />
+					</div>
+					<div class="b">URL to chain:</div><input name="url_of_chain" id="url_of_chain" type="text" class="url text" value="" /><br />
+					<div class="b">URL to image of chain:</div><input name="url_of_image" id="url_of_image" type="text" class="url text" value="" /><br />
+					<div class="b">BBcode to post on the Puyo Nexus Forum:</div><input name="ppm_bbcode" id="ppm_bbcode" type="text" class="url text" value="" />--><!--<br />-->
+					<!--<div class="b">HTML to post on the Puyo Nexus Wiki:</div><input name="ppm_html" id="ppm_html" type="text" class="url text" value="" />-->
+				<!--</div>
+			</div>-->
+
+		</td>
+	</tr>
+</table>
+<div><br /></div>
+
+<div id="tabs_main">
+<ul>
+	<li><a href="javascript: switch_tab('link_codes');" id="tab_link_codes"><span>Linking Codes</span></a></li><li><a href="javascript: switch_tab('settings');" id="tab_settings" class="current"><span>Settings</span></a></li><li><a href="javascript: switch_tab('my_profile');" id="tab_my_profile"><span>My Profile</span></a></li><li><a href="javascript: switch_tab('download');" id="tab_download"><span>Download</span></a></li><li><a href="javascript: switch_tab('fever_chains');" id="tab_fever_chains"><span>Fever Chains</span></a></li>
+</ul>
+</div>
+
+<div id="tab_content">
+	<div id="tab_cont_top">
+		Change Settings &amp; Values
+	</div>
+
+	<!--<div id="tabs_sub">
+	</div>-->
+
+	<div id="subTab_content">
+		<script type="text/javascript">
+			set_first_content();
+		</script>
+	</div>
+</div>
+<div><br /></div>
+
+<div id="copyright" class="center">
+	The Puyo Puyo Chain Simulator is based on the works of <a href="http://v61aq.puyopuyo.net/js/rs/" onclick="window.open(this.href); return false;">muSHIMaru</a> &amp; <a href="http://www.inosendo.com/puyo/rensim/" onclick="window.open(this.href); return false;">Inosendo</a>.<br />
+	Thank them for creating the bases of the Chain Simulator we use.
+</div>
+
+<!-- Load Images BEGIN -->
+<div id="load_data"></div>
+<script type="text/javascript">
+	preload_images();
+</script>
+<!-- Load Images END -->
+
+</body>
+</html>

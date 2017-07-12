@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<simulator>
+	<css href="field-eyecandy.css" />
+
+	<field> <!--  Field Content (#simulator-field) -->
+	<![CDATA[
+		<div id="field-content">
+			<div id="field-stage-bg"></div>
+			<div id="field-char-bg"></div>
+			<div id="field"></div>
+		</div>
+	]]>
+	</field>
+	
+	<scripts>
+	<![CDATA[
+		(function() {
+			var stagebg = [ // Stage Backgrounds
+				"pp7/physics-club.png", "pp7/classroom.png", "pp7/gymnasium.png", "pp7/schoolyard.png",
+				"pp7/rooftop.png", "pp7/shopping-district.png", "pp7/fish-store.png", "pp7/farmers-market.png",
+				"pp7/lottery.png", "pp7/station-square.png", "pp7/loch-ness.png", "pp7/egypt.png",
+				"pp7/himalayas.png", "pp7/easter-island.png", "pp7/area51.png", "pp7/bermuda-triangle.png",
+				"pp7/stonehenge.png", "pp7/magic-school.png", "pp7/park.png", "pp7/forest.png",
+				"pp7/dark-space.png", "pp7/sight-of-the-galaxy.png"
+			];
+			
+			$("#field-stage-bg").css("background-image", "url('images/eyecandy/field_stage_bg/" + stagebg[Math.floor(Math.random() * stagebg.length)] + "')");
+			
+			var charbg = [ // Character Backgrounds
+				"black.png",
+				"pp15/amitie.png", "pp15/raffine.png", "pp15/sig.png", "pp15/rider.png",
+				"pp15/klug.png", "pp15/accord.png", "pp15/oshare.png", "pp15/yu.png",
+				"pp15/ocean-prince.png", "pp15/onion-pixy.png", "pp15/dongurigaeru.png", "pp15/lemres.png",
+				"pp15/feli.png", "pp15/baldanders.png", "pp15/akuma.png", "pp15/arle.png",
+				"pp15/nasu-grave.png", "pp15/suketoudara.png", "pp15/zoh.png", "pp15/schezo.png",
+				"pp15/rulue.png", "pp15/satan.png",
+				"pp7/ringo.png", "pp7/amitie.png", "pp7/sig.png", "pp7/raffine.png",
+				"pp7/klug.png", "pp7/lemres.png", "pp7/feli.png", "pp7/maguro.png",
+				"pp7/risukuma.png", "pp7/arle.png", "pp7/dark-arle.png", "pp7/carbuncle.png",
+				"pp7/skeleton-t.png", "pp7/suketoudara.png", "pp7/draco.png", "pp7/schezo.png",
+				"pp7/rulue.png", "pp7/satan.png", "pp7/trio.png", "pp7/ekoro.png"
+			];
+			
+			$("#field-char-bg").css("background-image", "url('images/eyecandy/field_char_bg/" + charbg[Math.floor(Math.random() * charbg.length)] + "')");
+		})();
+	]]>
+	</scripts>
+</simulator>

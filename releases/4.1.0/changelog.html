@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<title>Puyo Puyo Chain Simulator - Changelog</title>
+	
+	<link rel="stylesheet" href="css/changelog.css">
+</head>
+<body>
+	<div id="header">
+		<div id="header-inner">
+			<div id="logo"></div>
+			<h1>Version 4.1.0</h1>
+			<h2>Coded by Nick Woronekin</h2>
+		</div>
+	</div>
+	<div id="wrap">
+		<div class="release">
+			<h2>Version 4.1.0</h2>
+			<h3>Released on August 7, 2012</h3>
+			<ul>
+				<li>New look. Looks so much better and more modern than v4.0.0 (which was really just the same as v3.0.x). The field still looks the same.</li>
+				<li>Added Sun Puyo (and they're nicely animated as well).</li>
+				<li>New nice stylized dropdown menus for Puyo skin selection, chain set selection, and attack power selection. This allows me to use more than just one line of text and use images.</li>
+				<li>Removed some code required for legacy browsers. Your browser now needs to support HTML5 DOM Storage (localStorage) and JSON. Due to this, browsers such as IE 7 (and older) and the Wii Internet Browser are no longer supported.</li>
+				<li>Eliminated the use of seperate css and xml files for each field style. All their content is stored in the main JavaScript file and a single CSS file. As such the initial loading time when opening the page and the loading time when switching between field displays no longer exists; it's now loads instantly.</li>
+				<li>Rewrote some code to clean it up and optimize it.</li>
+				<li>Rewrote the code for the saved chains. It goes back to using JSON ala v3.0.x rather than a custom JSON-less method used in v4.0.0.</li>
+				<li>Added the new Puyo skins from Puyo Puyo!! 20th Anniversary. There are now 26 different Puyo skins to select from.</li>
+				<li>Reordered the Puyo selection.</li>
+				<li>Changed the erasor image to the one from 20th Anniversary.</li>
+				<li>Replaced "Erase All" with a graphical one ala 20th Anniversary.</li>
+				<li>You can now disable Puyo animation. You can still disable the nuisance tray animation and can also disable the Sun Puyo animation.</li>
+				<li>Reordered and condensed some of the chain sets (Mini Puyo Fever and Chain Simulator chains are identical in Puyo 7 and 20th Anniversary). This change cuts the chain presets file by around 50KB.</li>
+				<li>Removed support for some types of URL's for chain images. URL's such as chainimage.php/000.png are no longer supported.</li>
+				<li>Used a darker background for chain images (#444 compared to #FFF).</li>
+				<li>New Puyo skin for chain images, ripped from Puyo Puyo Box (it's really the same but the colors resemble Arcade/Mega Drive Puyo Puyo Tsu).</li>
+				<li>The changelog is now a nicely formatted HTML file rather than a plain text document.</li>
+				<li>Numerous other additional features and changes.</li>
+			</ul>
+		</div>
+		<div class="release">
+			<h2>Version 4.0.0</h2>
+			<h3>Released on June 18, 2011</h3>
+			<ul>
+				<li>Complete rewrite, yet again.</li>
+				<li>Now supports using HTML5 Canvas to draw the puyo. (It still supports using DOM methods).</li>
+				<li>New logo</li>
+				<li>Improved look of the options.</li>
+				<li>When you select a character's power, the score mode and target points are automatically adjusted.</li>
+				<li>Improved scoring, should be 99% accurate now according to Puyo Puyo 7.</li>
+				<li>Added animation to the nuisance tray. It can be disabled. (it's enabled by default.)</li>
+				<li>Numerous other changes.</li>
+			</ul>
+		</div>
+		<div class="release">
+			<h2>Version 3.0.2</h2>
+			<h3>Released on February 4, 2011</h3>
+			<ul>
+				<li>
+					Updated jQuery from 1.4.2 to 1.5. The release version also uses a copy located on Google's CDN instead of a locally hosted one.
+					<ul>
+						<li>UPDATE on March 11, 2011 - Updated jQuery to 1.5.1.</li>
+					</ul>
+				</li>
+				<li>Added URL shortening for the chain URL (this was previously added in v2.2.1 but was removed in v3.)</li>
+				<li>Fixed a major bug where loading a chain from a url that contained the width and height parameters set the height incorrectly.</li>
+				<li>Fixed bug where switching from an animated puyo skin to a non-animated puyo skin connected the puyo in the hidden top row.</li>
+				<li>Changed BBCode in Linking Codes to Chain ID (possible release of a new version of the PPF Fever Editor in the future?) Due to an oversight, the original bbcode didn't even work anyway when the field size wasn't 6x12!</li>
+				<li>Changed the way the saved chains are stored. They no longer use JSON and as a result json2.js is no longer needed. Saved chains that are saved using the old way will be converted upon opening the chain simulator. Unfortunately, this new method breaks the old chain simulators when they try to load the saved chains (they encounter a JSON.parse error.)</li>
+				<li>Changed the look of the saved chains. There is no longer a Load and Delete button. Now, clicking the chain name will load it, and there is a graphical delete button.</li>
+				<li>Reversed the order of the simulation speeds. 1 is now Slow and 9 is now Fast.</li>
+				<li>Some minor internal changes.</li>
+			</ul>
+		</div>
+		<div class="release">
+			<h2>Version 3.0.1</h2>
+			<h3>Released on September 24, 2010</h3>
+			<ul>
+				<li>Switched doctype from XHTML1.0 Strict to HTML5.</li>
+				<li>Old style chain URL's now work.</li>
+			</ul>
+		</div>
+		<div class="release">
+			<h2>Version 3.0.0</h2>
+			<h3>Released on August 28, 2010</h3>
+			<ul>
+				<li>Complete rewrite. Now uses jQuery and OOP.</li>
+				<li>New look.</li>
+				<li>
+					New simulator skins that replace Standard and Eye Candy from v1 and v2.
+					<ul>
+						<li>Basic: Based off of Eye Candy from v1 without the fever backgrounds.</li>
+						<li>Standard: Based off of Eye Candy from v2 without the fever backgrounds and X's. It's also the default skin.</li>
+						<li>Eye Candy: New skin that uses 15th Anniversary and Puyo 7 backgrounds.</li>
+					</ul>
+				</li>
+				<li>16x16 puyo removed. All skins now use 32x32 puyo.</li>
+				<li>Puyo now connect to each other in the field.</li>
+				<li>Puyo skins from Puyo 7 added.</li>
+				<li>Classic puyo skin from 15th Anniversary removed as the one in Puyo 7 is identical and of higher quality.</li>
+				<li>Classic puyo skin now the default puyo skin.</li>
+				<li>Ability to change point value of point puyo (default is 50).</li>
+				<li>Added ability to save chains.</li>
+				<li>Improved score calculation. Should now be accurate according to Puyo 7.</li>
+				<li>Now saves settings using DOM storage if the browser supports it. Otherwise it will still use cookies.</li>
+				<li>Removed chain image puyo and skin selections. They will now use Puyo 2 puyo and a random skin.</li>
+				<li>Removed code generated for the PPF Fever Editor.</li>
+				<li>
+					New query string used for linking codes.
+					<ul>
+						<li>New: ?w=w&amp;h=h&amp;chain=c</li>
+						<li>Old: ??(w,h)c</li>
+					</ul>
+					Old style is still used for bbcode.
+				</li>
+				<li>Limited values for puyo to clear and target points.</li>
+				<li>Ability to freely switch between classic and fever scoring.</li>
+				<li>Added more control to the simulator speed. Also, it has been moved to directly under the controls now.</li>
+				<li>Simulation controls redone to be more like Puyo 7. They are also much less wordy.</li>
+				<li>"Chain from URL" now only shows up if a chain form the url was used.</li>
+				<li>Added 108 chain from Puyo~n. Maybe you should ask KONAMI for the CODE to unlock it.</li>
+				<li>
+					To-do:
+					<ul>
+						<li>Add chain powers for Puyo 7 Mini and Mega Transformation.</li>
+						<li>Fix bug where you can't place puyo in IE9 Preview. (This might be an IE bug as the wrong mouse button pressed is returned.)</li>
+						<li>Fix problems with Opera for Wii (aka Internet Channel).</li>
+						<li>Finish up my #2 and #3 custom sets.</li>
+					</ul>
+				</li>
+			</ul>
+		</div>
+	</div>
+</body>
+</html>

@@ -1,0 +1,268 @@
+/*************************
+** Puyo Panel
+*************************/
+#puyo_panel
+{
+	float: left;
+	display: block;
+	background-color: #FFF;
+	padding: 4px;
+}
+
+/* Puyo Field */
+#puyo_field
+{
+	background-image: url('../images/field_bg_color.png');
+	margin: 12px 20px 20px 20px;
+	float: left;
+	display: block;
+	position: relative;
+}
+
+#puyo_field .main_field
+{
+	background-color: #4A5A3A;
+	width: 100%;
+}
+
+#puyo_field a
+{
+	background-position: 0px;
+	display: block;
+	float: left;
+	position: relative;
+	z-index: 1;
+}
+
+/* Puyo Field Corners */
+#puyo_field .corners span
+{
+	background-image: url('../images/field_bg_corners.png');
+	background-repeat: no-repeat;
+	position: absolute;
+}
+#puyo_field .corners .top-left
+{
+	top: -12px;
+	left: -20px;
+	width: 20px;
+	height: 12px;
+	background-position: top left;
+}
+#puyo_field .corners .top-right
+{
+	top: -12px;
+	right: -20px;
+	width: 20px;
+	height: 12px;
+	background-position: top right;
+}
+#puyo_field .corners .bottom-left
+{
+	bottom: -20px;
+	left: -20px;
+	width: 20px;
+	height: 20px;
+	background-position: bottom left;
+}
+#puyo_field .corners .bottom-right
+{
+	bottom: -20px;
+	right: -20px;
+	width: 20px;
+	height: 20px;
+	background-position: bottom right;
+}
+
+/* Borders */
+#puyo_field .borders span
+{
+	position: absolute;
+}
+#puyo_field .borders .horizontal
+{
+	background-image: url('../images/field_bg_horizontal.png');
+	background-repeat: repeat-x;
+}
+#puyo_field .borders .vertical
+{
+	background-image: url('../images/field_bg_vertical.png');
+	background-repeat: repeat-y;
+	width: 20px;
+}
+#puyo_field .borders #puyo_field_border_top
+{
+	background-position: top left;
+	top: -12px;
+	left: 0px;
+	right: 0px;
+	height: 12px;
+}
+#puyo_field .borders #puyo_field_border_bottom
+{
+	background-position: bottom left;
+	bottom: -20px;
+	left: 0px;
+	right: 0px;
+	height: 20px;
+}
+#puyo_field .borders #puyo_field_border_left
+{
+	background-position: top left;
+	top: 0px;
+	bottom: 0px;
+	left: -20px;
+}
+#puyo_field .borders #puyo_field_border_right
+{
+	background-position: top right;
+	top: 0px;
+	bottom: 0px;
+	right: -20px;
+}
+
+/*#puyo_field .classX
+{
+	background-position: 0px;
+	float: left;
+	height: 32px;
+	margin-left: 0px;
+	width: 32px;
+	position: relative;
+	top: -384px;
+}*/
+
+#puyo_field .classX
+{
+	height: 32px;
+	position: absolute;
+	top: 32px;
+	width: 64px;
+	left: 0px;
+	right: 0px;
+	margin: 0px auto;
+}
+
+#puyo_field .classX span
+{
+	background-position: 0px;
+	display: block;
+	float: left;
+	height: 32px;
+	width: 32px;
+}
+
+/* Puyo Selection */
+#puyo_controls
+{
+	width: 188px;
+	float: left;
+	display: block;
+}
+
+#puyo_selection
+{
+	background-repeat: no-repeat;
+	margin-left: 4px;
+	padding: 5px;
+	width: 100%;
+}
+
+/*#puyo_selection div
+{
+	padding: 1px;
+	margin: 0px 1px 1px 0px;
+	float: left;
+	display: block;
+	background-position: 1px 1px;
+	background-repeat: no-repeat;
+}*/
+
+#puyo_selection span
+{
+	margin: 0px 1px 1px 0px;
+	padding: 1px;
+}
+
+
+
+/*#puyo_selection div.clear
+{
+	clear: both;
+	float: none;
+	height: 0px;
+	margin: 0px;
+	overflow: hidden;
+	padding: 0px;
+}*/
+
+#puyo_selection .selected
+{
+	background-color: #532600;
+}
+
+#puyo_selection .insert
+{
+	width: 96px;
+	margin-left: 5px;
+	text-align: right;
+	font-size: .75em;
+	font-weight: bold;
+}
+
+#puyo_selection span a
+{
+	display: block;
+}
+
+/* Lists in the puyo controls panel */
+#puyo_controls ul
+{
+	font-weight: bold;
+	list-style-type: none;
+	margin: 8px;
+	padding: 0px;
+}
+
+#puyo_controls ul li
+{
+	display: block;
+}
+
+#puyo_controls ul li a:link, #puyo_controls ul li a:visited
+{
+	color: #A57B4A;
+	text-decoration: none;
+}
+
+#puyo_controls ul li a:hover, #puyo_controls ul li a:active
+{
+	color: #000;
+	text-decoration: none;
+}
+
+/* Nuisance indicator */
+#nuisance_indicator
+{
+	background-image: url('../images/nuisance_indicator.png');
+	background-position: 14px 8px;
+	background-repeat: no-repeat;
+	height: 42px;
+	margin: 0px 0px 8px 4px;
+	padding: 0px 4px;
+	width: 224px;
+}
+
+#nuisance_indicator span
+{
+	display: block;
+	float: right;
+	height: 50px;
+	margin-right: -32px;
+	width: 64px;
+}
+
+#nuisance_indicator span.first
+{
+	margin-right: 0px;
+}

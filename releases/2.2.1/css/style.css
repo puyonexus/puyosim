@@ -1,0 +1,5 @@
+/* Styles for the chain simulator */
+@import url('global.css');     /* Global Styles */
+@import url('puyo_field.css'); /* Puyo Field */
+@import url('widget.css');     /* Widgets */
+/*@import url('/headers/sig/style.css');*/ /* Puyo Nexus Header */

@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<simulator>
+	<css href="field-standard.css" />
+
+	<field> <!-- Field Content (#simulator-field) -->
+	<![CDATA[
+		<div id="field-content">
+			<div id="field-bg"></div>
+			<div id="field-chalkboard"></div>
+			<div id="field"></div>
+		</div>
+	]]>
+	</field>
+	
+	<scripts>
+	<![CDATA[
+	]]>
+	</scripts>
+</simulator>

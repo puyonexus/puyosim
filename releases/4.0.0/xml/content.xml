@@ -1,0 +1,169 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<content>
+
+	<simulator-controls> <!-- Simulator Controls (#simulator-controls) -->
+	<![CDATA[
+		<div id="controls-puyo-selection">
+			<input type="checkbox" id="puyo-insertion"><label for="puyo-insertion">Insert</label>
+			<hr />
+			<div id="puyo-selection" class="center">
+				<ul>
+					<li><a class="puyo puyo-none"></a></il>
+					<li><a class="puyo puyo-red"></a></il>
+					<li><a class="puyo puyo-green"></a></il>
+					<li><a class="puyo puyo-blue"></a></il>
+					<li><a class="puyo puyo-yellow"></a></il>
+					<li><a class="puyo puyo-purple"></a></il>
+				</ul>
+				<ul>
+					<li><a class="puyo puyo-delete"></a></li>
+					<li><a class="puyo puyo-nuisance"></a></li>
+					<li><a class="puyo puyo-point"></a></li>
+					<li><a class="puyo puyo-hard"></a></li>
+					<li><a class="puyo puyo-iron"></a></li>
+					<li><a class="puyo puyo-wall"></a></li>
+				</ul>
+			</div>
+			<hr />
+			<input type="button" id="field-erase-all" value="Erase All" />
+			<input type="button" id="field-set-from-url" value="Set from URL" />
+		</div>
+		
+		<div id="controls-simulation">
+			<div class="center">
+				<input type="button" value="Back" id="simulation-back" />
+				<input type="button" value="Start" id="simulation-start" />
+				<input type="button" value="Pause" id="simulation-pause" />
+				<input type="button" value="Step" id="simulation-step" />
+				<input type="button" value="Skip" id="simulation-skip" />
+			</div>
+			<hr />
+			Speed: <select id="simulation-speed"></select>
+		</div>
+		
+		<div id="controls-score-display">
+				<div id="nuisance-tray"></div>
+				<dl>
+					<dt>Score:</dt>
+					<dd><span id="field-score"></span></dd>
+				</dl>
+				<dl>
+					<dt>Chains:</dt>
+					<dd><span id="field-chains"></span></dd>
+				</dl>
+				<dl>
+					<dt>Nuisance:</dt>
+					<dd><span id="field-nuisance"></span></dd>
+				</dl>
+		</div>
+	]]>
+	</simulator-controls>
+	
+	<options> <!-- Options -->
+	<![CDATA[
+		<div id="options-tab-wrapper">
+			<ul class="tabs">
+				<li><a rel="#tab-saved-chains">Saved Chains</a></li>
+				<li><a rel="#tab-preset-chains">Chains</a></li>
+				<li><a rel="#tab-simulator">Simulator</a></li>
+				<li><a rel="#tab-links">Links</a></li>
+				<li><a rel="#tab-puyo-skin">Puyo Skin</a></li>
+				<li><a rel="#tab-settings">Settings</a></li>
+				<li><a rel="#tab-about">About</a></li>
+			</ul>
+		</div>
+		<div id="options-panel-container">
+			<div id="options-panel-content" class="tab-container">
+				<div id="tab-saved-chains" class="tab-content">
+					<div>
+						<input type="text" id="save-chain-name" placeholder="Enter a name for the chain">&nbsp;<input type="button" id="save-chain-save" value="Save" />
+					</div>
+					<hr />
+					<ul id="saved-chains-list"></ul>
+				</div>
+				<div id="tab-preset-chains" class="tab-content"></div>
+				<div id="tab-simulator" class="tab-content">
+					<dl>
+						<dt>Scoring:</dt>
+						<dd><input type="radio" name="score-mode" id="score-mode-classic" value="classic" /><label for="score-mode-classic">Classic</label></dd>
+						<dd><input type="radio" name="score-mode" id="score-mode-fever" value="fever" /><label for="score-mode-fever">Fever</label></dd>
+					</dl>
+					<dl>
+						<dt>Puyo to Clear:</dt>
+						<dd><select id="puyo-to-clear"></select></dd>
+					</dl>
+					<dl>
+						<dt>Target Points:</dt>
+						<dd><select id="target-points"></select></dd>
+					</dl>
+					<dl>
+						<dt>Point Puyo:</dt>
+						<dd><select id="point-puyo-bonus"></select></dd>
+					</dl>
+					<dl>
+						<dt>Chain Power:</dt>
+						<dd><select id="chain-powers"></select></dd>
+					</dl>
+					<dl>
+						<dt>Field Size:</dt>
+						<dd><select id="field-size-width"></select>&nbsp;x&nbsp;<select id="field-size-height"></select>&nbsp;&nbsp;<input type="button" id="set-field-size" value="Set" /></dd>
+					</dl>
+				</div>
+				<div id="tab-links" class="tab-content">
+					<div class="center"><input type="button" id="get-links" value="Get Links" /></div>
+					<p>
+						<div id="shorten-links">
+							<label for="shorten-link-url"><input type="checkbox" id="shorten-link-url" />&nbsp;Shorten</label>
+						</div>
+						<span>URL:</span>
+					</p>
+					<textarea id="link-url" readonly="readonly"></textarea><br /><br />
+					<p>Image:</p>
+					<textarea id="link-image" readonly="readonly"></textarea><br /><br />
+					<p>Chain ID:</p>
+					<textarea id="link-chainID" readonly="readonly"></textarea>
+				</div>
+				<div id="tab-puyo-skin" class="tab-content">
+					<ul id="puyo-skin-selection"></ul>
+				</div>
+				<div id="tab-settings" class="tab-content">
+					<dl>
+						<dt>Puyo Renderer:</dt>
+						<dd><input type="radio" name="puyo-renderer" id="puyo-renderer-canvas" value="CanvasRenderer" /><label for="puyo-renderer-canvas">Canvas</label></dd>
+						<dd><input type="radio" name="puyo-renderer" id="puyo-renderer-dom" value="DOMRenderer" /><label for="puyo-renderer-dom">DOM</label></dd>
+					</dl>
+					<dl>
+						<dt>Animate Nuisance Tray:</dt>
+						<dd><input type="radio" name="animate-nuisance-tray" id="animate-nuisance-tray-yes" value="yes" /><label for="animate-nuisance-tray-yes">Animate</label></dd>
+						<dd><input type="radio" name="animate-nuisance-tray" id="animate-nuisance-tray-no" value="no" /><label for="animate-nuisance-tray-no">Do not animate</label></dd>
+					</dl>
+				</div>
+				<div id="tab-about" class="tab-content">
+					<h3 class="center">Puyo Puyo Chain Simulator</h3>
+					<h4 class="center">Version 4.0.0</h4>
+					<hr />
+					<p class="center">Written by: Nick Woronekin</p>
+					<hr />
+					<fieldset id="release-archive">
+						<legend>Release Archive:</legend>
+						<ul>
+							<li><a href="/chainsim/versions/v4.0.0/">v4.0.0</a></li>
+							<li><a href="/chainsim/versions/v3.0.2/">v3.0.2</a></li>
+							<li><a href="/chainsim/versions/v3.0.1/">v3.0.1</a></li>
+							<li><a href="/chainsim/versions/v3/">v3</a></li>
+							<li><a href="/chainsim/versions/v2.2.1/">v2.2.1</a></li>
+							<li><a href="/chainsim/versions/v2.2/">v2.2</a></li>
+							<li><a href="/chainsim/versions/v2.1/">v2.1</a></li>
+							<li><a href="/chainsim/versions/v2/">v2</a></li>
+							<li><a href="/chainsim/versions/v1/">v1</a></li>
+						</ul>
+					</fieldset>
+					<hr />
+					<p class="center"><a href="changelog.txt">Changelog</a></p>
+				</div>
+			</div>
+		</div>
+	]]>
+	</options>
+
+</content>

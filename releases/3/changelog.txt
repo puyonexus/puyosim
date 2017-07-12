@@ -1,0 +1,56 @@
+***************************************
+*
+* Puyo Puyo Chain Simulator
+* Version 3.0.0
+*
+* Written by: Nick Woronekin
+*
+***************************************
+
+******** Changelog ********
+
+v3.0.0 - August 28, 2010
+
+	* Complete rewrite. Now uses jQuery and OOP.
+	* New look.
+	* New simulator skins that replace Standard and Eye Candy from v1 and v2.
+		* Basic: Based off of Eye Candy from v1 without the fever backgrounds.
+		* Standard: Based off of Eye Candy from v2 without the fever backgrounds
+		  and X's. It's also the default skin.
+		* Eye Candy: New skin that uses 15h Anniversary and Puyo 7 backgrounds.
+	* 16x16 puyo removed. All skins now use 32x32 puyo.
+	* Puyo now connect to each other in the field.
+	* Puyo skins from Puyo 7 added.
+	* Classic puyo skin from 15th Anniversary removed as the one in Puyo 7 is
+	  identical and of higher quality.
+	* Classic puyo skin now the default puyo skin.
+	* Ability to change point value of point puyo (default is 50).
+	* Added ability to save chains.
+	* Improved score calculation. Should now be accurate according to Puyo 7.
+	* Now saves settings using DOM storage if the browser supports it.
+	  Otherwise it will still use cookies.
+	* Removed chain image puyo and skin selections. They will now use
+	  Puyo 2 puyo and a random skin.
+	* Removed code generated for the PPF Fever Editor.
+	* New query string used for linking codes.
+	  * New: ?w=w&h=h&chain=c
+	  * Old: ??(w,h)c
+	  Old style is still used for bbcode.
+	* Limited values for puyo to clear and target points.
+	* Ability to freely switch between classic and fever scoring.
+	* Added more control to the simulator speed. Also, it has been
+	  moved to directly under the controls now.
+	* Simulation controls redone to be more like Puyo 7. They are also
+	  much less wordy.
+	* "Chain from URL" now only shows up if a chain form the url was used.
+	* Added 108 chain from Puyo~n. Maybe you should ask KONAMI for the CODE
+	  to unlock it.
+	
+	To-do:
+	
+		* Add chain powers for Puyo 7 Mini and Mega Transformation.
+		* Fix bug where you can't place puyo in IE9 Preview.
+		  (This might be an IE bug as the wrong mouse button pressed
+		  is returned.)
+		* Fix problems with Opera for Wii (aka Internet Channel).
+		* Finish up my #2 and #3 custom sets.

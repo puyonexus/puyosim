@@ -1,0 +1,675 @@
+/*!
+ * Puyo Puyo Chain Simulator
+ * Version 4.2.0
+ * http://puyonexus.net/chainsim/
+ *
+ * By Nick Woronekin
+ */
+
+/* ==========================================================================
+   General styles
+   ========================================================================== */
+
+html, body {
+	height: 100%;
+}
+body {
+	background-color: #F5F5F5;
+	background-image: url('../images/noise.png');
+	font: 13px/1.5 Helvetica, Arial, sans-serif;
+}
+
+a {
+	cursor: pointer;
+}
+a[href]:link, a[href]:visited,
+a.link {
+	color: #0069D6;
+	text-decoration: none;
+}
+a[href]:hover, a[href]:active,
+a.link:hover, a.link:active {
+	color: #00438A;
+	text-decoration: underline;
+}
+
+dl, dd {
+	margin: 0;
+}
+
+h3, h4 {
+	margin: 0;
+}
+
+fieldset {
+	border: 0;
+	margin: 0;
+	padding: 0;
+}
+
+#simulator-tabs-select,
+#simulator-controls ul,
+#tab-saved-chains ul, 
+#tab-preset-chains ul,
+#tab-simulator ul,
+#tab-settings ul {
+	list-style: none;
+	margin: 0;
+	padding: 0;
+}
+
+.center {
+	text-align: center;
+	margin-left: auto;
+	margin-right: auto;
+}
+
+#wrap {
+	min-height: 100%;
+}
+#content {
+	width: 940px;
+	margin: 0 auto;
+	padding: 20px;
+}
+
+.box-inner-header {
+	margin: -10px -10px 10px -10px;
+	padding: 10px;
+	background-color: #F5F5F5;
+}
+.box-inner-footer {
+	margin: 10px -10px -10px -10px;
+	padding: 10px;
+	background-color: #F5F5F5;
+}
+
+.loading {
+	width: 16px;
+	height: 16px;
+	background: url('../images/loading.gif') no-repeat;
+}
+
+/* ==========================================================================
+   Forms
+   ========================================================================== */
+
+input, select, button, textarea {
+	font: inherit;
+	line-height: normal;
+}
+input[type="text"], textarea {
+	-moz-box-sizing: border-box;
+	-webkit-box-sizing: border-box;
+	box-sizing: border-box;
+}
+input[type="text"], select, textarea {
+	border: 1px solid #B4BAC0;
+	padding: 4px;
+	background-color: #FFF;
+}
+input[type="text"]:hover, select:hover, textarea:hover {
+	border-color: #008AD5;
+}
+input[type="text"]:focus, select:focus, textarea:focus {
+	outline: 0;
+	box-shadow: inset 0 0 4px rgba(0, 0, 0, 0.2);
+	border-color: #008AD5;
+}
+input[type="text"][disabled]:hover, select[disabled]:hover, textarea[disabled]:hover,
+input[type="text"][disabled]:focus, select[disabled]:focus, textarea[disabled]:focus {
+	border-color: #B4BAC0;
+	box-shadow: none;
+}
+
+input[type="radio"], input[type="checkbox"] {
+	margin: 5px;
+	cursor: pointer;
+}
+label.checkbox,
+label.radio {
+	padding-left: 18px;
+	margin-top: 4px;
+	display: block;
+	cursor: pointer;
+}
+label.checkbox:first-child,
+label.radio:first-child {
+	margin-top: 0;
+}
+label.checkbox input[type="checkbox"],
+label.radio input[type="radio"] {
+	float: left;
+	margin: 1px 0 0 -18px;
+}
+
+.button, button, input[type="button"] {
+	font: inherit;
+	line-height: normal;
+    background-color: #EAEAEA;
+	background-image: -webkit-linear-gradient(top, #FAFAFA, #EAEAEA);
+	background-image:    -moz-linear-gradient(top, #FAFAFA, #EAEAEA);
+	background-image:      -o-linear-gradient(top, #FAFAFA, #EAEAEA);
+    background-image: linear-gradient(to bottom, #FAFAFA, #EAEAEA);
+    border-color: #DDDDDD #DDDDDD #C5C5C5;
+    border-image: none;
+    border-radius: 3px;
+    border-style: solid;
+    border-width: 1px;
+    color: #333333;
+    cursor: pointer;
+    display: inline-block;
+    padding: 6px 15px 5px;
+    position: relative;
+    text-shadow: 0 1px 0 rgba(255, 255, 255, 0.9);
+    white-space: nowrap;
+}
+.button:hover, .button:active, .minibutton:hover, .button-group .grouped-button:hover, .minibutton:active,
+button:hover, button:active,
+input[type="button"]:hover, input[type="button"]:active,
+.dropdown.open button {
+    background-color: #D9D9D9;
+	background-image: -webkit-linear-gradient(top, #E8E8E8, #D9D9D9);
+	background-image:    -moz-linear-gradient(top, #E8E8E8, #D9D9D9);
+	background-image:      -o-linear-gradient(top, #E8E8E8, #D9D9D9);
+    background-image: linear-gradient(to bottom, #E8E8E8, #D9D9D9);
+    border-color: #CDCDCD #CDCDCD #B7B7B7;
+    text-decoration: none;
+}
+.button:active, .minibutton:active,
+button:active, input[type="button"]:active,
+.dropdown.open button {
+	box-shadow: inset 0 2px 4px rgba(0, 0, 0, .15), 0 1px 2px rgba(0, 0, 0, .05);
+}
+button[disabled], input[type="button"][disabled],
+button[disabled]:hover, input[type="button"][disabled]:hover,
+button[disabled]:active, input[type="button"][disabled]:active {
+	background-color: #BBBBBB;
+	background-image: none;
+	border-color: #B0B0B0;
+	cursor: default;
+	color: #888;
+	text-shadow: none;
+	box-shadow: none;
+}
+.dropdown-toggle {
+	font: inherit;
+}
+
+.button-group {
+    display: inline-block;
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.button + .button, input[type="button"] + input[type="button"],
+.button + .button-group, input[type="button"] + .button-group,
+.button-group + .button, .button-group + input[type="button"],
+.button-group + .button-group {
+    margin-left: 15px;
+}
+
+.button-group li {
+    float: left;
+    padding: 0;
+    margin: 0;
+}
+
+.button-group .button, .button-group input[type="button"] {
+    float: left;
+    margin-left: -1px;
+}
+
+.button-group > .button:not(:first-child):not(:last-child),
+.button-group li:not(:first-child):not(:last-child) .button,
+.button-group > input[type="button"]:not(:first-child):not(:last-child),
+.button-group li:not(:first-child):not(:last-child) input[type="button"] {
+    border-radius: 0;
+}
+
+.button-group > .button:first-child,
+.button-group li:first-child .button,
+.button-group > input[type="button"]:first-child,
+.button-group li:first-child input[type="button"]{
+    margin-left: 0;
+    border-top-right-radius: 0;
+    border-bottom-right-radius: 0;
+}
+
+.button-group > .button:last-child,
+.button-group li:last-child > .button,
+.button-group > input[type="button"]:last-child,
+.button-group li:last-child > input[type="button"] {
+    border-top-left-radius: 0;
+    border-bottom-left-radius: 0;
+}
+
+#controls-simulation .button-group {
+	display: table;
+	width: 100%;
+}
+#controls-simulation .button-group li {
+	display: table-cell;
+	width: 20%;
+}
+
+#controls-simulation .button-group input[type="button"] {
+	padding-left: 0;
+	padding-right: 0;
+	margin-left: 0;
+	float: none;
+	width: 100%;
+	border-left-width: 0;
+}
+#controls-simulation .button-group li:first-child input[type="button"] {
+	border-left-width: 1px;
+}
+
+.input-append.input-append-block {
+	width: 100%;
+}
+.input-append.input-append-block input[type="text"] {
+	width: 80%;
+}
+.input-append.input-append-block input[type="button"] {
+	width: 20%;
+}
+.input-append input[type="text"] {
+	padding: 6px 6px 5px;
+}
+.input-append input[type="button"] {
+	border-top-left-radius: 0;
+	border-bottom-left-radius: 0;
+	border-left-width: 0;
+}
+
+/* ==========================================================================
+   Dropdowns
+   ========================================================================== */
+
+.dropdown-toggle-block {
+	display: block;
+	width: 100%;
+	text-align: left;
+}
+.dropdown-toggle .dropdown-toggle-inner {
+	margin-right: 27px;
+	position: relative;
+}
+.dropdown-toggle .dropdown-toggle-inner .caret {
+    border-left: 6px solid transparent;
+    border-right: 6px solid transparent;
+    border-top: 6px solid #888;
+    display: inline-block;
+    height: 0;
+    vertical-align: top;
+    width: 0;
+	position: absolute;
+	top: 50%;
+	right: -27px;
+	margin-top: -3px !important;
+	margin-left: 10px !important;
+}
+
+.dropdown .dropdown-menu {
+	background-color: #F7F7F9;
+	border: 1px solid #BBB;
+	box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+	color: #000;
+	display: none;
+	position: absolute;
+	top: 20x;
+	width: 280px;
+	z-index: 2;
+	height: 288px;
+	overflow: auto;
+	display: none;
+}
+.dropdown.open .dropdown-menu {
+	display: block;
+}
+.dropdown .dropdown-menu a {
+	cursor: pointer;
+	display: block;
+	padding: 4px;
+}
+.dropdown .dropdown-menu li.selected a,
+.dropdown .dropdown-menu li a:hover {
+	background-color: #DEDEE0;
+	background-color: rgba(0, 0, 0, 0.1);
+}
+.dropdown .dropdown-menu ul a {
+	padding-left: 2em;
+}
+.dropdown .dropdown-menu h3 {
+	padding: 0.5em;
+}
+
+/* ==========================================================================
+   Header
+   ========================================================================== */
+
+#header-wrap {
+	background: url('../images/header_bg.png') repeat-x;
+	box-shadow: 0 0 2px rgba(0, 0, 0, 0.6);
+	min-width: 980px;
+	height: 80px;
+}
+#chainsim-header {
+	width: 940px;
+	margin: 0 auto;
+	position: relative;
+}
+
+#header-content {
+	max-width: 960px;
+	margin: 0 auto;
+	position: relative;
+}
+
+#chainsim-logo {
+	width: 315px;
+	height: 80px;
+	background: url('../images/logo.png') no-repeat left center;
+}
+
+#simulator-tabs-select {
+	position: absolute;
+	right: 0;
+	bottom: 0;
+	line-height: 2.5em;
+	color: #FFF;
+	overflow: hidden;
+}
+#simulator-tabs-select li{
+	float: left;
+}
+#simulator-tabs-select li a {
+	display: block;
+	padding: 0 1em;
+	background-color: #564460;
+	background-color: rgba(0, 0, 0, 0.3);
+}
+#simulator-tabs-select li:first-child a {
+	border-top-left-radius: 4px;
+}
+#simulator-tabs-select li:last-child a {
+	border-top-right-radius: 4px;
+}
+#simulator-tabs-select li.tab-active a, #simulator-tabs-select li a:hover {
+	background-color: #312737;
+	background-color: rgba(0, 0, 0, 0.6);
+}
+
+/* ==========================================================================
+   Simulator
+   ========================================================================== */
+
+.puyo {
+	width: 32px;
+	height: 32px;
+	background-repeat: no-repeat;
+}
+
+#simulator {
+	position: relative;
+}
+#simulator:after {
+	visibility: hidden;
+	display: block;
+	font-size: 0;
+	content: " ";
+	clear: both;
+	height: 0;
+}
+
+/* ==========================================================================
+   Field
+   ========================================================================== */
+
+#field-DOM .puyo {
+	position: absolute;
+}
+
+/* ==========================================================================
+   Editor Controls
+   ========================================================================== */
+
+#simulator-controls {
+	width: 272px;
+	float: left;
+	position: relative;
+	margin: 0 10px;
+}
+#controls-puyo-selection,
+#controls-simulation,
+#controls-score-display {
+	background-color: #FFF;
+	margin-bottom: 10px;
+	padding: 10px;
+	border: 1px solid #CED0D3;
+	border-color: rgba(8, 22, 37, 0.2);
+}
+
+#puyo-selection {
+	width: 216px;
+}
+#puyo-selection ul {
+	overflow: hidden;
+}
+#puyo-selection ul > li {
+	display: block;
+	float: left;
+	padding: 2px;
+}
+#puyo-selection .puyo {
+	display: block;
+}
+#puyo-selection .selected {
+	background: url('../images/puyo_selected.png') no-repeat;
+}
+
+#nuisance-tray {
+	width: 192px;
+	height: 34px;
+	margin: 5px auto 15px auto;
+	padding: 0 5px;
+	position: relative;
+}
+#nuisance-tray span {
+	display: block;
+	width: 64px;
+	height: 64px;
+	margin: -15px -11px;
+	position: absolute;
+	top: 0;
+}
+
+#controls-score-display {
+	margin-bottom: 0;
+}
+#controls-score-display dl {
+	overflow: hidden;
+	margin: 2px 0;
+}
+#controls-score-display dl > dt {
+	width: 64px;
+	float: left;
+}
+#controls-score-display dl > dd {
+	margin-left: 72px;
+}
+
+#field-erase-all,
+#field-set-from-url {
+	height: auto;
+	padding: 5px;
+}
+#field-erase-all img,
+#field-set-from-url img {
+	display: block;
+}
+#field-erase-all {
+	margin-right: 10px;
+}
+
+/* ==========================================================================
+   Puyo Positions
+   ========================================================================== */
+
+.puyo-red { background-position: 0 0; }
+.puyo-green { background-position: 0 -32px; }
+.puyo-blue{ background-position: 0 -64px; }
+.puyo-yellow { background-position: 0 -96px; }
+.puyo-purple { background-position: 0 -128px; }
+
+.puyo-nuisance { background-position: 0 -160px; }
+.puyo-point { background-position: 0 -192px; }
+.puyo-sun { background-position: 0 -224px; }
+.puyo-hard { background-position: 0 -256px; }
+.puyo-iron { background-position: -32px -256px; }
+.puyo-block { background-position: -64px -256px; }
+
+.puyo-none { background-image: url('../images/puyo_erase.png'); }
+.puyo-delete { background-image: url('../images/puyo_delete.png'); }
+
+/* ==========================================================================
+   Tabs
+   ========================================================================== */
+ 
+#simulator-tabs {
+	background-color: #FFF;
+	overflow: hidden;
+	border: 1px solid #CED0D3;
+	border-color: rgba(8, 22, 37, 0.2);
+}
+#simulator-tabs.float {
+	position: absolute;
+	z-index: 2;
+	width: 400px;
+	right: 0;
+	box-shadow: 0 0 2px 1px rgba(0, 0, 0, 0.2);
+	display: none;
+	overflow: visible;
+}
+#simulator-tabs.float.toggled {
+	display: block;
+}
+
+.tab-container .tab-content {
+	display: none;
+	padding: 10px;
+}
+.tab-container .tab-content.content-active {
+	display: block;
+}
+
+/* ==========================================================================
+   Saved Chains & Chains tabs
+   ========================================================================== */
+
+#tab-saved-chains, #preset-chains-list {
+	max-height: 512px;
+	overflow: auto;
+}
+#saved-chains-list > li, #preset-chains-list > li {
+	padding: 0.6em 0;
+	border-top: 1px solid #DDD;
+	overflow: hidden;
+}
+#saved-chains-list > li:first-child,
+#preset-chains-list > li:first-child {
+	border-top: 0;
+}
+#saved-chains-list .chain-name {
+	margin-right: 26px;
+	display: block;
+}
+#saved-chains-list .icon-delete {
+	background-image: url('../images/icon_delete.png');
+	width: 16px;
+	height: 16px;
+	display: block;
+	float: right;
+}
+
+#preset-chains-list dl {
+	overflow: hidden;
+}
+#preset-chains-list dt {
+	float: left;
+}
+#preset-chains-list dd {
+	float: right;
+	margin-left: 7px;
+}
+#preset-chains-list select {
+	float: left;
+	margin-left: 3px;
+}
+
+/* ==========================================================================
+   Simulator & Settings tabs
+   ========================================================================== */
+
+#tab-simulator dl, #tab-settings dl {
+	padding: 5px 0;
+	overflow: hidden;
+}
+#tab-simulator dl > dd, #tab-simulator dl > dt,
+#tab-settings dl > dd, #tab-settings dl > dt {
+	padding: 0 4px;
+}
+#tab-simulator dl > dt, #tab-settings dl > dt {
+	width: 96px;
+	float: left;
+}
+#tab-simulator dl > dd, #tab-settings dl > dd {
+	margin-left: 108px;
+}
+#tab-simulator dl > dd select {
+	width: 64px;
+}
+
+#puyo-skins .dropdown-toggle .puyo-skin {
+	width: 32px;
+	height: 32px;
+	display: inline-block;
+	background: url('../images/puyo_skins.png') no-repeat;
+}
+#puyo-skins .dropdown-menu .puyo-skin {
+	margin: 0 auto;
+	width: 212px;
+	height: 32px;
+	display: block;
+	background: url('../images/puyo_skins.png') no-repeat;
+}
+
+/* ==========================================================================
+   Links tab
+   ========================================================================== */
+
+#tab-links textarea {
+	width: 100%;
+	height: 72px;
+}
+#tab-links #shorten-links {
+	float: right;
+	margin-top: 0;
+}
+#tab-links p {
+	margin-top: 20px;
+	margin-bottom: 5px;
+}
+
+/* ==========================================================================
+   About tab
+   ========================================================================== */
+
+#release-archive legend {
+	font-weight: bold;
+}
+#release-archive ul {
+	line-height: 1.75em;
+}

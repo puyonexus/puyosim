@@ -1,0 +1,110 @@
+<div>
+	<!-- Linking Codes -->
+	<div id="options_widget_linking_codes_content" class="hidden">
+		<div class="center strong">
+			<a href="javascript: void(0);" onclick="generateLinkingCodes();">Generate Linking Codes</a>
+		</div>
+		
+		<div class="divider"></div>
+		
+		Link to this chain: <span class="small">(<a href="javascript: void(0);" onclick="selectText('linkingCodes_link');">Select</a>)</span><br />
+		<input type="text" id="linkingCodes_link" class="linking_code" />
+		
+		Image of this chain: <span class="small">(<a href="javascript: void(0);" onclick="selectText('linkingCodes_image');">Select</a>)</span><br />
+		<input type="text" id="linkingCodes_image" class="linking_code" />
+
+		BBCode for the Puyo Nexus Forum: <span class="small">(<a href="javascript: void(0);" onclick="selectText('linkingCodes_bbcode');">Select</a>)</span><br />
+		<input type="text" id="linkingCodes_bbcode" class="linking_code" />
+
+		Chain ID: (for use with the Fever Editor for Puyo Puyo Fever PC) <span class="small">(<a href="javascript: void(0);" onclick="selectText('linkingCodes_chainID');">Select</a>)</span><br />
+		<input type="text" id="linkingCodes_chainID" class="linking_code" />
+	</div>
+
+	<!-- Settings -->
+	<div id="options_widget_settings_content" class="hidden">
+	
+		<!-- Target Points -->
+		<fieldset>
+			<legend>Target Points</legend>
+			<div class="b">Current Value: <span id="label_targetPoints"></span></div><br />
+			Set Target Points: <input type="text" id="input_setTargetPoints" maxlength="4" class="text" /> <input type="button" onclick="setTargetPoints(getObject('input_setTargetPoints').value);" value="Set Target Points" /><br />
+			(0.01 to 9999, Default: 120)
+		</fieldset>
+		
+		<!-- Puyo Needed to Make a Chain -->
+		<fieldset>
+			<legend>Puyo Needed to Make a Chain</legend>
+			<div class="b">Current Value: <span id="label_puyoToChain"></span></div><br />
+			Set Target Points: <input type="text" id="input_setPuyoToChain" maxlength="2" class="text" /> <input type="button" onclick="setPuyoToChain(getObject('input_setPuyoToChain').value);" value="Set Puyo Needed to Make a Chain" /><br />
+			(2 to 72, Default: 4)
+		</fieldset>
+		
+		<!-- Character Powers -->
+		<fieldset>
+			<legend>Character Power</legend>
+			<div class="b">Current Value: <span id="label_characterPower"></span></div><br />
+			<select id="input_characterPower" onchange="setCharacterPower(this.selectedIndex);">
+			</select> <input type="button" onclick="setCharacterPower(getObject('input_characterPower').selectedIndex);" value="Set Character Power" />
+		</fieldset>
+		
+		<div class="strong center">Settings can only be changed when you are in Edit Mode.</div>
+		
+		<script type="text/javascript">
+		// <![CDATA[
+			setTargetPoints(targetPoints);
+			setPuyoToChain(puyoToChain);
+			addCharacterPowers();
+			setCharacterPower(1);
+		// ]]>
+		</script>
+	</div>
+
+	<!-- My Profile -->
+	<div id="options_widget_my_profile_content" class="hidden">
+	
+		<!-- Switch Style -->
+		<div class="center strong">
+			<a href="javascript: void(0);" onclick="switchStyle();" id="switch_style_text"></a>
+			
+			<script type="text/javascript">
+			// <![CDATA[
+				getObject('switch_style_text').innerHTML = (style == STYLE_STANDARD ? STYLE_SWITCH_EYE_CANDY : STYLE_SWITCH_STANDARD);
+			// ]]>
+			</script>
+		</div>
+		
+		<div class="divider"></div>
+
+		<!-- Small & Large Puyo Skin -->
+		<div id="puyo_skin_selection" class="center">
+			<fieldset>
+				<legend>Small Puyo Skin</legend>
+				<div id="puyo_skin_selection_smallPuyo"></div>
+			</fieldset>
+			<fieldset>
+				<legend>Large Puyo Skin</legend>
+				<div id="puyo_skin_selection_largePuyo"></div>
+			</fieldset>
+		</div>
+		
+		<div class="clear"></div>
+		
+		<!-- Chain Image Skin -->
+		<fieldset>
+			<legend>Chain Image Skin</legend>
+			<strong>This option is currently not available. You will need to use <a href="/chainsim/old/v1/">chain simulator v1</a> for this currently.</strong>
+		</fieldset>
+		
+		<script type="text/javascript">
+		// <![CDATA[
+			displayPuyoSkins_small();
+			displayPuyoSkins_large();
+		// ]]>
+		</script>
+	</div>
+
+	<!-- Download -->
+	<div id="options_widget_download_content" class="hidden">
+		<strong>There is currently no download for the chain simulator yet as it is not complete.</strong>
+	</div>
+</div>

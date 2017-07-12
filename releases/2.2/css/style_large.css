@@ -1,0 +1,27 @@
+/* Stylesheet used for large (32x32) puyo */
+.puyo
+{
+	width: 32px;
+	height: 32px;
+}
+
+#puyo_panel #puyo_field
+{
+	/*background-image: url('../images/field_bg_lg.png');*/
+	height: 416px;
+	width: 192px;
+}
+
+#puyo_panel #puyo_field .main_field
+{
+	background-image: url('../images/boardBG.png');
+	background-repeat: no-repeat;
+}
+
+#puyo_panel #puyo_controls #puyo_selection
+{
+	background-image: url('../images/puyoSelection_bg_lg.png');
+	height: 106px;
+	line-height: 32px;
+	width: 176px;
+}

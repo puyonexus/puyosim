@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<simulator>
+	<css href="basic.css" />
+
+	<field> <!-- (#simulator-field) Field Content -->
+	<![CDATA[
+		<div id="field-content">
+			<div id="field"></div>
+		</div>
+	]]>
+	</field>
+
+	<controls> <!-- (#simulator-controls) Controls Content -->
+	<![CDATA[
+		<div id="controls-puyo-selection">
+			<input type="checkbox" id="insertion-mode"><label for="insertion-mode">Insertion Mode</label>
+			<hr />
+			<div id="puyo-selection" class="center">
+				<ul>
+					<li><a class="puyo puyo-none"></a></il>
+					<li><a class="puyo puyo-red"></a></il>
+					<li><a class="puyo puyo-green"></a></il>
+					<li><a class="puyo puyo-blue"></a></il>
+					<li><a class="puyo puyo-yellow"></a></il>
+					<li><a class="puyo puyo-purple"></a></il>
+				</ul>
+				<ul>
+					<li><a class="puyo puyo-delete"></a></li>
+					<li><a class="puyo puyo-nuisance"></a></li>
+					<li><a class="puyo puyo-point"></a></li>
+					<li><a class="puyo puyo-hard"></a></li>
+					<li><a class="puyo puyo-iron"></a></li>
+					<li><a class="puyo puyo-wall"></a></li>
+				</ul>
+			</div>
+			<hr />
+			<input type="button" id="field-erase-all" value="Erase All" />
+			<input type="button" id="field-set-from-url" value="Set from URL" />
+		</div>
+		
+		<div id="controls-simulation">
+			<div class="center">
+				<input type="button" value="Back" id="simulation-back" />
+				<input type="button" value="Start" id="simulation-start" />
+				<input type="button" value="Pause" id="simulation-pause" />
+				<input type="button" value="Step" id="simulation-step" />
+				<input type="button" value="Skip" id="simulation-skip" />
+			</div>
+			<hr />
+			Speed: <select id="simulation-speed"></select>
+		</div>
+		
+		<div id="controls-score-display">
+				<div id="nuisance-indicator"></div>
+				<dl>
+					<dt>Score:</dt>
+					<dd><span id="field-score"></span></dd>
+				</dl>
+				<dl>
+					<dt>Chains:</dt>
+					<dd><span id="field-chains"></span></dd>
+				</dl>
+				<dl>
+					<dt>Nuisance:</dt>
+					<dd><span id="field-nuisance"></span></dd>
+				</dl>
+		</div>
+	]]>
+	</controls>
+	
+	<scripts>
+	<![CDATA[
+	]]>
+	</scripts>
+</simulator>

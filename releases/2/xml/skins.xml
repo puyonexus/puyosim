@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8" ?>  
+<skins>
+	<set id="chainsim">
+		<name>Chain Simulator</name>
+		<skin id="default" image="default.png">Default Skin</skin>
+		<skin id="random" image="random.png">Random Skin</skin>
+	</set>
+
+	<set id="pp1">
+		<name>Puyo Puyo</name>
+		<skin id="color_blocks" image="colorful_blocks.png">Colorful Blocks</skin>
+	</set>
+</skins>
