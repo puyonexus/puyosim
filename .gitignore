@@ -1,0 +1,6 @@
+.vscode/
+config/localsettings.php
+node_modules/
+temp/*
+vendor/
+composer.phar

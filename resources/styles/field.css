@@ -1,0 +1,175 @@
+/*
+ * Field Stylesheet
+ *
+ * Contains all the declatations for all three styles.
+ */
+
+#simulator-field {
+	position: relative;
+	display: block;
+	flex-shrink: 0;
+}
+#field-content #field {
+	position: relative;
+}
+#field-content {
+	position: relative;
+}
+#field #field-cursor {
+	position: absolute;
+	z-index: 2;
+	cursor: pointer;
+}
+
+#field-bg-1, #field-bg-2, #field-bg-3 {
+	position: absolute;
+}
+
+/*
+ * Basic Skin Stylesheet
+ */
+
+/*
+ * Puyo Field
+ */
+ 
+.field-basic #simulator-field {
+	border: 32px solid transparent;
+	border-top: 0;
+	border-image: url('../images/basic/field_border.png') 32 round;
+}
+
+.field-basic #field-content {
+	background-color: #444;
+}
+
+.field-basic #field #field-cursor {
+	border: 3px solid #FFF;
+	width: 32px;
+	height: 32px;
+	margin: -3px;
+	border-radius: 3px;
+}
+.field-basic #field #field-cursor.left-mouse-down {
+	border-color: #CCC;
+}
+.field-basic #field #field-cursor.right-mouse-down {
+	border-color: #990000;
+}
+
+.field-basic #nuisance-tray {
+	background-color: #A7AAE7;
+	border: 1px solid #1D259E;
+	border-radius: 3px;
+}
+
+.field-basic #field-bg-1, .field-basic #field-bg-2 {
+	display: none;
+}
+.field-basic #field-bg-3 {
+	background-color: #444;
+	position: absolute;
+	top: 0; left: -32px; right: -32px;
+}
+
+/*
+ * Standard Skin Stylesheet
+ */
+
+/*
+ * Puyo Field
+ */
+ 
+.field-standard #simulator-field {
+	border: 12px solid transparent;
+	border-image: url('../images/standard/field_border.png') 12 repeat;
+}
+
+.field-standard #field-content {
+	margin: -4px;
+	padding: 0 12px 12px 12px;
+}
+
+.field-standard #field #field-cursor {
+	background: url('../images/standard/cursor.png') no-repeat;
+
+	width: 44px;
+	height: 44px;
+	margin: -6px;
+}
+.field-standard #field #field-cursor.left-mouse-down {
+	background-position: -44px 0;
+}
+.field-standard #field #field-cursor.right-mouse-down {
+	background-position: -88px 0;
+}
+
+.field-standard #nuisance-tray {
+	background: url('../images/standard/nuisance_tray.png') no-repeat;
+}
+
+.field-standard #field-bg-1 {
+	top: 0; left: 0; bottom: 0; right: 0;
+	background-color: #A57B4A;
+}
+.field-standard #field-bg-2 {
+	left: 12px; bottom: 12px; right: 12px;
+	background-color: #4A5A3A;
+}
+.field-standard #field-bg-3 {
+	display: none;
+}
+
+/*
+ * Eye Candy Skin Stylesheet
+ */
+
+/*
+ * Puyo Field
+ */
+ 
+.field-eyecandy #simulator-field {
+	border: 10px solid transparent;
+	border-image: url('../images/eyecandy/field_border.png') 10 repeat;
+}
+
+.field-eyecandy #field-content {
+	margin: -4px;
+	padding: 0 32px 32px 32px;
+}
+
+.field-eyecandy #field #field-cursor {
+	background: url('../images/eyecandy/cursor.png') no-repeat;
+
+	width: 44px;
+	height: 44px;
+	margin: -6px;
+}
+.field-eyecandy #field #field-cursor.left-mouse-down {
+	background-position: -44px 0;
+}
+.field-eyecandy #field #field-cursor.right-mouse-down {
+	background-position: -88px 0;
+}
+
+.field-eyecandy #nuisance-tray {
+	background: url('../images/eyecandy/nuisance_tray.png') no-repeat;
+}
+
+.field-eyecandy #field-bg-1 {
+	top: 0; left: 0; bottom: 0; right: 0;
+}
+.field-eyecandy #field-bg-2 {
+	left: 32px; bottom: 32px; right: 32px;
+}
+.field-eyecandy #field-bg-3 {
+	display: none;
+}
+.field-eyecandy #field-content.alternate #field-bg-1,
+.field-eyecandy #field-content #field-bg-1.alternate {
+	background-image: none !important;
+	background-color: #41415A;
+}
+.field-eyecandy #field-content.alternate #field-bg-2 {
+	background-image: url('../images/eyecandy/alt_bg.png') !important;
+}

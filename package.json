@@ -1,0 +1,26 @@
+{
+    "name": "puyosim",
+    "version": "4.3.0",
+    "description": "The code behind the best Puyo Puyo chain simulator.",
+    "license": "MIT",
+    "author": {
+        "name": "Nick Woronekin",
+        "url": "https://github.com/nickworonekin"
+    },
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/puyonexus/puyosim.git"
+    },
+    "dependencies": {
+        "bootstrap":"3.3.7",
+        "clipboard": "1.7.1",
+        "jquery": "3.2.1",
+        "normalize.css": "7.0.0"
+    },
+    "devDependencies": {
+        "css-loader": "0.28.4",
+        "extract-text-webpack-plugin": "3.0.0",
+        "html-loader": "0.4.5",
+        "webpack": "3.1.0"
+    }
+}

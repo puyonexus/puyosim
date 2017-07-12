@@ -1,0 +1,53 @@
+#sim-header {
+    background-color: #5a4169;
+}
+#sim-brand {
+    font: bold 30px/1 -apple-system, system-ui, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+    margin: 0;
+    padding: 15px;
+    color: #fff;
+}
+
+#sim-footer {
+    background-color: #f5f5f5;
+    border-top: 1px solid #e5e5e5;
+}
+#sim-footer p {
+    color: #777;
+    /*margin: 19px 0;*/
+    margin: 0;
+}
+#sim-footer ul {
+    margin: 0;
+    list-style: none;
+    overflow: hidden;
+}
+#sim-footer ul li {
+    padding: 19px 15px;
+    float: left;
+}
+
+#pn-footer {
+    position: static;
+}
+
+#pn-footer .container,
+#sim-footer .container {
+    display: flex;
+}
+.copyright {
+    margin: 19px 0;
+    flex: 1;
+}
+#pn-footer p,
+.copyright p {
+    margin: 0;
+}
+.footer-links {
+    display: flex;
+    list-style: none;
+    margin: 19px 0;
+}
+.footer-links li {
+    padding: 0 10px;
+}
