@@ -113,7 +113,7 @@ class ChainRepository
         $i = 5;
         while ($i > 0)
         {
-            $url = StringUtils::random(6, NumberBase::BASE58_ALPHABET);
+            $url = StringUtils::random(5, NumberBase::BASE58_ALPHABET);
             $i--;
 
             if (!$this->urlExists($url))

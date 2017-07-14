@@ -49,7 +49,7 @@ class ApiController
         // If a title was set, make sure it does not exceed 128 characters.
         if (isset($body['title']) && strlen($body['title']) > 128)
         {
-            return JsonResponse::error($response, 400, "The chain title cannot exceed 128 characters.");
+            return JsonResponse::error($response, 400, 'The chain title cannot exceed 128 characters.');
         }
 
         // Parse the chain, or return an error if there was an issue with it.

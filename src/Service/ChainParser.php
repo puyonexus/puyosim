@@ -28,7 +28,7 @@ class ChainParser
         // Validate the chain
         if (preg_match('/[^0123456789AB]/', $chain) !== 0)
         {
-            throw new InvalidChainException("The chain contains invalid characters.");
+            throw new InvalidChainException('The chain contains invalid characters.');
         }
 
         // Validate the width, height, and hidden rows.
@@ -65,7 +65,7 @@ class ChainParser
         // Now that we know the width, height, and number of hidden rows, make sure the chain length isn't longer than the board size
         if (strlen($chain) > $width * ($height + $hiddenRows))
         {
-            throw new InvalidChainException("The chain exceeds the amount of characters allowed for the specified board size.");
+            throw new InvalidChainException('The chain exceeds the amount of characters allowed for the specified board size.');
         }
 
         // Trim leading zeros from the chain

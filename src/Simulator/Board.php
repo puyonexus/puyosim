@@ -45,8 +45,8 @@ class Board
             $this->puyos[$i] = Puyo::None;
         }
 
-        $this->borderImage = imagecreatefrompng(__DIR__ . "/../../public/assets/images/wood_block.png");
-        $this->puyoSkinImage = imagecreatefrompng(__DIR__ . "/../../public/assets/images/puyo/16x16/puyo.png");
+        $this->borderImage = imagecreatefrompng(__DIR__ . '/../../public/assets/images/wood_block.png');
+        $this->puyoSkinImage = imagecreatefrompng(__DIR__ . '/../../public/assets/images/puyo/16x16/puyo.png');
     }
 
     /**
@@ -161,15 +161,15 @@ class Board
                 if (($puyo & PuyoFlags::Cleared) !== 0)
                 {
                     $imagePoints = [
-                        'x' => ($puyo & ~PuyoFlags::Cleared) - Puyo::Red + /*3*/6,
-                        'y' => /*8*/5,
+                        'x' => ($puyo & ~PuyoFlags::Cleared) - Puyo::Red + 6,
+                        'y' => 5,
                     ];
                 }
-                else if ($puyo >= Puyo::/*Hard*/Garbage)
+                else if ($puyo >= Puyo::Garbage)
                 {
                     $imagePoints = [
-                        'x' => $puyo - Puyo::/*Hard*/Garbage,
-                        'y' => /*8*/5,
+                        'x' => $puyo - Puyo::Garbage,
+                        'y' => 5,
                     ];
                 }
                 else

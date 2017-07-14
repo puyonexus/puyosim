@@ -9,7 +9,7 @@ SET time_zone = "+00:00";
 
 CREATE TABLE `chain` (
   `id` int(11) NOT NULL,
-  `url` varchar(6) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `url` varchar(5) COLLATE utf8mb4_unicode_ci NOT NULL,
   `title` varchar(128) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `chain` varchar(448) COLLATE utf8mb4_unicode_ci NOT NULL,
   `width` int(11) NOT NULL,

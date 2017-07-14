@@ -24,7 +24,7 @@ class LegacyChainParser extends ChainParser
         // Validate the chain
         if (preg_match('/[^012345678ABC]/', $chain) !== 0)
         {
-            throw new InvalidChainException("The chain contains invalid characters.");
+            throw new InvalidChainException('The chain contains invalid characters.');
         }
 
         // Convert the legacy chain to the new chain format
@@ -40,7 +40,7 @@ class LegacyChainParser extends ChainParser
                 : '0';
         }
 
-        // Continue with the parent's' constructor
+        // Continue with the parent's constructor
         parent::__construct($convertedChain, $width, $height, $hiddenRows);
 
         // Set class properties
