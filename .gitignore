@@ -4,3 +4,4 @@ node_modules/
 temp/*
 vendor/
 composer.phar
+!.gitkeep
