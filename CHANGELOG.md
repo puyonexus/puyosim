@@ -3,9 +3,9 @@
 
 ### New features
 * Short URLs for shareable chains and images. The URLs take the following format:
-    * **Link**: /chain/abc123
-    * **Image**: /image/abc123.png
-    * **Animated Image**: /image/abc123.gif
+    * **Link**: /chain/abc12
+    * **Image**: /image/abc12.png
+    * **Animated Image**: /image/abc12.gif
 * Shareable animated GIFs.
 * Open Graph, Twitter Cards, and oEmbed support.
 
