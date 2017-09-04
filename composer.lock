@@ -281,16 +281,16 @@
         },
         {
             "name": "slim/pdo",
-            "version": "1.10.0",
+            "version": "1.10.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/FaaPz/Slim-PDO.git",
-                "reference": "9424e6d5f3737a71722ab1f868c1d3090b63287d"
+                "reference": "2eaaae8c5fbfeba832bf3c8fa88b1780e23554ee"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/FaaPz/Slim-PDO/zipball/9424e6d5f3737a71722ab1f868c1d3090b63287d",
-                "reference": "9424e6d5f3737a71722ab1f868c1d3090b63287d",
+                "url": "https://api.github.com/repos/FaaPz/Slim-PDO/zipball/2eaaae8c5fbfeba832bf3c8fa88b1780e23554ee",
+                "reference": "2eaaae8c5fbfeba832bf3c8fa88b1780e23554ee",
                 "shasum": ""
             },
             "require": {
@@ -323,7 +323,7 @@
                 "pdo",
                 "slim"
             ],
-            "time": "2016-08-14T11:42:49+00:00"
+            "time": "2017-08-15T10:42:44+00:00"
         },
         {
             "name": "slim/php-view",
