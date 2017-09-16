@@ -139,7 +139,7 @@ class Simulation
 
                         // Check the Puyos around this one and see if any of them are the same Puyo at this one
                         // If so, add them to the coordinate list and check those as well
-                        if ($point['y'] > $this->board->getTotalHeight())
+                        if ($point['y'] > $this->board->getHiddenRows())
                         {
                             $checkPuyoAt($point['x'], $point['y'] - 1);
                         }
