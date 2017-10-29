@@ -187,7 +187,7 @@ class Simulation
                                 $this->board->get($point['x'], $point['y']) | PuyoFlags::Cleared);
 
                             // Check the garbage Puyos around this one and clear/adjust them
-                            if ($point['x'] > $this->board->getHiddenRows())
+                            if ($point['y'] > $this->board->getHiddenRows())
                             {
                                 $clearGarbageAt($point['x'], $point['y'] - 1);
                             }
