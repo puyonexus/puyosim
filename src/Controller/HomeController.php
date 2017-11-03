@@ -283,7 +283,7 @@ class HomeController
         ini_set('memory_limit', '256M');
 
         $frames = [];
-        $durations = [50];
+        $durations = [100]; // First frame should last twice as long
 
         $board = new Board($chain, $width, $height, $hiddenRows);
         $simulation = new Simulation($board, $popLimit);
@@ -299,12 +299,14 @@ class HomeController
                 $image = $board->toImage();
                 imagetruecolortopalette($image, false, 256);
                 $frames[] = $image;
+                $durations[] = 50;
             }
             while ($isActionPerformed = $simulation->performAction());
 
             $image = $board->toImage();
             imagetruecolortopalette($image, false, 256);
             $frames[] = $image;
+            $durations[] = 100; // Last frame should last twice as long
         }
 
         // AnimGif needs at least 2 frames to work.

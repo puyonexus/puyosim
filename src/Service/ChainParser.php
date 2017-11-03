@@ -26,7 +26,7 @@ class ChainParser
     public function __construct(string $chain, $width = 6, $height = 12, $hiddenRows = 1, $popLimit = 4)
     {
         // Validate the chain
-        if (preg_match('/[^0123456789AB]/', $chain) !== 0)
+        if (preg_match('/[^0123456789ab]/', $chain) !== 0)
         {
             throw new InvalidChainException('The chain contains invalid characters.');
         }

@@ -67,7 +67,7 @@ class LegacyChainParser extends ChainParser
     public function getQueryString(): string
     {
         $parameters = [
-            'chain' => $this->chain,
+            'chain' => $this->legacyChain,
         ];
 
         if ($this->width !== 6)
