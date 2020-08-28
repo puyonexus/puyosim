@@ -3,10 +3,10 @@ $settings = [
     'settings' => [
         // Site settings
         'site' => [
-            'name' => 'Puyo Nexus Chain Simulator',
+            'name' => 'PuyoSim',
             'description' => 'Create and share Puyo Puyo chains.',
-            'titledChainDescription' => 'Create and share Puyo Puyo chains with the Puyo Nexus Chain Simulator.',
-            'twitter' => '@puyonexus',
+            'titledChainDescription' => 'Create and share Puyo Puyo chains with the Puyo Simulator.',
+            'twitter' => '@EngPuyoDiscord',
         ],
 
         // View settings for PhpRenderer

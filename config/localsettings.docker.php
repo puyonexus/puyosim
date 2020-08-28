@@ -2,10 +2,10 @@
 $localSettings = [
     'settings' => [
         'site' => [
-            'name' => 'Puyo Nexus Chain Simulator (Local)',
+            'name' => 'PuyoSimLocal',
             'description' => 'Create and share Puyo Puyo chains (Local)',
             'titledChainDescription' => 'Create and share Puyo Puyo chains with the Puyo Nexus Chain Simulator (Local)',
-            'twitter' => '@puyonexus',
+            'twitter' => '@EngPuyoDiscord',
         ],
 
         'database' => [
