@@ -75,7 +75,7 @@ class HomeController
             $pageUrl = "{$baseUrl}/?{$queryString}";
 
             // Set the view arguments
-            // basePath, assetsPath, and pageUrl are set by viewResponse.
+            // basePath and pageUrl are set by viewResponse.
             $viewArgs = [
                 'pageUrl' => $pageUrl,
                 'embedImage' => "{$baseUrl}/chainimage.php?{$queryString}",
@@ -95,7 +95,6 @@ class HomeController
         return $this->view->render($response, 'home/index.php', [
             'site' => $this->siteSettings,
             'basePath' => $basePath,
-            'assetsPath' => "{$basePath}/assets",
             'pageUrl' => "{$baseUrl}/",
             'embedImage' => "{$baseUrl}/assets/images/logo.png",
             'ogEmbedImage' => "{$baseUrl}/assets/images/logo.png",
@@ -114,7 +113,7 @@ class HomeController
         $pageUrl = "{$baseUrl}/chain/{$entity->url}";
 
         // Set the view arguments
-        // basePath and assetsPath are set by viewResponse.
+        // basePath is set by viewResponse.
         $viewArgs = [
             'pageUrl' => $pageUrl,
             'embedImage' => "{$baseUrl}/image/{$entity->url}.png",
@@ -200,7 +199,6 @@ class HomeController
         $viewArgs = array_replace_recursive([
             'site' => $this->siteSettings,
             'basePath' => $basePath,
-            'assetsPath' => "{$basePath}/assets",
             'chainData' => [
                 'chain' => $chain,
                 'width' => $width,

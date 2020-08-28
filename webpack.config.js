@@ -1,7 +1,12 @@
-const ExtractTextPlugin = require("extract-text-webpack-plugin");
+const MiniCssExtractPlugin = require("mini-css-extract-plugin");
+const TerserJSPlugin = require("terser-webpack-plugin");
+const OptimizeCSSAssetsPlugin = require("optimize-css-assets-webpack-plugin");
 const path = require("path");
 
 module.exports = {
+    optimization: {
+        minimizer: [new TerserJSPlugin({ extractComments: false }), new OptimizeCSSAssetsPlugin({})],
+    },
     entry: [
         "./resources/styles/simulator.css",
         "./resources/scripts/simulator.js",
@@ -15,23 +20,26 @@ module.exports = {
             {
                 test: /\.html$/,
                 use: [{
-                    loader: 'html-loader',
+                    loader: "html-loader",
                     options: {
-                        attrs: false,
+                        attributes: false,
                     }
                 }]
             },
             {
                 test: /\.css$/,
-                use: ExtractTextPlugin.extract({
-                    use: {
-                        loader: "css-loader",
-                        options: {
-                            minimize: true,
-                            url: false,
-                        }
+                use: [MiniCssExtractPlugin.loader, {
+                    loader: "css-loader",
+                    options: {
+                        url: false,
                     }
-                })
+                }],
+            },
+            {
+                test: /\.(png|jpe?g|gif)$/i,
+                use: [{
+                    loader: "file-loader",
+                }],
             }
         ],
     },
@@ -43,6 +51,8 @@ module.exports = {
         "jquery": "$"
     },
     plugins: [
-        new ExtractTextPlugin("../css/simulator.css"),
+        new MiniCssExtractPlugin({
+          filename: "../css/simulator.min.css",
+        }),
     ]
 };

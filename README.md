@@ -14,4 +14,4 @@ PuyoSim is the name of the Puyo Puyo chain simulator used on Puyo Nexus.
 The current version of PuyoSim is 4.3.0, which can be seen on [Puyo Nexus](https://puyonexus.com/chainsim/). See the [changelog](CHANGELOG.md) for changes between versions and the [release archive](https://puyonexus.github.io/puyosim/releases/) to play with previous versions.
 
 ## Contributors
-PuyoSim's sole contributor is [Nick Woronekin](https://github.com/nickworonekin).
+PuyoSim's primary contributor is [Nick Woronekin](https://github.com/nickworonekin). See [Contributors](https://github.com/puyonexus/puyosim/graphs/contributors) for a full listing.

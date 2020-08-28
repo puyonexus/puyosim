@@ -5,10 +5,11 @@
 
 import $ from 'jquery';
 import Clipboard from 'clipboard';
-import * as attackPowersJson from './../json/attackPowers.json';
-import * as chainsJson from './../json/chains.json';
-import * as contentHtml from './../html/content.html';
+import {default as attackPowersJson} from './../json/attackPowers.json';
+import {default as chainsJson} from './../json/chains.json';
+import {default as contentHtml} from './../html/content.html';
 import 'bootstrap/js/dropdown.js';
+import './common.js';
 
 (function () {
 "use strict";
@@ -75,8 +76,7 @@ var Config = {
 	shareAnimatedImageUrl: "/image/{0}.gif",
 	shareLegacyLinkUrl: "/?{0}",
 	shareLegacyImageUrl: "/chainimage.php?{0}",
-	basePath: ".",
-	assetsPath: "assets"
+	basePath: "."
 };
 
 /*
@@ -1112,7 +1112,7 @@ var PuyoDisplay = {
 	},
 	
 	displayPuyoSelection: function() {
-		$("#puyo-selection .puyo").not(".puyo-none, .puyo-delete").css("background-image", "url('" + Config.assetsPath + "/" + this.puyoSkinsPath + "/" + this.puyoSkin.image + "')");
+		$("#puyo-selection .puyo").not(".puyo-none, .puyo-delete").css("background-image", "url('/assets/" + this.puyoSkinsPath + "/" + this.puyoSkin.image + "')");
 	},
 
 	getSkinIndex: function(id) {
@@ -1200,7 +1200,7 @@ PuyoDisplay.CanvasRenderer = { // CanvasRenderer (uses HTML5 Canvas to display t
 
 	setPuyoSkin: function() { // Sets the puyo skin
 		var newPuyoImage = new Image(), self = this;
-		newPuyoImage.src = Config.assetsPath + "/" + this.parent.puyoSkinsPath + "/" + this.parent.puyoSkin.image;
+		newPuyoImage.src = "/assets/" + this.parent.puyoSkinsPath + "/" + this.parent.puyoSkin.image;
 		newPuyoImage.onload = function() {
 			if (self.parent.puyoAnimation.running) { // Stop the animation if it is running
 				self.parent.puyoAnimation.stop();
@@ -1226,7 +1226,7 @@ PuyoDisplay.CanvasRenderer = { // CanvasRenderer (uses HTML5 Canvas to display t
 				}
 			}
 
-			$("#puyo-selection .puyo").not(".puyo-none, .puyo-delete").css("background-image", "url('" + Config.assetsPath + "/" + self.parent.puyoSkinsPath + "/" + self.parent.puyoSkin.image + "')");
+			$("#puyo-selection .puyo").not(".puyo-none, .puyo-delete").css("background-image", "url('/assets/" + self.parent.puyoSkinsPath + "/" + self.parent.puyoSkin.image + "')");
 			
 			if (self.parent.nuisanceTrayTimer === undefined) {
 				self.drawNuisanceTray(Simulation.nuisance, false);
@@ -2037,9 +2037,9 @@ Tabs.Settings = {
 
 				if (FieldDisplay.fieldContent === Content.Field.EyeCandy) {
 					if (id === 0) {
-						$("#field-bg-2").css("background-image", "url('" + Config.assetsPath + "/images/eyecandy/field_char_bg/" + Content.Field.EyeCandy.CharaBGs[Math.floor(Math.random() * Content.Field.EyeCandy.CharaBGs.length)] + "')");
+						$("#field-bg-2").css("background-image", "url('/assets/images/eyecandy/field_char_bg/" + Content.Field.EyeCandy.CharaBGs[Math.floor(Math.random() * Content.Field.EyeCandy.CharaBGs.length)] + "')");
 					} else {
-						$("#field-bg-2").css("background-image", "url('" + Config.assetsPath + "/images/eyecandy/field_char_bg/" + Content.Field.EyeCandy.CharaBGs[id - 1] + "')");
+						$("#field-bg-2").css("background-image", "url('/assets/images/eyecandy/field_char_bg/" + Content.Field.EyeCandy.CharaBGs[id - 1] + "')");
 					}
 				}
 
@@ -2149,13 +2149,13 @@ var Content = {
 			],
 			
 			Script: function() {
-				$("#field-bg-1").css("background-image", "url('" + Config.assetsPath + "/images/eyecandy/field_stage_bg/" + Content.Field.EyeCandy.StageBGs[Math.floor(Math.random() * Content.Field.EyeCandy.StageBGs.length)] + "')");
+				$("#field-bg-1").css("background-image", "url('/assets/images/eyecandy/field_stage_bg/" + Content.Field.EyeCandy.StageBGs[Math.floor(Math.random() * Content.Field.EyeCandy.StageBGs.length)] + "')");
 
 				var boardBackgroundId = parseInt(localStorage.getItem("chainsim.boardBackgroundId"), 10) || 0;
 				if (boardBackgroundId === 0) {
-					$("#field-bg-2").css("background-image", "url('" + Config.assetsPath + "/images/eyecandy/field_char_bg/" + Content.Field.EyeCandy.CharaBGs[Math.floor(Math.random() * Content.Field.EyeCandy.CharaBGs.length)] + "')");
+					$("#field-bg-2").css("background-image", "url('/assets/images/eyecandy/field_char_bg/" + Content.Field.EyeCandy.CharaBGs[Math.floor(Math.random() * Content.Field.EyeCandy.CharaBGs.length)] + "')");
 				} else {
-					$("#field-bg-2").css("background-image", "url('" + Config.assetsPath + "/images/eyecandy/field_char_bg/" + Content.Field.EyeCandy.CharaBGs[boardBackgroundId - 1] + "')");
+					$("#field-bg-2").css("background-image", "url('/assets/images/eyecandy/field_char_bg/" + Content.Field.EyeCandy.CharaBGs[boardBackgroundId - 1] + "')");
 				}
 			},
 
@@ -2291,13 +2291,12 @@ var Utils = {
 $(document).ready(function() {
 	// Set up config values
 	Config.basePath = $("body").attr("data-base-path");
-	Config.assetsPath = $("body").attr("data-assets-path");
 
 	Field.init();            // Initalize the Field
 	FieldDisplay.init();     // Initalize the Field Display
 	
 	// Display the contents of the simulator
-	$("#simulator").html(Utils.stringFormat(contentHtml, Config.assetsPath));
+	$("#simulator").html(Utils.stringFormat(contentHtml, "/assets"));
 
 	// Enable auto-copying to clipboard
 	if (Clipboard.isSupported()) {

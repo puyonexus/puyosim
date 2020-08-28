@@ -172,12 +172,10 @@ class ChainRepository
     {
         $statement = $this->db
             ->select()
-            ->count()
             ->from('chain')
             ->where('url', '=', $url)
             ->limit(1, 0);
-        
-        $count = $statement->execute()->fetchColumn();
-        return $count > 0;
+
+        return $statement->execute()->rowCount() > 0;
     }
 }

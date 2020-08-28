@@ -1,0 +1,22 @@
+version: '3'
+services:
+    mysql:
+        image: mysql:5.7
+        volumes:
+            - ./resources/sql/puyosim.sql:/docker-entrypoint-initdb.d/puyosim.sql
+        environment:
+            MYSQL_ROOT_PASSWORD: root
+            MYSQL_DATABASE: puyosim
+            MYSQL_USER: puyosim
+            MYSQL_PASSWORD: puyosim
+    web:
+        build:
+            context: .
+            dockerfile: Dockerfile
+        volumes:
+            - .:/app
+            - ./config/localsettings.docker.php:/app/config/localsettings.php
+        depends_on:
+            - mysql
+        ports:
+            - "8080:8080"

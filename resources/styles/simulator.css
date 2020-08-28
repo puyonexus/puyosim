@@ -4,6 +4,7 @@
  */
 
 @import '../../node_modules/normalize.css/normalize.css';
+@import 'common.css';
 @import 'header-footer.css';
 @import 'field.css';
 
@@ -128,12 +129,12 @@ input, select, button, textarea {
 	font: inherit;
 	line-height: normal;
 }
-input[type="text"], textarea {
+input[type="text"], input:not([type]), textarea {
 	-moz-box-sizing: border-box;
 	-webkit-box-sizing: border-box;
 	box-sizing: border-box;
 }
-input[type="text"], select, textarea {
+input[type="text"], input:not([type]), select, textarea {
 	border: 1px solid #B4BAC0;
 	padding: 6px;
 	background-color: #FFF;
@@ -142,16 +143,16 @@ select {
 	padding-top: 5px;
 	padding-bottom: 5px;
 }
-input[type="text"]:hover, select:hover, textarea:hover {
+input[type="text"]:hover, input:not([type]):hover, select:hover, textarea:hover {
 	border-color: #008AD5;
 }
-input[type="text"]:focus, select:focus, textarea:focus {
+input[type="text"]:focus, input:not([type]):focus, select:focus, textarea:focus {
 	outline: 0;
 	box-shadow: inset 0 0 4px rgba(0, 0, 0, 0.2);
 	border-color: #008AD5;
 }
-input[type="text"][disabled]:hover, select[disabled]:hover, textarea[disabled]:hover,
-input[type="text"][disabled]:focus, select[disabled]:focus, textarea[disabled]:focus {
+input[type="text"][disabled]:hover, input:not([type])[disabled]:hover, select[disabled]:hover, textarea[disabled]:hover,
+input[type="text"][disabled]:focus, input:not([type])[disabled]:focus, select[disabled]:focus, textarea[disabled]:focus {
 	border-color: #B4BAC0;
 	box-shadow: none;
 }
@@ -263,29 +264,35 @@ button[disabled]:active {
 	display: flex;
 	width: 100%;
 }
-.input-group input[type="text"] {
+.input-group input[type="text"],
+.input-group input:not([type]) {
 	flex: 1 1 auto;
 }
 .input-group input[type="text"],
+.input-group input:not([type]),
 .input-group button {
 	position: relative;
 }
 .input-group input[type="text"]:not(:first-child),
+.input-group input:not([type]):not(:first-child),
 .input-group button:not(:first-child) {
 	margin-left: -1px;
 	border-top-left-radius: 0;
 	border-bottom-left-radius: 0;
 }
 .input-group input[type="text"]:not(:last-child),
+.input-group input:not([type]):not(:last-child),
 .input-group button:not(:last-child) {
 	border-top-right-radius: 0;
 	border-bottom-right-radius: 0;
 }
 .input-group input[type="text"]:hover,
+.input-group input:not([type]):hover,
 .input-group button:hover {
 	z-index: 1;
 }
 .input-group input[type="text"]:focus,
+.input-group input:not([type]):focus,
 .input-group button:focus {
 	z-index: 2;
 }

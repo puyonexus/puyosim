@@ -49,23 +49,21 @@
 	</script>
 	<script async src="https://www.google-analytics.com/analytics.js"></script>
 
-	<link rel="stylesheet" href="/assets/css/common.css">
 	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
-	<link rel="stylesheet" href="<?= htmlspecialchars($assetsPath) ?>/css/simulator.css">
+	<link rel="stylesheet" href="/assets/css/simulator.min.css">
 </head>
-<body data-base-path="<?= htmlspecialchars($basePath) ?>" data-assets-path="<?= htmlspecialchars($assetsPath) ?>">
+<body data-base-path="<?= htmlspecialchars($basePath) ?>">
 	<header id="pn-header">
 		<nav id="pn-navbar">
 			<div class="container">
 				<h1 id="pn-navbar-brand">
-					<a href="/">Puyo Nexus</a>
+					<a>PuyoSim</a>
 				</h1>
 				<button class="pn-navbar-toggle collapsed"><span class="pn-navbar-toggle-icon" aria-hidden="true"></span></button>
 				<div class="pn-navbar-collapse collapse">
 					<ul class="pn-nav">
-						<li><a href="/wiki/">Wiki</a></li>
-						<li><a href="/forum/">Forum</a></li>
-						<li class="active"><a href="/chainsim/">Chain Simulator</a></li>
+						<li><a href="https://puyonexus.com/">Puyo Nexus</a></li>
+						<li><a href="https://puyonexus.com/wiki/">Puyo Wiki</a></li>
 					</ul>
 				</div>
 			</div>
@@ -79,7 +77,7 @@
 	<footer id="pn-footer">
 		<div class="container">
 			<div class="copyright">
-				<p>&copy; 2007-2017 Puyo Nexus</p>
+				<p>&copy; 2007-2020 Nick Woronekin and <a href="https://github.com/puyonexus/puyosim/graphs/contributors">contributors</a>.</p>
 			</div>
 			<ul class="footer-links">
 				<li><a href="https://github.com/puyonexus/puyosim/">Github</a></li>
@@ -87,10 +85,9 @@
 		</div>
 	</footer>
 	
-	<script src="/assets/js/common.min.js"></script>
-	<script src="<?= htmlspecialchars($assetsPath) ?>/js/clipboard.min.js"></script>
-	<script src="<?= htmlspecialchars($assetsPath) ?>/js/jquery.min.js"></script>
-	<script src="<?= htmlspecialchars($assetsPath) ?>/js/simulator.min.js"></script>
+	<script src="/assets/js/clipboard.min.js"></script>
+	<script src="/assets/js/jquery.min.js"></script>
+	<script src="/assets/js/simulator.min.js"></script>
 	<?php
 		if (isset($chainData))
 		{

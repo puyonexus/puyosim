@@ -3,6 +3,7 @@ namespace PuyoSim\Controller;
 
 use Psr\Http\Message\ServerRequestInterface as Request;
 use Psr\Http\Message\ResponseInterface as Response;
+use Psr\Interop\Container\ContainerInterface as ContainerInterface;
 use PuyoSim\Exception\InvalidChainException;
 use PuyoSim\Http\JsonResponse;
 use PuyoSim\Repository\ChainRepository;
@@ -25,6 +26,7 @@ class ApiController
 
     public function info(Request $request, Response $response, string $id)
     {
+        error_reporting(0);
         $entity = $this->chainRepository->findByUrl($id);
         if ($entity === null)
         {
@@ -44,6 +46,7 @@ class ApiController
 
     public function save(Request $request, Response $response)
     {
+        error_reporting(0);
         $body = $request->getParsedBody();
 
         // If a title was set, make sure it does not exceed 128 characters.
@@ -80,6 +83,7 @@ class ApiController
 
     public function oembed(Request $request, Response $response)
     {
+        error_reporting(0);
         $baseUrl = $request->getUri()->getBaseUrl();
 
         $oembed = [
