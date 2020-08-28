@@ -340,6 +340,7 @@ var Simulation = {
 	score   : 0, // Score
 	chains  : 0, // Chains
 	nuisance: 0, // Nuisance
+	cleared: [], // How many puyos are cleared in each chain
 
 	leftoverNuisance: 0, // Leftover nuisance puyo
 	prevChainPower  : 0, // Previous chain power
@@ -373,13 +374,15 @@ var Simulation = {
 		this.chains = 0;
 		this.score = 0;
 		this.nuisance = 0;
+		this.cleared = [];
 		this.leftoverNuisance = 0;
 		this.prevChainPower = 0;
 		
 		$("#field-chains").text(this.chains);
 		$("#field-score").text(this.score);
 		$("#field-nuisance").text(this.nuisance);
-		
+		$("#field-cleared").text('0');
+
 		PuyoDisplay.renderer.drawNuisanceTray(this.nuisance);
 		
 		// Display the "editor" chain on the puyo display and set the simulation buttons
@@ -644,7 +647,10 @@ var Simulation = {
 
 				this.chains++;
 				this.score += bonus;
-				
+
+				// Store how many puyos are cleared in this chain
+				this.cleared.push(puyoCleared);
+
 				var nuisanceCalculated = (bonus / this.targetPoints) + this.leftoverNuisance; // Calculate nuisance
 				this.nuisance += Math.floor(nuisanceCalculated); // Round down and add to nuisance
 				this.leftoverNuisance = nuisanceCalculated % 1; // Save leftover nuisance for the next chain
@@ -666,7 +672,10 @@ var Simulation = {
 					$("#field-chains").text(this.chains);
 					$("#field-score").text(((puyoCleared * 10) + (pointPuyoCleared * this.pointPuyoBonus)) + " x " + clearBonus);
 					$("#field-nuisance").text(this.nuisance);
-					
+					var clearedChain = this.cleared.map(function(i) { return i.toString() }).join(', ');
+					var clearedTotal = this.cleared.reduce(function(a, b) { return a + b; });
+					$("#field-cleared").text(clearedChain + ' (' + clearedTotal + ')');
+
 					PuyoDisplay.renderer.drawNuisanceTray(this.nuisance);
 					
 					if (!this.stepMode) { // Set the timer if we aren't in step mode
@@ -686,7 +695,10 @@ var Simulation = {
 					$("#field-chains").text(this.chains);
 					$("#field-score").text(this.score);
 					$("#field-nuisance").text(this.nuisance);
-					
+					var clearedChain = this.cleared.map(function(i) { return i.toString() }).join(', ');
+					var clearedTotal = this.cleared.reduce(function(a, b) { return a + b; });
+					$("#field-cleared").text(clearedChain + ' (' + clearedTotal + ')');
+
 					PuyoDisplay.renderer.drawNuisanceTray(this.nuisance);
 				} else { // Just toggle the buttons
 					ControlsDisplay.toggleSimulationButtons(true, false, false, false, false);
@@ -727,7 +739,10 @@ var Simulation = {
 					$("#field-chains").text(this.chains);
 					$("#field-score").text(this.score);
 					$("#field-nuisance").text(this.nuisance);
-					
+					var clearedChain = this.cleared.map(function(i) { return i.toString() }).join(', ');
+					var clearedTotal = this.cleared.reduce(function(a, b) { return a + b; });
+					$("#field-cleared").text(clearedChain + ' (' + clearedTotal + ')');
+
 					PuyoDisplay.renderer.drawNuisanceTray(this.nuisance);
 				} else { // Just toggle the buttons
 					ControlsDisplay.toggleSimulationButtons(true, false, false, false, false);
@@ -1467,6 +1482,7 @@ var ControlsDisplay = {
 		$("#field-score").text("0");
 		$("#field-chains").text("0");
 		$("#field-nuisance").text("0");
+		$("#field-cleared").text("0");
 	},
 	
 	toggleSimulationButtons: function(back, start, pause, step, skip) { // Controls the display of the simulator control buttons
