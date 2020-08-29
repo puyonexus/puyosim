@@ -11,7 +11,7 @@ import { PuyoSim } from "./puyosim";
 
 export class FieldDisplay {
   // A reference to the content of the field
-  fieldContent?: IFieldType;
+  fieldContent: IFieldType = content.Field.Standard;
 
   // Current Puyo that is selected
   selectedPuyo = PuyoType.None;
@@ -54,10 +54,10 @@ export class FieldDisplay {
         $("#simulator").removeClass(
           "field-basic field-standard field-eyecandy"
         );
-        $("#simulator").addClass(self.fieldContent!.CSSClass);
+        $("#simulator").addClass(self.fieldContent.CSSClass);
 
-        if (self.fieldContent!.Script !== undefined) {
-          self.fieldContent!.Script.call(self);
+        if (self.fieldContent.CSSClass == "field-eyecandy") {
+          self.fieldContent.Script.call(self);
         }
 
         $("#field").css({
@@ -86,8 +86,8 @@ export class FieldDisplay {
     $("#simulator").removeClass("field-basic field-standard field-eyecandy");
     $("#simulator").addClass(this.fieldContent!.CSSClass);
 
-    if (this.fieldContent!.Script) {
-      this.fieldContent!.Script.call(this);
+    if (this.fieldContent.CSSClass == "field-eyecandy") {
+      this.fieldContent.Script.call(this);
     }
 
     $("#field").css({

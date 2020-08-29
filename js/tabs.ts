@@ -664,12 +664,12 @@ class SettingsTab {
       var index = 0;
       for (
         var i = 0;
-        i < content.Field.EyeCandy.CharacterBackgrounds!.length;
+        i < content.Field.EyeCandy.CharacterBackgrounds.length;
         i++
       ) {
         $("#character-background .dropdown-menu").append(
           "<h3>" +
-            content.Field.EyeCandy.CharacterBackgrounds![i].name +
+            content.Field.EyeCandy.CharacterBackgrounds[i].name +
             "</h3>"
         );
         var category = $("<ul>");
@@ -678,7 +678,7 @@ class SettingsTab {
         for (
           var j = 0;
           j <
-          content.Field.EyeCandy.CharacterBackgrounds![i].backgrounds.length;
+          content.Field.EyeCandy.CharacterBackgrounds[i].backgrounds.length;
           j++
         ) {
           $("<li>")
@@ -687,7 +687,7 @@ class SettingsTab {
             .attr("data-id", index)
             .html(
               "<a>" +
-                content.Field.EyeCandy.CharacterBackgrounds![i].backgrounds[j] +
+                content.Field.EyeCandy.CharacterBackgrounds[i].backgrounds[j] +
                 "</a>"
             )
             .appendTo(category);
@@ -712,9 +712,9 @@ class SettingsTab {
             $("#field-bg-2").css(
               "background-image",
               "url('/images/eyecandy/field_char_bg/" +
-                content.Field.EyeCandy.CharaBGs![
+                content.Field.EyeCandy.CharaBGs[
                   Math.floor(
-                    Math.random() * content.Field.EyeCandy.CharaBGs!.length
+                    Math.random() * content.Field.EyeCandy.CharaBGs.length
                   )
                 ] +
                 "')"
@@ -723,17 +723,17 @@ class SettingsTab {
             $("#field-bg-2").css(
               "background-image",
               "url('/images/eyecandy/field_char_bg/" +
-                content.Field.EyeCandy.CharaBGs![id - 1] +
+                content.Field.EyeCandy.CharaBGs[id - 1] +
                 "')"
             );
           }
         }
 
         $("#character-background-game").text(
-          content.Field.EyeCandy.CharacterBackgrounds![category].name
+          content.Field.EyeCandy.CharacterBackgrounds[category].name
         );
         $("#character-background-character").text(
-          content.Field.EyeCandy.CharacterBackgrounds![category].backgrounds[
+          content.Field.EyeCandy.CharacterBackgrounds[category].backgrounds[
             value
           ]
         );
@@ -763,11 +763,11 @@ class SettingsTab {
       }
 
       $("#character-background-game").text(
-        content.Field.EyeCandy.CharacterBackgrounds![boardBackgroundCategory]
+        content.Field.EyeCandy.CharacterBackgrounds[boardBackgroundCategory]
           .name
       );
       $("#character-background-character").text(
-        content.Field.EyeCandy.CharacterBackgrounds![boardBackgroundCategory]
+        content.Field.EyeCandy.CharacterBackgrounds[boardBackgroundCategory]
           .backgrounds[boardBackgroundValue]
       );
       $(
