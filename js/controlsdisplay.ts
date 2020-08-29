@@ -10,8 +10,8 @@ import { FieldDisplay } from "./fielddisplay";
 import { Constants } from "./constants";
 import { Simulation } from "./simulation";
 
-export const ControlsDisplay = {
-  display: function () {
+export class ControlsDisplay {
+  static display() {
     // Displays the controls
     $("#puyo-insertion").change(function () {
       FieldDisplay.insertPuyo = $(this).prop("checked");
@@ -122,14 +122,14 @@ export const ControlsDisplay = {
     $("#field-chains").text("0");
     $("#field-nuisance").text("0");
     $("#field-cleared").text("0");
-  },
+  }
 
-  toggleSimulationButtons: function (back: boolean, start: boolean, pause: boolean, step: boolean, skip: boolean) {
+  static toggleSimulationButtons(back: boolean, start: boolean, pause: boolean, step: boolean, skip: boolean) {
     // Controls the display of the simulator control buttons
     $("#simulation-back").prop("disabled", !back);
     $("#simulation-start").prop("disabled", !start);
     $("#simulation-pause").prop("disabled", !pause);
     $("#simulation-step").prop("disabled", !step);
     $("#simulation-skip").prop("disabled", !skip);
-  },
+  }
 };

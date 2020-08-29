@@ -1,6 +1,6 @@
 {
     "compilerOptions": {
-        "strict": false,
+        "strict": true,
         "resolveJsonModule": true,
         "esModuleInterop": true,
     }
