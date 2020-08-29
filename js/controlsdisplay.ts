@@ -112,7 +112,7 @@ export const ControlsDisplay = {
     );
     $("#simulation-speed")
       .change(function () {
-        Simulation.speed = parseInt($(this).val(), 10);
+        Simulation.speed = parseInt(String($(this).val()), 10);
       })
       .val(Constants.Simulation.DefaultSpeed);
 
