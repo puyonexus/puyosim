@@ -25,7 +25,7 @@ interface ICanvasRenderer {
   uninit: () => void;
   drawPuyo: (x: number, y: number, p: Puyo) => void;
   setPuyoSkin: () => void;
-  drawNuisanceTray: (n: number, animate: boolean) => void;
+  drawNuisanceTray: (n: number, animate?: boolean) => void;
   animateNuisanceTray: (step: number, pos: number[]) => void;
 };
 
@@ -504,7 +504,7 @@ export const PuyoDisplay: IPuyoDisplay = {
       };
     },
 
-    drawNuisanceTray: function (n: number, animate: boolean) {
+    drawNuisanceTray: function (n: number, animate?: boolean) {
       // Draws nuisance in the nuisance tray
       var amounts = [1, 6, 30, 180, 360, 720, 1440],
         pos = [],
