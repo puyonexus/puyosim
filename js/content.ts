@@ -7,17 +7,28 @@
 
 import $ from "jquery";
 
+export interface IFieldType {
+  CSSClass: string;
+  StageBGs?: string[];
+  CharaBGs?: string[];
+  Script?: () => void;
+  CharacterBackgrounds?: {
+      name: string;
+      backgrounds: string[];
+  }[];
+}
+
 export const Content = {
   Field: {
-    Basic: {
+    Basic: <IFieldType>{
       CSSClass: "field-basic",
     },
 
-    Standard: {
+    Standard: <IFieldType>{
       CSSClass: "field-standard",
     },
 
-    EyeCandy: {
+    EyeCandy: <IFieldType>{
       CSSClass: "field-eyecandy",
 
       StageBGs: [
@@ -155,8 +166,8 @@ export const Content = {
         $("#field-bg-1").css(
           "background-image",
           "url('/images/eyecandy/field_stage_bg/" +
-            Content.Field.EyeCandy.StageBGs[
-              Math.floor(Math.random() * Content.Field.EyeCandy.StageBGs.length)
+            Content.Field.EyeCandy.StageBGs![
+              Math.floor(Math.random() * Content.Field.EyeCandy.StageBGs!.length)
             ] +
             "')"
         );
@@ -167,9 +178,9 @@ export const Content = {
           $("#field-bg-2").css(
             "background-image",
             "url('/images/eyecandy/field_char_bg/" +
-              Content.Field.EyeCandy.CharaBGs[
+              Content.Field.EyeCandy.CharaBGs![
                 Math.floor(
-                  Math.random() * Content.Field.EyeCandy.CharaBGs.length
+                  Math.random() * Content.Field.EyeCandy.CharaBGs!.length
                 )
               ] +
               "')"
@@ -178,7 +189,7 @@ export const Content = {
           $("#field-bg-2").css(
             "background-image",
             "url('/images/eyecandy/field_char_bg/" +
-              Content.Field.EyeCandy.CharaBGs[boardBackgroundId - 1] +
+              Content.Field.EyeCandy.CharaBGs![boardBackgroundId - 1] +
               "')"
           );
         }

@@ -7,12 +7,21 @@
 import $ from "jquery";
 import { PuyoDisplay } from "./puyodisplay";
 import { Simulation } from "./simulation";
-import { Constants } from "./constants";
-import { Content } from "./content";
+import { Constants, PuyoType } from "./constants";
+import { Content, IFieldType } from "./content";
 import { Field } from "./field";
 import { Tabs } from "./tabs";
 
-export const FieldDisplay = {
+interface IFieldDisplay {
+  fieldContent?: IFieldType;
+  selectedPuyo: PuyoType;
+  insertPuyo: boolean;
+  init: () => void;
+  load: (style: any, init?: any) => void;
+  display: () => void;
+}
+
+export const FieldDisplay: IFieldDisplay = {
   fieldContent: undefined, // A reference to the content of the field
   selectedPuyo: Constants.Puyo.None, // Current Puyo that is selected
   insertPuyo: false, // Indicates if we are going to insert Puyo (the insert box is checked)
@@ -43,17 +52,17 @@ export const FieldDisplay = {
 
     if (!init) {
       // Only fade out & fade in if we are switching styles
-      var self = this;
+      const self = this;
       $("#simulator-field, #nuisance-tray").fadeOut(200, function () {
         // Fade out the simulator and display the new one
         $("#field-bg-1, #field-bg-2, #field-bg-3").removeAttr("style");
         $("#simulator").removeClass(
           "field-basic field-standard field-eyecandy"
         );
-        $("#simulator").addClass(self.fieldContent.CSSClass);
+        $("#simulator").addClass(self.fieldContent!.CSSClass);
 
-        if (self.fieldContent.Script !== undefined) {
-          self.fieldContent.Script.call(self);
+        if (self.fieldContent!.Script !== undefined) {
+          self.fieldContent!.Script.call(self);
         }
 
         $("#field").css({
@@ -79,10 +88,10 @@ export const FieldDisplay = {
   display: function () {
     // Displays the field
     $("#simulator").removeClass("field-basic field-standard field-eyecandy");
-    $("#simulator").addClass(this.fieldContent.CSSClass);
+    $("#simulator").addClass(this.fieldContent!.CSSClass);
 
-    if (this.fieldContent.Script !== undefined) {
-      this.fieldContent.Script.call(this);
+    if (this.fieldContent!.Script) {
+      this.fieldContent!.Script.call(this);
     }
 
     $("#field").css({
@@ -105,8 +114,8 @@ export const FieldDisplay = {
         rightMouseDown = false, // Right mouse button is pressed
         offsetX, // X offset in the DOM
         offsetY, // Y offset in the DOM
-        fieldX, // X position in the field
-        fieldY, // Y position in the field
+        fieldX = 0, // X position in the field
+        fieldY = 0, // Y position in the field
         y; // Loop variable
 
       $("#field")
@@ -116,8 +125,8 @@ export const FieldDisplay = {
             return;
           }
 
-          offsetX = e.pageX - $(this).offset().left;
-          offsetY = e.pageY - $(this).offset().top;
+          offsetX = e.pageX - $(this).offset()!.left;
+          offsetY = e.pageY - $(this).offset()!.top;
           fieldX = Math.floor(offsetX / PuyoDisplay.puyoSize);
           fieldY = Math.floor(offsetY / PuyoDisplay.puyoSize);
 
@@ -136,14 +145,14 @@ export const FieldDisplay = {
           }
 
           var newFieldX, newFieldY;
-          offsetX = e.pageX - $(this).offset().left;
-          offsetY = e.pageY - $(this).offset().top;
+          offsetX = e.pageX - $(this).offset()!.left;
+          offsetY = e.pageY - $(this).offset()!.top;
 
           if (
             offsetX < 0 ||
-            offsetX >= $(this).width() ||
+            offsetX >= $(this).width()! ||
             offsetY < 0 ||
-            offsetY >= $(this).height()
+            offsetY >= $(this).height()!
           ) {
             // Check for out of bounds before continuing
             $(this).mouseleave();
@@ -197,22 +206,22 @@ export const FieldDisplay = {
             if (self.selectedPuyo === Constants.Puyo.Delete) {
               // Delete this puyo and shift the ones on top down one row
               for (y = fieldY; y > 0; y--) {
-                Field.map.set(fieldX, y, Field.map.puyo(fieldX, y - 1));
+                Field.map!.set(fieldX, y, Field.map!.puyo(fieldX, y - 1));
               }
-              Field.map.set(fieldX, 0, Constants.Puyo.None);
+              Field.map!.set(fieldX, 0, Constants.Puyo.None);
             } else {
               if (self.insertPuyo) {
                 // Insert puyo
                 for (y = 0; y < fieldY; y++) {
-                  Field.map.set(fieldX, y, Field.map.puyo(fieldX, y + 1));
+                  Field.map!.set(fieldX, y, Field.map!.puyo(fieldX, y + 1));
                 }
               }
 
-              Field.map.set(fieldX, fieldY, self.selectedPuyo);
+              Field.map!.set(fieldX, fieldY, self.selectedPuyo);
             }
           } else if (rightMouseDown) {
             // Right click, delete puyo
-            Field.map.set(fieldX, fieldY, Constants.Puyo.None);
+            Field.map!.set(fieldX, fieldY, Constants.Puyo.None);
           }
         })
         .mouseup(function () {
