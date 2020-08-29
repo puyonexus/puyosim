@@ -7,6 +7,10 @@
         "name": "Nick Woronekin",
         "url": "https://github.com/nickworonekin"
     },
+    "scripts": {
+        "build": "parcel build index.html",
+        "serve": "parcel serve index.html"
+    },
     "repository": {
         "type": "git",
         "url": "https://github.com/puyonexus/puyosim.git"
@@ -14,8 +18,12 @@
     "dependencies": {
         "bootstrap": "3.4.1",
         "clipboard": "2.0.6",
+        "common.css": "^1.0.1",
+        "font-awesome": "4.7.0",
         "jquery": "3.5.1",
-        "normalize.css": "8.0.1"
+        "normalize.css": "8.0.1",
+        "parcel-bundler": "^1.12.4",
+        "parcel-plugin-asset-copier": "^1.1.0"
     },
     "devDependencies": {
         "css-loader": "4.2.2",

@@ -1,0 +1,693 @@
+/*!
+ * PuyoSim 4.3.0
+ * https://github.com/puyonexus/puyosim/
+ */
+
+@import '../node_modules/normalize.css/normalize.css';
+@import '../node_modules/font-awesome/css/font-awesome.css';
+@import './common.css';
+@import './header-footer.css';
+@import './field.css';
+
+/* ==========================================================================
+   General styles
+   ========================================================================== */
+
+* {
+	box-sizing: border-box;
+}
+*:before,
+*:after {
+	box-sizing: border-box;
+}
+html, body {
+	height: 100%;
+}
+body {
+	background-color: #F5F5F5;
+	background-image: url('../images/noise.png');
+	font: 14px/20px -apple-system, system-ui, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+	display: flex;
+	min-height: 100%;
+	flex-direction: column;
+}
+
+a {
+	cursor: pointer;
+	color: #0069D6;
+	text-decoration: none;
+}
+a:hover,
+a:focus {
+	color: #00438A;
+	text-decoration: underline;
+}
+
+dl, dd {
+	margin: 0;
+}
+
+h3, h4 {
+	margin: 0;
+}
+
+fieldset {
+	border: 0;
+	margin: 0;
+	padding: 0;
+}
+
+#simulator-tabs-select,
+#simulator-controls ul,
+#tab-saved-chains ul, 
+#tab-preset-chains ul,
+#tab-simulator ul,
+#tab-settings ul {
+	list-style: none;
+	margin: 0;
+	padding: 0;
+}
+
+.center {
+	text-align: center;
+	margin-left: auto;
+	margin-right: auto;
+}
+
+#content {
+	padding-top: 15px;
+	padding-bottom: 15px;
+	flex: 1;
+}
+
+.box-inner-header {
+	margin: -10px -10px 10px -10px;
+	padding: 10px;
+	background-color: #F5F5F5;
+}
+.box-inner-footer {
+	margin: 10px -10px -10px -10px;
+	padding: 10px;
+	background-color: #F5F5F5;
+}
+
+.loading {
+	width: 16px;
+	height: 16px;
+	background: url('../images/loading.gif') no-repeat;
+}
+
+.container {
+	min-width: 546px;
+	max-width: 1170px;
+	margin: 0 auto;
+	padding: 0 15px;
+}
+
+/*@media (min-width: 576px) {
+	.container {
+		padding: 0 15px;
+	}
+}
+@media (min-width: 1200px) {
+	.container {
+		width: 1170px;
+	}
+}*/
+
+.show-on-shared-chain,
+.hide-on-shared-chain,
+.show-on-saved-chains,
+.hide-on-saved-chains {
+	display: none;
+}
+
+/* ==========================================================================
+   Forms
+   ========================================================================== */
+
+input, select, button, textarea {
+	font: inherit;
+	line-height: normal;
+}
+input[type="text"], input:not([type]), textarea {
+	-moz-box-sizing: border-box;
+	-webkit-box-sizing: border-box;
+	box-sizing: border-box;
+}
+input[type="text"], input:not([type]), select, textarea {
+	border: 1px solid #B4BAC0;
+	padding: 6px;
+	background-color: #FFF;
+}
+select {
+	padding-top: 5px;
+	padding-bottom: 5px;
+}
+input[type="text"]:hover, input:not([type]):hover, select:hover, textarea:hover {
+	border-color: #008AD5;
+}
+input[type="text"]:focus, input:not([type]):focus, select:focus, textarea:focus {
+	outline: 0;
+	box-shadow: inset 0 0 4px rgba(0, 0, 0, 0.2);
+	border-color: #008AD5;
+}
+input[type="text"][disabled]:hover, input:not([type])[disabled]:hover, select[disabled]:hover, textarea[disabled]:hover,
+input[type="text"][disabled]:focus, input:not([type])[disabled]:focus, select[disabled]:focus, textarea[disabled]:focus {
+	border-color: #B4BAC0;
+	box-shadow: none;
+}
+
+input[type="radio"], input[type="checkbox"] {
+	margin: 5px;
+	cursor: pointer;
+}
+label.checkbox,
+label.radio {
+	padding-left: 18px;
+	margin-top: 4px;
+	display: block;
+	cursor: pointer;
+}
+label.checkbox:first-child,
+label.radio:first-child {
+	margin-top: 0;
+}
+label.checkbox input[type="checkbox"],
+label.radio input[type="radio"] {
+	float: left;
+	margin: 4px 0 0 -18px;
+}
+
+.button, button:not(.pn-navbar-toggle) {
+	font: inherit;
+	line-height: normal;
+    background-color: #EAEAEA;
+    background-image: linear-gradient(to bottom, #FAFAFA, #EAEAEA);
+    border-color: #DDDDDD #DDDDDD #C5C5C5;
+    border-image: none;
+    border-radius: 3px;
+    border-style: solid;
+    border-width: 1px;
+    color: #333333;
+    cursor: pointer;
+    display: inline-block;
+    padding: 6px 12px;
+    position: relative;
+    text-shadow: 0 1px 0 rgba(255, 255, 255, 0.9);
+    white-space: nowrap;
+}
+.button:hover, .button:active, .minibutton:hover, .button-group .grouped-button:hover, .minibutton:active,
+button:not(.pn-navbar-toggle):hover, button:not(.pn-navbar-toggle):active,
+.dropdown.open button {
+    background-color: #D9D9D9;
+    background-image: linear-gradient(to bottom, #E8E8E8, #D9D9D9);
+    border-color: #CDCDCD #CDCDCD #B7B7B7;
+    text-decoration: none;
+}
+.button:active, .minibutton:active,
+button:not(.pn-navbar-toggle):active,
+.dropdown.open button {
+	box-shadow: inset 0 2px 4px rgba(0, 0, 0, .15), 0 1px 2px rgba(0, 0, 0, .05);
+}
+button[disabled],
+button[disabled]:hover,
+button[disabled]:active {
+	background-color: #BBBBBB;
+	background-image: none;
+	border-color: #B0B0B0;
+	cursor: default;
+	color: #888;
+	text-shadow: none;
+	box-shadow: none;
+}
+.dropdown-toggle {
+	font: inherit;
+}
+
+.button-group {
+	display: inline-flex;
+}
+.button-group button {
+	flex: 0 1 auto;
+	position: relative;
+}
+.button-group button:not(:first-child) {
+	border-top-left-radius: 0;
+	border-bottom-left-radius: 0;
+	margin-left: -1px;
+}
+.button-group button:not(:last-child) {
+	border-top-right-radius: 0;
+	border-bottom-right-radius: 0;
+}
+.button-group button:hover {
+	z-index: 1;
+}
+.button-group button:focus {
+	z-index: 2;
+}
+.button-group button[disabled]:hover,
+.button-group button[disabled]:focus {
+	z-index: 0;
+}
+
+#controls-simulation .button-group {
+	width: 100%;
+}
+#controls-simulation .button-group button {
+	flex: 1 1 0;
+	padding-left: 0;
+	padding-right: 0;
+}
+
+.input-group {
+	display: flex;
+	width: 100%;
+}
+.input-group input[type="text"],
+.input-group input:not([type]) {
+	flex: 1 1 auto;
+}
+.input-group input[type="text"],
+.input-group input:not([type]),
+.input-group button {
+	position: relative;
+}
+.input-group input[type="text"]:not(:first-child),
+.input-group input:not([type]):not(:first-child),
+.input-group button:not(:first-child) {
+	margin-left: -1px;
+	border-top-left-radius: 0;
+	border-bottom-left-radius: 0;
+}
+.input-group input[type="text"]:not(:last-child),
+.input-group input:not([type]):not(:last-child),
+.input-group button:not(:last-child) {
+	border-top-right-radius: 0;
+	border-bottom-right-radius: 0;
+}
+.input-group input[type="text"]:hover,
+.input-group input:not([type]):hover,
+.input-group button:hover {
+	z-index: 1;
+}
+.input-group input[type="text"]:focus,
+.input-group input:not([type]):focus,
+.input-group button:focus {
+	z-index: 2;
+}
+
+/* ==========================================================================
+   Dropdowns
+   ========================================================================== */
+
+.dropdown {
+	position: relative;
+}
+.dropdown-toggle-block {
+	display: block;
+	width: 100%;
+	text-align: left;
+}
+.dropdown-toggle .dropdown-toggle-inner {
+	margin-right: 27px;
+	position: relative;
+}
+.dropdown-toggle .dropdown-toggle-inner .caret {
+    border-left: 6px solid transparent;
+    border-right: 6px solid transparent;
+    border-top: 6px solid #888;
+    display: inline-block;
+    height: 0;
+    vertical-align: top;
+    width: 0;
+	position: absolute;
+	top: 50%;
+	right: -27px;
+	margin-top: -3px !important;
+	margin-left: 10px !important;
+}
+
+.dropdown .dropdown-menu {
+	background-color: #F7F7F9;
+	border: 1px solid #BBB;
+	box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+	color: #000;
+	display: none;
+	position: absolute;
+	min-width: 280px;
+	z-index: 2;
+	max-height: 288px;
+	overflow: auto;
+	display: none;
+}
+.dropdown .dropdown-toggle-block + .dropdown-menu {
+	width: 100%;
+}
+.dropdown.open .dropdown-menu {
+	display: block;
+}
+.dropdown .dropdown-menu a {
+	cursor: pointer;
+	display: block;
+	padding: 4px;
+	color: inherit;
+	text-decoration: none;
+}
+.dropdown .dropdown-menu li.selected a,
+.dropdown .dropdown-menu li a:hover {
+	background-color: #DEDEE0;
+	background-color: rgba(0, 0, 0, 0.1);
+}
+.dropdown .dropdown-menu ul a {
+	padding-left: 2em;
+}
+.dropdown .dropdown-menu h3 {
+	padding: 0.5em;
+}
+
+/* ==========================================================================
+   Header
+   ========================================================================== */
+
+#header-wrap {
+	background: url('../images/header_bg.png') repeat-x;
+	box-shadow: 0 0 2px rgba(0, 0, 0, 0.6);
+	min-width: 980px;
+	height: 80px;
+}
+#chainsim-header {
+	width: 940px;
+	margin: 0 auto;
+	position: relative;
+}
+
+#header-content {
+	max-width: 960px;
+	margin: 0 auto;
+	position: relative;
+}
+
+#chainsim-logo {
+	width: 315px;
+	height: 80px;
+	background: url('../images/logo.png') no-repeat left center;
+}
+
+/* ==========================================================================
+   Simulator
+   ========================================================================== */
+
+.puyo {
+	width: 32px;
+	height: 32px;
+	background-repeat: no-repeat;
+}
+
+#simulator {
+	display: flex;
+	align-items: flex-start;
+	position: relative;
+}
+
+/* ==========================================================================
+   Editor Controls
+   ========================================================================== */
+
+#simulator-controls {
+	width: 272px;
+	margin: 0 10px;
+	flex-shrink: 0;
+}
+#controls-puyo-selection,
+#controls-simulation,
+#controls-score-display {
+	background-color: #FFF;
+	margin-bottom: 10px;
+	padding: 10px;
+	border: 1px solid #CED0D3;
+	border-color: rgba(8, 22, 37, 0.2);
+}
+
+#puyo-selection {
+	width: 216px;
+}
+#puyo-selection ul {
+	overflow: hidden;
+}
+#puyo-selection ul > li {
+	display: block;
+	float: left;
+	padding: 2px;
+}
+#puyo-selection .puyo {
+	display: block;
+}
+#puyo-selection .selected {
+	background: url('../images/puyo_selected.png') no-repeat;
+}
+
+#nuisance-tray {
+	width: 202px;
+	height: 34px;
+	margin: 5px auto 15px auto;
+	padding: 0 5px;
+	position: relative;
+}
+#nuisance-tray span {
+	display: block;
+	width: 64px;
+	height: 64px;
+	margin: -15px -11px;
+	position: absolute;
+	top: 0;
+}
+
+#controls-score-display {
+	margin-bottom: 0;
+}
+#controls-score-display dl {
+	overflow: hidden;
+	margin: 2px 0;
+}
+#controls-score-display dl > dt {
+	width: 64px;
+	float: left;
+}
+#controls-score-display dl > dd {
+	margin-left: 72px;
+}
+
+#field-erase-all,
+#field-set-from-url {
+	height: auto;
+	padding: 5px;
+}
+#field-erase-all img,
+#field-set-from-url img {
+	display: block;
+}
+#field-erase-all {
+	margin-right: 10px;
+}
+
+/* ==========================================================================
+   Puyo Positions
+   ========================================================================== */
+
+.puyo-red { background-position: 0 0; }
+.puyo-green { background-position: 0 -32px; }
+.puyo-blue{ background-position: 0 -64px; }
+.puyo-yellow { background-position: 0 -96px; }
+.puyo-purple { background-position: 0 -128px; }
+
+.puyo-nuisance { background-position: 0 -160px; }
+.puyo-point { background-position: 0 -192px; }
+.puyo-sun { background-position: 0 -224px; }
+.puyo-hard { background-position: 0 -256px; }
+.puyo-iron { background-position: -32px -256px; }
+.puyo-block { background-position: -64px -256px; }
+
+.puyo-none { background-image: url('../images/puyo_erase.png'); }
+.puyo-delete { background-image: url('../images/puyo_delete.png'); }
+
+/* ==========================================================================
+   Tabs
+   ========================================================================== */
+
+#simulator-tabs {
+	flex: 1;
+}
+#simulator-tabs .tab-container {
+	background-color: #FFF;
+	border: 1px solid #CED0D3;
+	border-color: rgba(8, 22, 37, 0.2);
+}
+#simulator-tabs.float .tab-container {
+	position: absolute;
+	z-index: 2;
+	width: 400px;
+	right: 0;
+	box-shadow: 0 0 2px 1px rgba(0, 0, 0, 0.2);
+	display: none;
+	overflow: visible;
+}
+#simulator-tabs.float.toggled .tab-container {
+	display: block;
+}
+
+.tab-container .tab-content {
+	display: none;
+	padding: 10px;
+}
+.tab-container .tab-content.content-active {
+	display: block;
+}
+#simulator-tabs > .simulator-tabs-toggle {
+	font-size: 30px;
+	float: right;
+	display: none;
+}
+#simulator-tabs > .simulator-tabs-toggle a {
+	display: block;
+	padding: 5px 0;
+	text-align: center;
+}
+#simulator-tabs.float:not(.toggled) > .simulator-tabs-toggle {
+	display: block;
+}
+#simulator-tabs-select > .simulator-tabs-toggle {
+	flex: 0;
+	display: none;
+}
+#simulator-tabs.float #simulator-tabs-select > .simulator-tabs-toggle {
+	display: block;
+}
+#simulator-tabs .simulator-tabs-toggle a {
+	width: 40px;
+	text-align: center;
+	color: inherit;
+}
+
+#simulator-tabs-select {
+	display: flex;
+	border-bottom: 1px solid  rgba(8, 22, 37, 0.2);
+}
+#simulator-tabs-select li {
+	flex-grow: 1;
+}
+#simulator-tabs-select li a {
+	display: block;
+	text-align: center;
+	padding: 10px 0;
+	color: #757575;
+}
+#simulator-tabs-select li a:hover {
+	text-decoration: none;
+}
+#simulator-tabs-select li.tab-active a,
+#simulator-tabs-select li a:hover {
+	color: #333;
+}
+#simulator-tabs-select li.tab-active a[data-target] {
+	padding-bottom: 7px;
+	border-bottom: 3px solid #2196f3;
+}
+
+.tab-content-message {
+	padding: 5px 0;
+	margin: 0;
+	text-align: center;
+}
+
+/* ==========================================================================
+   Saved Chains & Chains tabs
+   ========================================================================== */
+
+#tab-saved-chains,
+#preset-chains-list {
+	max-height: 512px;
+	overflow: auto;
+}
+#saved-chains-list > li,
+#preset-chains-list > li {
+	padding: 0.6em 0;
+	border-top: 1px solid #DDD;
+	overflow: hidden;
+}
+#saved-chains-list > li:first-child,
+#preset-chains-list > li:first-child {
+	border-top: 0;
+}
+#saved-chains-list .chain-name {
+	margin-right: 26px;
+	display: block;
+}
+#saved-chains-list .icon-delete {
+	background-image: url('../images/icon_delete.png');
+	width: 16px;
+	height: 16px;
+	display: block;
+	float: right;
+}
+
+#preset-chains-list dl {
+	display: flex;
+	justify-content: space-between;
+	align-items: flex-start;
+}
+#preset-chains-list dd {
+	margin-left: 7px;
+	display: flex;
+}
+#preset-chains-list select {
+	margin-left: 3px;
+}
+
+/* ==========================================================================
+   Simulator & Settings tabs
+   ========================================================================== */
+
+#tab-simulator dl, #tab-settings dl {
+	padding: 5px 0;
+	display: flex;
+}
+#tab-simulator dl > dd, #tab-simulator dl > dt,
+#tab-settings dl > dd, #tab-settings dl > dt {
+	padding: 0 4px;
+}
+#tab-simulator dl > dt, #tab-settings dl > dt {
+	width: 96px;
+	padding-top: 7px;
+}
+#tab-simulator dl > dd, #tab-settings dl > dd {
+	margin-left: 12px;
+	flex: 1;
+}
+#tab-simulator dl > dd select {
+	width: 64px;
+}
+
+#puyo-skins .dropdown-toggle .puyo-skin {
+	width: 32px;
+	height: 32px;
+	display: inline-block;
+	background: url('../images/puyo_skins.png') no-repeat;
+}
+#puyo-skins .dropdown-menu .puyo-skin {
+	margin: 0 auto;
+	width: 212px;
+	height: 32px;
+	display: block;
+	background: url('../images/puyo_skins.png') no-repeat;
+}
+
+/* ==========================================================================
+   Links tab
+   ========================================================================== */
+
+#tab-links p {
+	margin-top: 20px;
+	margin-bottom: 5px;
+}

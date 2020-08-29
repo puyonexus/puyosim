@@ -1,7 +1,5 @@
 .vscode/
-config/localsettings.php
+.cache/
+dist/
 node_modules/
-temp/*
-vendor/
-composer.phar
 !.gitkeep
