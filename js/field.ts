@@ -11,6 +11,18 @@ import { Constants } from "./constants";
 import { Simulation } from "./simulation";
 import { PuyoDisplay } from "./puyodisplay";
 
+declare global {
+  interface Window {
+    chainData?: {
+      chain: string,
+      width: number,
+      height: number,
+      hiddenRows: number,
+      popLimit?: number,
+    };
+  }
+};
+
 export const Field = {
   width: Constants.Field.DefaultWidth, // Field Width (Default = 6)
   height: Constants.Field.DefaultHeight, // Field Height (Default = 12)
