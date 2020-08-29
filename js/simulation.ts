@@ -11,38 +11,64 @@ import { puyoDisplay } from "./puyodisplay";
 import { FieldMap } from "./fieldmap";
 import { field } from "./field";
 
-export const simulation = {
-  running: false, // Simulator is running
-  paused: false, // Simulator is paused
-  stepMode: false, // Simulator is in step mode
-  skipMode: false, // Simulator is in skip mode (skips right to the end of the chain)
-  action: -1, // Current action
-  timer: undefined as number|undefined, // The simulation timer
+class Simulation {
+  // Simulator is running
+  running = false;
 
-  score: 0, // Score
-  chains: 0, // Chains
-  nuisance: 0, // Nuisance
-  cleared: [] as number[], // How many puyos are cleared in each chain
+  // Simulator is paused
+  paused = false;
 
-  leftoverNuisance: 0, // Leftover nuisance puyo
-  prevChainPower: 0, // Previous chain power
+  // Simulator is in step mode
+  stepMode = false;
 
-  colorBonus: [
+  // Simulator is in skip mode (skips right to the end of the chain)
+  skipMode = false;
+
+  // Current action
+  action = -1;
+
+  // The simulation timer
+  timer?: number;
+
+  // Score
+  score = 0;
+
+  // Chains
+  chains = 0;
+
+  // Nuisance
+  nuisance = 0;
+
+  // How many puyos are cleared in each chain
+  cleared: number[] = [];
+
+  // Leftover nuisance puyo
+  leftoverNuisance = 0;
+
+  // Previous chain power
+  prevChainPower = 0;
+
+  // Color bonuses (Classic, Fever)
+  colorBonus = [
     [0, 3, 6, 12, 24],
     [0, 2, 4, 8, 16],
-  ], // Color bonuses (Classic, Fever)
-  groupBonus: [
+  ];
+  
+  // Group bonuses (Classic, Fever)
+  groupBonus = [
     [0, 2, 3, 4, 5, 6, 7, 10],
     [0, 1, 2, 3, 4, 5, 6, 8],
-  ], // Group bonuses (Classic, Fever)
+  ];
 
-  positions: [
+  // Positions around us
+  positions = [
     { x: 0, y: -1 },
     { x: -1, y: 0 },
     { x: 0, y: 1 },
     { x: 1, y: 0 },
-  ], // Positions around us
-  chainPowers: [
+  ];
+
+  chainPowers = [
     0,
     8,
     16,
@@ -67,15 +93,27 @@ export const simulation = {
     608,
     640,
     672,
-  ],
-  chainPowerInc: 0, // Chain power increment
-  puyoToClear: SimulationDefaultPuyoToClear, // Puyo To Clear (Default = 4)
-  pointPuyoBonus: SimulationDefaultPointPuyoBonus, // Point Puyo Bonus (Default = 50)
-  targetPoints: SimulationDefaultTargetPoints, // Target Points (Default = 70)
-  speed: SimulationDefaultSpeed, // Speed that the simulator runs at (lower = faster; Default = 500)
-  scoreMode: 0, // Score Mode (0 = Classic, 1 = Fever)
+  ];
 
-  back: function () {
+  // Chain power increment
+  chainPowerInc = 0;
+
+  // Puyo To Clear (Default = 4)
+  puyoToClear = SimulationDefaultPuyoToClear;
+
+  // Point Puyo Bonus (Default = 50)
+  pointPuyoBonus = SimulationDefaultPointPuyoBonus;
+
+  // Target Points (Default = 70)
+  targetPoints = SimulationDefaultTargetPoints;
+
+  // Speed that the simulator runs at (lower = faster; Default = 500)
+  speed = SimulationDefaultSpeed;
+
+  // Score Mode (0 = Classic, 1 = Fever)
+  scoreMode = 0;
+
+  back() {
     // Stops the chain
     // Reset all variables
     if (this.timer !== undefined) {
@@ -115,9 +153,9 @@ export const simulation = {
         puyoDisplay.renderer!.drawPuyo(x, y, field.map!.get(x, y));
       }
     }
-  },
+  }
 
-  start: function () {
+  start() {
     // Starts the chain
     if (!this.running) {
       ControlsDisplay.toggleSimulationButtons(true, false, true, false, false); // Toggle simulation buttons
@@ -155,9 +193,9 @@ export const simulation = {
 
       this.chain();
     }
-  },
+  }
 
-  pause: function () {
+  pause() {
     // Pauses the chain
     if (this.running && !this.paused && !this.stepMode && !this.skipMode) {
       if (this.timer !== undefined) {
@@ -169,9 +207,9 @@ export const simulation = {
 
       ControlsDisplay.toggleSimulationButtons(true, true, false, true, true); // Toggle simulation buttons
     }
-  },
+  }
 
-  step: function () {
+  step() {
     // Advances a step in the chain
     if (!this.running) {
       ControlsDisplay.toggleSimulationButtons(true, true, false, true, true); // Toggle simulation buttons
@@ -203,9 +241,9 @@ export const simulation = {
 
       this.chain();
     }
-  },
+  }
 
-  skip: function () {
+  skip() {
     // Skips right to the end of the chain
     if (!this.running) {
       ControlsDisplay.toggleSimulationButtons(true, false, false, false, false); // Toggle simulation buttons
@@ -236,9 +274,9 @@ export const simulation = {
 
       this.chain();
     }
-  },
+  }
 
-  chain: function () {
+  chain() {
     // This preforms the chain
     var self = this, // References to this object
       i,
@@ -613,9 +651,9 @@ export const simulation = {
         }
       }
     }
-  },
+  }
 
-  dropPuyo: function () {
+  dropPuyo() {
     // Makes the puyo fall in place and returns if any puyo changed position
     var dropped = false;
 
@@ -645,5 +683,7 @@ export const simulation = {
     }
 
     return dropped;
-  },
+  }
 };
+
+export const simulation = new Simulation();
