@@ -15,15 +15,12 @@ import {Utils} from './utils';
 window.jQuery = $;
 require('bootstrap/js/dropdown.js');
 
-(function () {
-"use strict";
-
 /*
  * Config
  * 
  * Contains configuration values used throughout the simulator
  */
-var Config = {
+const Config = {
 	baseUrl: "https://puyonexus.com/chainsim",
 	shareLinkUrl: "/chain/{0}",
 	shareImageUrl: "/image/{0}.png",
@@ -2103,9 +2100,6 @@ var Content = {
  */
 
 $(document).ready(function() {
-	// Set up config values
-	Config.basePath = $("body").attr("data-base-path");
-
 	Field.init();            // Initalize the Field
 	FieldDisplay.init();     // Initalize the Field Display
 	
@@ -2173,5 +2167,3 @@ $(document).ready(function() {
 		});
 	}());
 });
-
-}());
