@@ -794,7 +794,13 @@ class SettingsTab {
   }
 }
 
-export const tabs = {
+class Tabs {
+  savedChains = new SavedChainsTab();
+  chains = new ChainsTab();
+  simulator = new SimulatorTab();
+  links = new LinksTab();
+  settings = new SettingsTab();
+
   display() {
     // Displays the tab content and initalizes all of the tabs
     // Set up the tabs for the options
@@ -836,7 +842,7 @@ export const tabs = {
     this.simulator.init();
     this.links.init();
     this.settings.init();
-  },
+  }
 
   fieldWidthChanged() {
     // Called when the field width changes
@@ -863,15 +869,7 @@ export const tabs = {
       $simulatorTabs.removeClass("float toggled");
       $(document).off("click.simulatorTabs");
     }
-  },
+  }
+}
 
-  savedChains: new SavedChainsTab(),
-
-  chains: new ChainsTab(),
-
-  simulator: new SimulatorTab(),
-
-  links: new LinksTab(),
-
-  settings: new SettingsTab(),
-};
+export const tabs = new Tabs();
