@@ -284,7 +284,7 @@ class ChainsTab {
     ).click();
   }
 
-  displaySubCategory(category: any, subCategory: any) {
+  displaySubCategory(category: number, subCategory: number) {
     $("#preset-chains-list").empty(); // Empty the list so we can put new stuff in it
 
     // Chain types
@@ -653,7 +653,7 @@ class SettingsTab {
     $("#field-style")
       .change(function () {
         $(this).prop("disabled", true);
-        self.sim.fieldDisplay.load($(this).val());
+        self.sim.fieldDisplay.load(String($(this).val()));
         localStorage.setItem("chainsim.fieldStyle", String($(this).val()));
       })
       .val(localStorage.getItem("chainsim.fieldStyle") || "standard"); // Default to Standard

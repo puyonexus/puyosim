@@ -25,7 +25,7 @@ export class Utils {
     return s.replace(/&(?!\w+;)|[<>"']/g, (s) => escapeMap.get(s) ?? s);
   }
 
-  static createDropDownListOptions(items: Array<any> | Object) {
+  static createDropDownListOptions(items: any[] | Object) {
     let html = "";
 
     if (Array.isArray(items)) {

@@ -1,6 +1,6 @@
 declare global {
   interface Window {
-    jQuery: any;
+    jQuery: JQueryStatic;
   }
 }
 

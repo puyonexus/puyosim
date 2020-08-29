@@ -27,7 +27,7 @@ export class FieldDisplay {
     this.load(localStorage.getItem("chainsim.fieldStyle") || "standard", true);
   }
 
-  load(style: any, init?: any) {
+  load(style: string, init?: boolean) {
     // Loads the display and the style (need to do this after DOM ready)
     // Init specifies if this is the simulator is being loaded (aka style isn't being changed)
     init = init || false;
