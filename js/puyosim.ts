@@ -29,9 +29,6 @@ export class PuyoSim {
   }
 
   init() {
-    // Initalize the Field
-    this.field.init();
-
     // Initalize the Field Display
     this.fieldDisplay.init();
 

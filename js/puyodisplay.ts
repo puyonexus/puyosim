@@ -45,7 +45,7 @@ class PuyoAnimation {
 
     for (var y = 0; y < this.sim.field.totalHeight; y++) {
       for (var x = 0; x < this.sim.field.width; x++) {
-        var p = this.sim.field.map!.get(x, y);
+        var p = this.sim.field.map.get(x, y);
         if (p.hasAnimation()) {
           // Only redraw puyo that can have animation
           this.sim.puyoDisplay.renderer.drawPuyo(x, y, p);
@@ -133,7 +133,7 @@ class PuyoAnimation {
 
     for (var y = 0; y < this.sim.field.totalHeight; y++) {
       for (var x = 0; x < this.sim.field.width; x++) {
-        var p = this.sim.field.map!.get(x, y);
+        var p = this.sim.field.map.get(x, y);
         if (p.hasAnimation()) {
           // Only redraw puyo that can have animation
           this.sim.puyoDisplay.renderer.drawPuyo(x, y, p);
@@ -194,7 +194,7 @@ class SunPuyoAnimation {
 
     for (var y = 0; y < this.sim.field.totalHeight; y++) {
       for (var x = 0; x < this.sim.field.width; x++) {
-        var p = this.sim.field.map!.get(x, y);
+        var p = this.sim.field.map.get(x, y);
         if (p.puyo === PuyoType.Sun) {
           // Only redraw sun puyo
           this.sim.puyoDisplay.renderer.drawPuyo(x, y, p);
@@ -237,7 +237,7 @@ class SunPuyoAnimation {
 
     for (var y = 0; y < this.sim.field.totalHeight; y++) {
       for (var x = 0; x < this.sim.field.width; x++) {
-        var p = this.sim.field.map!.get(x, y);
+        var p = this.sim.field.map.get(x, y);
         if (p.puyo === PuyoType.Sun) {
           // Only redraw sun puyo
           this.sim.puyoDisplay.renderer.drawPuyo(x, y, p);
@@ -311,7 +311,7 @@ class CanvasRenderer {
     // Now draw everything
     for (var y = 0; y < this.sim.field.totalHeight; y++) {
       for (var x = 0; x < this.sim.field.width; x++) {
-        this.drawPuyo(x, y, this.sim.field.map!.get(x, y));
+        this.drawPuyo(x, y, this.sim.field.map.get(x, y));
       }
     }
 
@@ -427,7 +427,7 @@ class CanvasRenderer {
         // Can we draw the puyo?
         for (var y = 0; y < self.sim.field.totalHeight; y++) {
           for (var x = 0; x < self.sim.field.width; x++) {
-            self.drawPuyo(x, y, self.sim.field.map!.get(x, y));
+            self.drawPuyo(x, y, self.sim.field.map.get(x, y));
           }
         }
       }
@@ -648,16 +648,16 @@ export class PuyoDisplay {
       if (y < self.sim.field.hiddenRows) return 0;
       if (p === PuyoType.Nuisance || p === PuyoType.Point) return 0;
 
-      var L = x > 0 && self.sim.field.map!.puyo(x - 1, y) === p,
+      var L = x > 0 && self.sim.field.map.puyo(x - 1, y) === p,
         R =
           x < self.sim.field.width - 1 &&
-          self.sim.field.map!.puyo(x + 1, y) === p,
+          self.sim.field.map.puyo(x + 1, y) === p,
         U =
           y > self.sim.field.hiddenRows &&
-          self.sim.field.map!.puyo(x, y - 1) === p,
+          self.sim.field.map.puyo(x, y - 1) === p,
         D =
           y < self.sim.field.totalHeight - 1 &&
-          self.sim.field.map!.puyo(x, y + 1) === p;
+          self.sim.field.map.puyo(x, y + 1) === p;
 
       if (L) pos += 8;
       if (R) pos += 4;

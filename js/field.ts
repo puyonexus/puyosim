@@ -47,17 +47,15 @@ export class Field {
   chainInURL = false;
 
   // Map that contains the puyo
-  map?: FieldMap;
+  map: FieldMap;
 
   // The map used during the "editing" portion of the simulator
-  mapEditor?: FieldMap;
+  mapEditor: FieldMap;
 
   // The map used during the simulation
   mapSimulation?: FieldMap;
 
-  constructor(readonly sim: PuyoSim) {}
-
-  init() {
+  constructor(readonly sim: PuyoSim) {
     // Initalize
     this.mapEditor = new FieldMap(this.sim, this.width, this.totalHeight);
     this.map = this.mapEditor;
@@ -117,44 +115,44 @@ export class Field {
     for (var y = this.totalHeight - 1; y >= 0; y--) {
       for (var x = this.width - 1; x >= 0; x--) {
         if (pos < 0) {
-          this.map!.set(x, y, PuyoType.None);
+          this.map.set(x, y, PuyoType.None);
         } else {
-          this.map!.set(x, y, parseInt(chain.charAt(pos), 36));
+          this.map.set(x, y, parseInt(chain.charAt(pos), 36));
           pos--;
 
           if (!this.sim.puyoDisplay.renderer) {
             continue;
           }
 
-          this.sim.puyoDisplay.renderer.drawPuyo(x, y, this.map!.get(x, y));
+          this.sim.puyoDisplay.renderer.drawPuyo(x, y, this.map.get(x, y));
           if (!this.sim.puyoDisplay.puyoAnimation.running) {
             // Redraw all puyo around us
             if (y > 0) {
               this.sim.puyoDisplay.renderer.drawPuyo(
                 x,
                 y - 1,
-                this.map!.get(x, y - 1)
+                this.map.get(x, y - 1)
               );
             }
             if (x > 0) {
               this.sim.puyoDisplay.renderer.drawPuyo(
                 x - 1,
                 y,
-                this.map!.get(x - 1, y)
+                this.map.get(x - 1, y)
               );
             }
             if (y < this.totalHeight - 1) {
               this.sim.puyoDisplay.renderer.drawPuyo(
                 x,
                 y + 1,
-                this.map!.get(x, y + 1)
+                this.map.get(x, y + 1)
               );
             }
             if (x < this.width - 1) {
               this.sim.puyoDisplay.renderer.drawPuyo(
                 x + 1,
                 y,
-                this.map!.get(x + 1, y)
+                this.map.get(x + 1, y)
               );
             }
           }
@@ -190,12 +188,12 @@ export class Field {
       chainString = ""; // The chain string
     for (var y = 0; y < this.totalHeight; y++) {
       for (var x = 0; x < this.width; x++) {
-        if (this.mapEditor!.puyo(x, y) === PuyoType.None && !addZeros) {
+        if (this.mapEditor.puyo(x, y) === PuyoType.None && !addZeros) {
           continue; // Don't need to add zeros to the front of the string
         }
 
         addZeros = true;
-        chainString += this.mapEditor!.puyo(x, y).toString(16);
+        chainString += this.mapEditor.puyo(x, y).toString(16);
       }
     }
 

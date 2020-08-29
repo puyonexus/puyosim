@@ -205,30 +205,30 @@ export class FieldDisplay {
             if (self.selectedPuyo === PuyoType.Delete) {
               // Delete this puyo and shift the ones on top down one row
               for (y = fieldY; y > 0; y--) {
-                self.sim.field.map!.set(
+                self.sim.field.map.set(
                   fieldX,
                   y,
-                  self.sim.field.map!.puyo(fieldX, y - 1)
+                  self.sim.field.map.puyo(fieldX, y - 1)
                 );
               }
-              self.sim.field.map!.set(fieldX, 0, PuyoType.None);
+              self.sim.field.map.set(fieldX, 0, PuyoType.None);
             } else {
               if (self.insertPuyo) {
                 // Insert puyo
                 for (y = 0; y < fieldY; y++) {
-                  self.sim.field.map!.set(
+                  self.sim.field.map.set(
                     fieldX,
                     y,
-                    self.sim.field.map!.puyo(fieldX, y + 1)
+                    self.sim.field.map.puyo(fieldX, y + 1)
                   );
                 }
               }
 
-              self.sim.field.map!.set(fieldX, fieldY, self.selectedPuyo);
+              self.sim.field.map.set(fieldX, fieldY, self.selectedPuyo);
             }
           } else if (rightMouseDown) {
             // Right click, delete puyo
-            self.sim.field.map!.set(fieldX, fieldY, PuyoType.None);
+            self.sim.field.map.set(fieldX, fieldY, PuyoType.None);
           }
         })
         .mouseup(function () {
