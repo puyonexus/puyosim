@@ -124,8 +124,13 @@ export class FieldDisplay {
             return;
           }
 
-          offsetX = e.pageX - $(this).offset()!.left;
-          offsetY = e.pageY - $(this).offset()!.top;
+          const offset = $(this).offset();
+          if (!offset) {
+            return;
+          }
+
+          offsetX = e.pageX - offset.left;
+          offsetY = e.pageY - offset.top;
           fieldX = Math.floor(offsetX / self.sim.puyoDisplay.puyoSize);
           fieldY = Math.floor(offsetY / self.sim.puyoDisplay.puyoSize);
 
@@ -143,15 +148,22 @@ export class FieldDisplay {
             return;
           }
 
+          const width = $(this).width();
+          const height = $(this).height()
+          const offset = $(this).offset();
+          if (!width || !height || !offset) {
+            return;
+          }
+
           var newFieldX, newFieldY;
-          offsetX = e.pageX - $(this).offset()!.left;
-          offsetY = e.pageY - $(this).offset()!.top;
+          offsetX = e.pageX - offset.left;
+          offsetY = e.pageY - offset.top;
 
           if (
             offsetX < 0 ||
-            offsetX >= $(this).width()! ||
+            offsetX >= width ||
             offsetY < 0 ||
-            offsetY >= $(this).height()!
+            offsetY >= height
           ) {
             // Check for out of bounds before continuing
             $(this).mouseleave();
