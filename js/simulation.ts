@@ -6,7 +6,7 @@
 
 import $ from "jquery";
 import { PuyoType, SimulationDefaultPuyoToClear, SimulationDefaultPointPuyoBonus, SimulationDefaultTargetPoints, SimulationDefaultSpeed } from "./constants";
-import { ControlsDisplay } from "./controlsdisplay";
+import { controlsDisplay } from "./controlsdisplay";
 import { puyoDisplay } from "./puyodisplay";
 import { FieldMap } from "./fieldmap";
 import { field } from "./field";
@@ -142,7 +142,7 @@ class Simulation {
     puyoDisplay.renderer!.drawNuisanceTray(this.nuisance);
 
     // Display the "editor" chain on the puyo display and set the simulation buttons
-    ControlsDisplay.toggleSimulationButtons(false, true, false, true, true);
+    controlsDisplay.toggleSimulationButtons(false, true, false, true, true);
     $(
       "#tab-simulator input, #tab-simulator select, #tab-simulator button"
     ).prop("disabled", false); // Disable simulator options
@@ -158,7 +158,7 @@ class Simulation {
   start() {
     // Starts the chain
     if (!this.running) {
-      ControlsDisplay.toggleSimulationButtons(true, false, true, false, false); // Toggle simulation buttons
+      controlsDisplay.toggleSimulationButtons(true, false, true, false, false); // Toggle simulation buttons
       $(
         "#tab-simulator input, #tab-simulator select, #tab-simulator button"
       ).prop("disabled", true); // Disable simulator options
@@ -186,7 +186,7 @@ class Simulation {
         }, this.speed);
       }
     } else if (this.running && (this.paused || this.stepMode)) {
-      ControlsDisplay.toggleSimulationButtons(true, false, true, false, false); // Toggle simulation buttons
+      controlsDisplay.toggleSimulationButtons(true, false, true, false, false); // Toggle simulation buttons
 
       this.paused = false;
       this.stepMode = false;
@@ -205,14 +205,14 @@ class Simulation {
 
       this.paused = true;
 
-      ControlsDisplay.toggleSimulationButtons(true, true, false, true, true); // Toggle simulation buttons
+      controlsDisplay.toggleSimulationButtons(true, true, false, true, true); // Toggle simulation buttons
     }
   }
 
   step() {
     // Advances a step in the chain
     if (!this.running) {
-      ControlsDisplay.toggleSimulationButtons(true, true, false, true, true); // Toggle simulation buttons
+      controlsDisplay.toggleSimulationButtons(true, true, false, true, true); // Toggle simulation buttons
       $(
         "#tab-simulator input, #tab-simulator select, #tab-simulator button"
       ).prop("disabled", true); // Disable simulator options
@@ -234,7 +234,7 @@ class Simulation {
         this.chain();
       }
     } else if (this.running && !this.skipMode && this.action !== -1) {
-      ControlsDisplay.toggleSimulationButtons(true, true, false, true, true); // Toggle simulation buttons
+      controlsDisplay.toggleSimulationButtons(true, true, false, true, true); // Toggle simulation buttons
 
       this.paused = false;
       this.stepMode = true;
@@ -246,7 +246,7 @@ class Simulation {
   skip() {
     // Skips right to the end of the chain
     if (!this.running) {
-      ControlsDisplay.toggleSimulationButtons(true, false, false, false, false); // Toggle simulation buttons
+      controlsDisplay.toggleSimulationButtons(true, false, false, false, false); // Toggle simulation buttons
       $(
         "#tab-simulator input, #tab-simulator select, #tab-simulator button"
       ).prop("disabled", true); // Disable simulator options
@@ -266,7 +266,7 @@ class Simulation {
       this.dropPuyo();
       this.chain();
     } else if (this.running && !this.skipMode && this.action !== -1) {
-      ControlsDisplay.toggleSimulationButtons(true, false, false, false, false); // Toggle simulation buttons
+      controlsDisplay.toggleSimulationButtons(true, false, false, false, false); // Toggle simulation buttons
 
       this.paused = false;
       this.stepMode = false;
@@ -576,7 +576,7 @@ class Simulation {
           puyoDisplay.renderer!.drawNuisanceTray(this.nuisance);
         } else {
           // Just toggle the buttons
-          ControlsDisplay.toggleSimulationButtons(
+          controlsDisplay.toggleSimulationButtons(
             true,
             false,
             false,
@@ -641,7 +641,7 @@ class Simulation {
           puyoDisplay.renderer!.drawNuisanceTray(this.nuisance);
         } else {
           // Just toggle the buttons
-          ControlsDisplay.toggleSimulationButtons(
+          controlsDisplay.toggleSimulationButtons(
             true,
             false,
             false,

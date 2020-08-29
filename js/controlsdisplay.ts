@@ -10,8 +10,8 @@ import { fieldDisplay } from "./fielddisplay";
 import { simulation } from "./simulation";
 import { PuyoType, SimulationDefaultSpeed } from "./constants";
 
-export class ControlsDisplay {
-  static display() {
+class ControlsDisplay {
+  display() {
     // Displays the controls
     $("#puyo-insertion").change(function () {
       fieldDisplay.insertPuyo = $(this).prop("checked");
@@ -124,7 +124,7 @@ export class ControlsDisplay {
     $("#field-cleared").text("0");
   }
 
-  static toggleSimulationButtons(back: boolean, start: boolean, pause: boolean, step: boolean, skip: boolean) {
+  toggleSimulationButtons(back: boolean, start: boolean, pause: boolean, step: boolean, skip: boolean) {
     // Controls the display of the simulator control buttons
     $("#simulation-back").prop("disabled", !back);
     $("#simulation-start").prop("disabled", !start);
@@ -133,3 +133,5 @@ export class ControlsDisplay {
     $("#simulation-skip").prop("disabled", !skip);
   }
 };
+
+export const controlsDisplay = new ControlsDisplay();

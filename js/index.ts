@@ -19,7 +19,7 @@ import { simulation } from "./simulation";
 import { tabs } from "./tabs";
 import { fieldDisplay } from "./fielddisplay";
 import { puyoDisplay } from "./puyodisplay";
-import { ControlsDisplay } from "./controlsdisplay";
+import { controlsDisplay } from "./controlsdisplay";
 window.jQuery = $;
 require("bootstrap/js/dropdown.js");
 
@@ -56,7 +56,7 @@ $(document).ready(function () {
   }
 
   fieldDisplay.display(); // Display the Field
-  ControlsDisplay.display(); // Display the Controls Display
+  controlsDisplay.display(); // Display the Controls Display
   puyoDisplay.display(); // Display the Puyo Display
   tabs.display(); // Display the tabs
 
