@@ -395,7 +395,7 @@ class CanvasRenderer {
     // Sets the puyo skin
     var newPuyoImage = new Image(),
       self = this;
-    newPuyoImage.src = "/images/puyo/" + this.sim.puyoDisplay.puyoSkin!.image;
+    newPuyoImage.src = "/images/puyo/" + this.sim.puyoDisplay.puyoSkin.image;
     newPuyoImage.onload = function () {
       if (self.sim.puyoDisplay.puyoAnimation.running) {
         // Stop the animation if it is running
@@ -410,12 +410,12 @@ class CanvasRenderer {
 
       if (
         self.sim.puyoDisplay.animate.puyo &&
-        self.sim.puyoDisplay.puyoSkin!.frames !== undefined &&
-        self.sim.puyoDisplay.puyoSkin!.frames > 0
+        self.sim.puyoDisplay.puyoSkin.frames !== undefined &&
+        self.sim.puyoDisplay.puyoSkin.frames > 0
       ) {
         // Is this puyo skin animated?
         self.sim.puyoDisplay.puyoAnimation.start(
-          self.sim.puyoDisplay.puyoSkin!.frames
+          self.sim.puyoDisplay.puyoSkin.frames
         );
       }
       if (self.sim.puyoDisplay.animate.sunPuyo) {
@@ -436,7 +436,7 @@ class CanvasRenderer {
         .not(".puyo-none, .puyo-delete")
         .css(
           "background-image",
-          "url('/images/puyo/" + self.sim.puyoDisplay.puyoSkin!.image + "')"
+          "url('/images/puyo/" + self.sim.puyoDisplay.puyoSkin.image + "')"
         );
 
       if (self.sim.puyoDisplay.nuisanceTrayTimer === undefined) {
@@ -551,7 +551,7 @@ export class PuyoDisplay {
   readonly puyoSize = 32;
 
   // The current puyo skin
-  puyoSkin?: IPuyoSkin;
+  puyoSkin: IPuyoSkin;
 
   // The timer for the nuisance tray
   nuisanceTrayTimer?: number;
@@ -569,7 +569,7 @@ export class PuyoDisplay {
   };
 
   // Finally, we will list the available puyo skins here
-  puyoSkins = [
+  readonly puyoSkins = [
     { id: "classic", image: "classic.png" },
     { id: "puyo4", image: "puyo4.png" },
     { id: "fever", image: "fever.png" },
@@ -602,6 +602,7 @@ export class PuyoDisplay {
     this.renderer = new CanvasRenderer(sim);
     this.puyoAnimation = new PuyoAnimation(sim);
     this.sunPuyoAnimation = new SunPuyoAnimation(sim);
+    this.puyoSkin = this.puyoSkins[0];
   }
 
   init() {
@@ -636,7 +637,7 @@ export class PuyoDisplay {
           return 0;
         }
       }
-      if (self.puyoSkin!.frames !== undefined && self.puyoSkin!.frames > 0) {
+      if (self.puyoSkin.frames !== undefined && self.puyoSkin.frames > 0) {
         // Animated Puyo
         if (self.puyoAnimation.running) {
           return self.puyoAnimation.frame;
@@ -789,7 +790,7 @@ export class PuyoDisplay {
       .not(".puyo-none, .puyo-delete")
       .css(
         "background-image",
-        "url('/images/puyo/" + this.puyoSkin!.image + "')"
+        "url('/images/puyo/" + this.puyoSkin.image + "')"
       );
   }
 

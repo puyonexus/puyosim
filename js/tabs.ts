@@ -606,11 +606,11 @@ class SettingsTab {
         if (
           checked &&
           !self.sim.puyoDisplay.puyoAnimation.running &&
-          self.sim.puyoDisplay.puyoSkin!.frames !== undefined &&
-          self.sim.puyoDisplay.puyoSkin!.frames > 0
+          self.sim.puyoDisplay.puyoSkin.frames !== undefined &&
+          self.sim.puyoDisplay.puyoSkin.frames > 0
         ) {
           self.sim.puyoDisplay.puyoAnimation.start(
-            self.sim.puyoDisplay.puyoSkin!.frames
+            self.sim.puyoDisplay.puyoSkin.frames
           );
         } else if (!checked && self.sim.puyoDisplay.puyoAnimation.running) {
           self.sim.puyoDisplay.puyoAnimation.stop();
@@ -806,18 +806,18 @@ class SettingsTab {
       $("#puyo-skins .dropdown-toggle .puyo-skin").css(
         "background-position",
         "0px -" +
-          self.sim.puyoDisplay.getSkinIndex(self.sim.puyoDisplay.puyoSkin!.id) *
+          self.sim.puyoDisplay.getSkinIndex(self.sim.puyoDisplay.puyoSkin.id) *
             self.sim.puyoDisplay.puyoSize +
           "px"
       );
     });
     $(
-      "#puyo-skins li[data-value='" + this.sim.puyoDisplay.puyoSkin!.id + "']"
+      "#puyo-skins li[data-value='" + this.sim.puyoDisplay.puyoSkin.id + "']"
     ).addClass("selected");
     $("#puyo-skins .dropdown-toggle .puyo-skin").css(
       "background-position",
       "0px -" +
-        this.sim.puyoDisplay.getSkinIndex(this.sim.puyoDisplay.puyoSkin!.id) *
+        this.sim.puyoDisplay.getSkinIndex(this.sim.puyoDisplay.puyoSkin.id) *
           this.sim.puyoDisplay.puyoSize +
         "px"
     );
