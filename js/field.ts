@@ -4,6 +4,13 @@
  * Controls the aspects of the field, but doesn't display it
  */
 
+import $ from "jquery";
+import { Tabs } from "./tabs";
+import { FieldMap } from "./fieldmap";
+import { Simulation } from "./simulation";
+import { PuyoDisplay } from "./puyodisplay";
+import { FieldDefaultWidth, FieldDefaultHeight, FieldDefaultHiddenRows, PuyoType, SimulationDefaultPuyoToClear } from "./constants";
+
 declare global {
   interface Window {
     chainData?: {
@@ -18,13 +25,6 @@ declare global {
     };
   }
 };
-
-import $ from "jquery";
-import { Tabs } from "./tabs";
-import { FieldMap } from "./fieldmap";
-import { Constants } from "./constants";
-import { Simulation } from "./simulation";
-import { PuyoDisplay } from "./puyodisplay";
 
 interface IField {
   width: number;
@@ -42,11 +42,10 @@ interface IField {
 }
 
 export const Field: IField = {
-  width: Constants.Field.DefaultWidth, // Field Width (Default = 6)
-  height: Constants.Field.DefaultHeight, // Field Height (Default = 12)
-  hiddenRows: Constants.Field.DefaultHiddenRows, // Hidden Rows (Default = 1)
-  totalHeight:
-    Constants.Field.DefaultHeight + Constants.Field.DefaultHiddenRows, // Total height (height + hidden rows)
+  width: FieldDefaultWidth, // Field Width (Default = 6)
+  height: FieldDefaultHeight, // Field Height (Default = 12)
+  hiddenRows: FieldDefaultHiddenRows, // Hidden Rows (Default = 1)
+  totalHeight: FieldDefaultHeight + FieldDefaultHiddenRows, // Total height (height + hidden rows)
 
   chainInURL: false, // A chain is in the URL and can be successfully set
   map: undefined, // Map that contains the puyo
@@ -67,9 +66,9 @@ export const Field: IField = {
   setChain: function (chain, w, h, hr?) {
     // Sets the chain with the specified width and height
     var pos;
-    w = w || Constants.Field.DefaultWidth;
-    h = h || Constants.Field.DefaultHeight;
-    hr = hr || Constants.Field.DefaultHiddenRows;
+    w = w || FieldDefaultWidth;
+    h = h || FieldDefaultHeight;
+    hr = hr || FieldDefaultHiddenRows;
 
     if (Simulation.running) {
       // Stop the simulation
@@ -113,7 +112,7 @@ export const Field: IField = {
     for (var y = this.totalHeight - 1; y >= 0; y--) {
       for (var x = this.width - 1; x >= 0; x--) {
         if (pos < 0) {
-          this.map!.set(x, y, Constants.Puyo.None);
+          this.map!.set(x, y, PuyoType.None);
         } else {
           this.map!.set(x, y, parseInt(chain.charAt(pos), 36));
           pos--;
@@ -158,7 +157,7 @@ export const Field: IField = {
     );
 
     Simulation.puyoToClear =
-      window.chainData.popLimit || Constants.Simulation.DefaultPuyoToClear;
+      window.chainData.popLimit || SimulationDefaultPuyoToClear;
     $("#puyo-to-clear").val(Simulation.puyoToClear);
 
     this.chainInURL = true;
@@ -170,7 +169,7 @@ export const Field: IField = {
       chainString = ""; // The chain string
     for (var y = 0; y < this.totalHeight; y++) {
       for (var x = 0; x < this.width; x++) {
-        if (this.mapEditor!.puyo(x, y) === Constants.Puyo.None && !addZeros) {
+        if (this.mapEditor!.puyo(x, y) === PuyoType.None && !addZeros) {
           continue; // Don't need to add zeros to the front of the string
         }
 
