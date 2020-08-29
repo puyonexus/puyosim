@@ -1,3 +1,13 @@
+declare global {
+  interface Window {
+    jQuery: any;
+  }
+};
+
+import $ from "jquery";
+window.jQuery = $;
+require("bootstrap/js/dropdown.js");
+
 function pnNavbarToggleOnClick(event: Event) {
   const target = event.currentTarget;
   if (!(target instanceof HTMLElement)) {
