@@ -7,8 +7,8 @@
 import $ from "jquery";
 import { Field } from "./field";
 import { FieldDisplay } from "./fielddisplay";
-import { Constants } from "./constants";
 import { Simulation } from "./simulation";
+import { PuyoType, SimulationDefaultSpeed } from "./constants";
 
 export class ControlsDisplay {
   static display() {
@@ -32,43 +32,43 @@ export class ControlsDisplay {
     }
 
     $("#puyo-selection .puyo.puyo-none").click(function () {
-      FieldDisplay.selectedPuyo = Constants.Puyo.None;
+      FieldDisplay.selectedPuyo = PuyoType.None;
     });
     $("#puyo-selection .puyo.puyo-delete").click(function () {
-      FieldDisplay.selectedPuyo = Constants.Puyo.Delete;
+      FieldDisplay.selectedPuyo = PuyoType.Delete;
     });
     $("#puyo-selection .puyo.puyo-red").click(function () {
-      FieldDisplay.selectedPuyo = Constants.Puyo.Red;
+      FieldDisplay.selectedPuyo = PuyoType.Red;
     });
     $("#puyo-selection .puyo.puyo-green").click(function () {
-      FieldDisplay.selectedPuyo = Constants.Puyo.Green;
+      FieldDisplay.selectedPuyo = PuyoType.Green;
     });
     $("#puyo-selection .puyo.puyo-blue").click(function () {
-      FieldDisplay.selectedPuyo = Constants.Puyo.Blue;
+      FieldDisplay.selectedPuyo = PuyoType.Blue;
     });
     $("#puyo-selection .puyo.puyo-yellow").click(function () {
-      FieldDisplay.selectedPuyo = Constants.Puyo.Yellow;
+      FieldDisplay.selectedPuyo = PuyoType.Yellow;
     });
     $("#puyo-selection .puyo.puyo-purple").click(function () {
-      FieldDisplay.selectedPuyo = Constants.Puyo.Purple;
+      FieldDisplay.selectedPuyo = PuyoType.Purple;
     });
     $("#puyo-selection .puyo.puyo-nuisance").click(function () {
-      FieldDisplay.selectedPuyo = Constants.Puyo.Nuisance;
+      FieldDisplay.selectedPuyo = PuyoType.Nuisance;
     });
     $("#puyo-selection .puyo.puyo-point").click(function () {
-      FieldDisplay.selectedPuyo = Constants.Puyo.Point;
+      FieldDisplay.selectedPuyo = PuyoType.Point;
     });
     $("#puyo-selection .puyo.puyo-hard").click(function () {
-      FieldDisplay.selectedPuyo = Constants.Puyo.Hard;
+      FieldDisplay.selectedPuyo = PuyoType.Hard;
     });
     $("#puyo-selection .puyo.puyo-iron").click(function () {
-      FieldDisplay.selectedPuyo = Constants.Puyo.Iron;
+      FieldDisplay.selectedPuyo = PuyoType.Iron;
     });
     $("#puyo-selection .puyo.puyo-block").click(function () {
-      FieldDisplay.selectedPuyo = Constants.Puyo.Block;
+      FieldDisplay.selectedPuyo = PuyoType.Block;
     });
     $("#puyo-selection .puyo.puyo-sun").click(function () {
-      FieldDisplay.selectedPuyo = Constants.Puyo.Sun;
+      FieldDisplay.selectedPuyo = PuyoType.Sun;
     });
     $("#puyo-selection .puyo").click(function () {
       $("#puyo-selection .selected").removeClass("selected");
@@ -114,7 +114,7 @@ export class ControlsDisplay {
       .change(function () {
         Simulation.speed = parseInt(String($(this).val()), 10);
       })
-      .val(Constants.Simulation.DefaultSpeed);
+      .val(SimulationDefaultSpeed);
 
     this.toggleSimulationButtons(false, true, false, true, true);
 
