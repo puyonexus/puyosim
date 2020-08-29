@@ -14,21 +14,21 @@ const escapeMap = new Map([
     ["'", '&#39;']
 ]);
 
-export const Utils = {
-	stringFormat: function (format: string) {
+export class Utils {
+	static stringFormat(format: string) {
     	let args = Array.prototype.slice.call(arguments, 1);
     	return format.replace(/{(\d+)}/g, function(match, number) { 
      		return typeof args[number] != 'undefined'
         		? args[number] 
         		: match;
     		});
-	},
+	}
 
-	escape: function (s: string) {
+	static escape(s: string) {
 		return s.replace(/&(?!\w+;)|[<>"']/g, s => escapeMap.get(s) ?? s);
-	},
+	}
 
-	createDropDownListOptions: function (items: Array<any>|Object) {
+	static createDropDownListOptions(items: Array<any>|Object) {
 		let html = '';
 
 		if (Array.isArray(items)) {
@@ -48,9 +48,9 @@ export const Utils = {
 		}
 
 		return html;
-	},
+	}
 
-	range: function (start: number, end: number, step: number) {
+	static range(start: number, end: number, step: number) {
 		if (step === undefined) {
 			step = 1;
 		}
