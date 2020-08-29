@@ -6,8 +6,8 @@
 
 import $ from "jquery";
 import { PuyoType, FieldDefaultWidth, FieldDefaultHeight, FieldDefaultHiddenRows } from "./constants";
-import { Field } from "./field";
-import { Simulation } from "./simulation";
+import { field } from "./field";
+import { simulation } from "./simulation";
 import { Puyo } from "./puyo";
 
 interface IPosition {
@@ -75,7 +75,7 @@ interface IPuyoDisplay {
   }
 }
 
-export const PuyoDisplay: IPuyoDisplay = {
+export const puyoDisplay: IPuyoDisplay = {
   // We're going to start out with our constants
   puyoSize: 32, // Puyo size in pixels (always 32)
 
@@ -171,13 +171,13 @@ export const PuyoDisplay: IPuyoDisplay = {
         }
       }
 
-      if (y < Field.hiddenRows) return 0;
+      if (y < field.hiddenRows) return 0;
       if (p === PuyoType.Nuisance || p === PuyoType.Point) return 0;
 
-      var L = x > 0 && Field.map!.puyo(x - 1, y) === p,
-        R = x < Field.width - 1 && Field.map!.puyo(x + 1, y) === p,
-        U = y > Field.hiddenRows && Field.map!.puyo(x, y - 1) === p,
-        D = y < Field.totalHeight - 1 && Field.map!.puyo(x, y + 1) === p;
+      var L = x > 0 && field.map!.puyo(x - 1, y) === p,
+        R = x < field.width - 1 && field.map!.puyo(x + 1, y) === p,
+        U = y > field.hiddenRows && field.map!.puyo(x, y - 1) === p,
+        D = y < field.totalHeight - 1 && field.map!.puyo(x, y + 1) === p;
 
       if (L) pos += 8;
       if (R) pos += 4;
@@ -332,26 +332,26 @@ export const PuyoDisplay: IPuyoDisplay = {
     init: function () {
       // Initalize the Canvas Renderer
       if (
-        (Field.width !== FieldDefaultWidth ||
-          Field.height !== FieldDefaultHeight) &&
+        (field.width !== FieldDefaultWidth ||
+          field.height !== FieldDefaultHeight) &&
         !$("#field-content").hasClass("alternate")
       ) {
         $("#field-content").addClass("alternate");
       } else if (
-        Field.width === FieldDefaultWidth &&
-        Field.height === FieldDefaultHeight &&
+        field.width === FieldDefaultWidth &&
+        field.height === FieldDefaultHeight &&
         $("#field-content").hasClass("alternate")
       ) {
         $("#field-content").removeClass("alternate");
       }
 
       if (
-        Field.hiddenRows !== FieldDefaultHiddenRows &&
+        field.hiddenRows !== FieldDefaultHiddenRows &&
         !$("#field-bg-1").hasClass("alternate")
       ) {
         $("#field-bg-1").addClass("alternate");
       } else if (
-        Field.hiddenRows === FieldDefaultHiddenRows &&
+        field.hiddenRows === FieldDefaultHiddenRows &&
         $("#field-bg-1").hasClass("alternate")
       ) {
         $("#field-bg-1").removeClass("alternate");
@@ -360,8 +360,8 @@ export const PuyoDisplay: IPuyoDisplay = {
       $("<canvas>")
         .attr({
           id: "field-canvas",
-          width: Field.width * this.parent.puyoSize,
-          height: Field.totalHeight * this.parent.puyoSize,
+          width: field.width * this.parent.puyoSize,
+          height: field.totalHeight * this.parent.puyoSize,
         })
         .appendTo("#field");
       const fieldCanvas: HTMLCanvasElement = document.getElementById(
@@ -370,9 +370,9 @@ export const PuyoDisplay: IPuyoDisplay = {
       this.ctx = fieldCanvas.getContext("2d")!;
 
       // Now draw everything
-      for (var y = 0; y < Field.totalHeight; y++) {
-        for (var x = 0; x < Field.width; x++) {
-          this.drawPuyo(x, y, Field.map!.get(x, y));
+      for (var y = 0; y < field.totalHeight; y++) {
+        for (var x = 0; x < field.width; x++) {
+          this.drawPuyo(x, y, field.map!.get(x, y));
         }
       }
 
@@ -393,7 +393,7 @@ export const PuyoDisplay: IPuyoDisplay = {
       ) as HTMLCanvasElement;
       this.nuisanceTrayCtx = nuisanceTrayCanvas.getContext("2d")!;
 
-      this.drawNuisanceTray(Simulation.nuisance, false);
+      this.drawNuisanceTray(simulation.nuisance, false);
     },
 
     uninit: function () {
@@ -421,7 +421,7 @@ export const PuyoDisplay: IPuyoDisplay = {
 
       if (p.puyo !== PuyoType.None && this.puyoImage !== undefined) {
         pos = this.parent.getImagePosition(x, y, p.puyo);
-        if (y < Field.hiddenRows) {
+        if (y < field.hiddenRows) {
           // Puyo in hidden row are partially transparent
           this.ctx.globalAlpha = 0.5;
           this.ctx.drawImage(
@@ -484,9 +484,9 @@ export const PuyoDisplay: IPuyoDisplay = {
 
         if ($("#field-canvas").length > 0) {
           // Can we draw the puyo?
-          for (var y = 0; y < Field.totalHeight; y++) {
-            for (var x = 0; x < Field.width; x++) {
-              self.drawPuyo(x, y, Field.map!.get(x, y));
+          for (var y = 0; y < field.totalHeight; y++) {
+            for (var x = 0; x < field.width; x++) {
+              self.drawPuyo(x, y, field.map!.get(x, y));
             }
           }
         }
@@ -499,7 +499,7 @@ export const PuyoDisplay: IPuyoDisplay = {
           );
 
         if (self.parent.nuisanceTrayTimer === undefined) {
-          self.drawNuisanceTray(Simulation.nuisance, false);
+          self.drawNuisanceTray(simulation.nuisance, false);
         }
       };
     },
@@ -612,9 +612,9 @@ export const PuyoDisplay: IPuyoDisplay = {
         this.frame = 0;
       }
 
-      for (var y = 0; y < Field.totalHeight; y++) {
-        for (var x = 0; x < Field.width; x++) {
-          var p = Field.map!.get(x, y);
+      for (var y = 0; y < field.totalHeight; y++) {
+        for (var x = 0; x < field.width; x++) {
+          var p = field.map!.get(x, y);
           if (p.hasAnimation()) {
             // Only redraw puyo that can have animation
             this.parent.renderer!.drawPuyo(x, y, p);
@@ -700,9 +700,9 @@ export const PuyoDisplay: IPuyoDisplay = {
       this.frame = 0;
       clearTimeout(this.timer);
 
-      for (var y = 0; y < Field.totalHeight; y++) {
-        for (var x = 0; x < Field.width; x++) {
-          var p = Field.map!.get(x, y);
+      for (var y = 0; y < field.totalHeight; y++) {
+        for (var x = 0; x < field.width; x++) {
+          var p = field.map!.get(x, y);
           if (p.hasAnimation()) {
             // Only redraw puyo that can have animation
             this.parent.renderer!.drawPuyo(x, y, p);
@@ -753,9 +753,9 @@ export const PuyoDisplay: IPuyoDisplay = {
         this.frame = 0;
       }
 
-      for (var y = 0; y < Field.totalHeight; y++) {
-        for (var x = 0; x < Field.width; x++) {
-          var p = Field.map!.get(x, y);
+      for (var y = 0; y < field.totalHeight; y++) {
+        for (var x = 0; x < field.width; x++) {
+          var p = field.map!.get(x, y);
           if (p.puyo === PuyoType.Sun) {
             // Only redraw sun puyo
             this.parent.renderer!.drawPuyo(x, y, p);
@@ -796,9 +796,9 @@ export const PuyoDisplay: IPuyoDisplay = {
       this.frame = 0;
       clearTimeout(this.timer);
 
-      for (var y = 0; y < Field.totalHeight; y++) {
-        for (var x = 0; x < Field.width; x++) {
-          var p = Field.map!.get(x, y);
+      for (var y = 0; y < field.totalHeight; y++) {
+        for (var x = 0; x < field.width; x++) {
+          var p = field.map!.get(x, y);
           if (p.puyo === PuyoType.Sun) {
             // Only redraw sun puyo
             this.parent.renderer!.drawPuyo(x, y, p);

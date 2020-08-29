@@ -7,11 +7,11 @@
 import $ from "jquery";
 import { PuyoType, SimulationDefaultPuyoToClear, SimulationDefaultPointPuyoBonus, SimulationDefaultTargetPoints, SimulationDefaultSpeed } from "./constants";
 import { ControlsDisplay } from "./controlsdisplay";
-import { PuyoDisplay } from "./puyodisplay";
+import { puyoDisplay } from "./puyodisplay";
 import { FieldMap } from "./fieldmap";
-import { Field } from "./field";
+import { field } from "./field";
 
-export const Simulation = {
+export const simulation = {
   running: false, // Simulator is running
   paused: false, // Simulator is paused
   stepMode: false, // Simulator is in step mode
@@ -101,7 +101,7 @@ export const Simulation = {
     $("#field-nuisance").text(this.nuisance);
     $("#field-cleared").text("0");
 
-    PuyoDisplay.renderer!.drawNuisanceTray(this.nuisance);
+    puyoDisplay.renderer!.drawNuisanceTray(this.nuisance);
 
     // Display the "editor" chain on the puyo display and set the simulation buttons
     ControlsDisplay.toggleSimulationButtons(false, true, false, true, true);
@@ -109,10 +109,10 @@ export const Simulation = {
       "#tab-simulator input, #tab-simulator select, #tab-simulator button"
     ).prop("disabled", false); // Disable simulator options
 
-    Field.map = Field.mapEditor;
-    for (var y = 0; y < Field.totalHeight; y++) {
-      for (var x = 0; x < Field.width; x++) {
-        PuyoDisplay.renderer!.drawPuyo(x, y, Field.map!.get(x, y));
+    field.map = field.mapEditor;
+    for (var y = 0; y < field.totalHeight; y++) {
+      for (var x = 0; x < field.width; x++) {
+        puyoDisplay.renderer!.drawPuyo(x, y, field.map!.get(x, y));
       }
     }
   },
@@ -127,12 +127,12 @@ export const Simulation = {
 
       // Set all variables
       this.running = true;
-      Field.mapSimulation = new FieldMap(
-        Field.width,
-        Field.totalHeight,
-        Field.mapEditor
+      field.mapSimulation = new FieldMap(
+        field.width,
+        field.totalHeight,
+        field.mapEditor
       );
-      Field.map = Field.mapSimulation;
+      field.map = field.mapSimulation;
 
       // Check to see if the puyo can fall and go from there
       this.action = 0;
@@ -182,12 +182,12 @@ export const Simulation = {
       // Set all variables
       this.running = true;
       this.stepMode = true;
-      Field.mapSimulation = new FieldMap(
-        Field.width,
-        Field.totalHeight,
-        Field.mapEditor
+      field.mapSimulation = new FieldMap(
+        field.width,
+        field.totalHeight,
+        field.mapEditor
       );
-      Field.map = Field.mapSimulation;
+      field.map = field.mapSimulation;
 
       // Check to see if the puyo can fall and go from there
       this.action = 0;
@@ -216,12 +216,12 @@ export const Simulation = {
       // Set all variables
       this.running = true;
       this.skipMode = true;
-      Field.mapSimulation = new FieldMap(
-        Field.width,
-        Field.totalHeight,
-        Field.mapEditor
+      field.mapSimulation = new FieldMap(
+        field.width,
+        field.totalHeight,
+        field.mapEditor
       );
-      Field.map = Field.mapSimulation;
+      field.map = field.mapSimulation;
 
       // Drop the puyo and start chaining
       this.action = 0;
@@ -256,22 +256,22 @@ export const Simulation = {
         groups: number[][] = [[], [], [], [], []]; // Groups to sort the colors
 
       // Create the "check" array
-      for (x = 0; x < Field.width; x++) {
+      for (x = 0; x < field.width; x++) {
         check[x] = [];
-        for (y = 0; y < Field.totalHeight; y++) {
+        for (y = 0; y < field.totalHeight; y++) {
           check[x][y] = false;
         }
       }
 
       // Check to see which puyo have been cleared
-      for (y = Field.hiddenRows; y < Field.totalHeight; y++) {
+      for (y = field.hiddenRows; y < field.totalHeight; y++) {
         // Don't check the hidden row
-        for (x = 0; x < Field.width; x++) {
-          if (!check[x][y] && Field.map!.get(x, y).isColored()) {
+        for (x = 0; x < field.width; x++) {
+          if (!check[x][y] && field.map!.get(x, y).isColored()) {
             // Is a colored puyo
             var cleared = 1, // Amount of puyo cleared
               checked = 1, // Amount of puyo checked
-              puyo = Field.map!.puyo(x, y), // Puyo currently being checked
+              puyo = field.map!.puyo(x, y), // Puyo currently being checked
               list = [{ x: x, y: y }], // List of puyo to clear
               pos,
               checkX,
@@ -284,12 +284,12 @@ export const Simulation = {
               // Check the puyo to see if we can make a chain
               for (i = 0; i < 4; i++) {
                 // Check for out of bounds
-                if (this.positions[i].y === -1 && pos.y <= Field.hiddenRows)
+                if (this.positions[i].y === -1 && pos.y <= field.hiddenRows)
                   continue;
                 if (this.positions[i].x === -1 && pos.x <= 0) continue;
-                if (this.positions[i].y === 1 && pos.y >= Field.totalHeight - 1)
+                if (this.positions[i].y === 1 && pos.y >= field.totalHeight - 1)
                   continue;
-                if (this.positions[i].x === 1 && pos.x >= Field.width - 1)
+                if (this.positions[i].x === 1 && pos.x >= field.width - 1)
                   continue;
 
                 // Check to see if the puyo match
@@ -297,7 +297,7 @@ export const Simulation = {
                 checkY = pos.y + this.positions[i].y; // Shortcuts
                 if (
                   !check[checkX][checkY] &&
-                  Field.map!.puyo(checkX, checkY) === puyo
+                  field.map!.puyo(checkX, checkY) === puyo
                 ) {
                   cleared++;
                   check[checkX][checkY] = true;
@@ -335,67 +335,67 @@ export const Simulation = {
               for (i = 0; i < cleared; i++) {
                 // Set the cleared sprite for the cleared puyo
                 pos = list[i];
-                switch (Field.map!.puyo(pos.x, pos.y)) {
+                switch (field.map!.puyo(pos.x, pos.y)) {
                   case PuyoType.Red:
-                    Field.map!.set(pos.x, pos.y, PuyoType.ClearedRed);
+                    field.map!.set(pos.x, pos.y, PuyoType.ClearedRed);
                     break;
                   case PuyoType.Green:
-                    Field.map!.set(pos.x, pos.y, PuyoType.ClearedGreen);
+                    field.map!.set(pos.x, pos.y, PuyoType.ClearedGreen);
                     break;
                   case PuyoType.Blue:
-                    Field.map!.set(pos.x, pos.y, PuyoType.ClearedBlue);
+                    field.map!.set(pos.x, pos.y, PuyoType.ClearedBlue);
                     break;
                   case PuyoType.Yellow:
-                    Field.map!.set(pos.x, pos.y, PuyoType.ClearedYellow);
+                    field.map!.set(pos.x, pos.y, PuyoType.ClearedYellow);
                     break;
                   case PuyoType.Purple:
-                    Field.map!.set(pos.x, pos.y, PuyoType.ClearedPurple);
+                    field.map!.set(pos.x, pos.y, PuyoType.ClearedPurple);
                     break;
                 }
 
                 // Check the nuisance/point/hard puyo around the current puyo
                 for (j = 0; j < 4; j++) {
                   // Check for out of bounds
-                  if (this.positions[j].y === -1 && pos.y <= Field.hiddenRows)
+                  if (this.positions[j].y === -1 && pos.y <= field.hiddenRows)
                     continue;
                   if (this.positions[j].x === -1 && pos.x <= 0) continue;
                   if (
                     this.positions[j].y === 1 &&
-                    pos.y >= Field.totalHeight - 1
+                    pos.y >= field.totalHeight - 1
                   )
                     continue;
-                  if (this.positions[j].x === 1 && pos.x >= Field.width - 1)
+                  if (this.positions[j].x === 1 && pos.x >= field.width - 1)
                     continue;
 
                   // Check to see if the puyo match
                   checkX = pos.x + this.positions[j].x; // Shortcuts
                   checkY = pos.y + this.positions[j].y; // Shortcuts
                   if (
-                    Field.map!.puyo(checkX, checkY) === PuyoType.Nuisance
+                    field.map!.puyo(checkX, checkY) === PuyoType.Nuisance
                   ) {
                     // Nuisance Puyo
-                    Field.map!.set(
+                    field.map!.set(
                       checkX,
                       checkY,
                       PuyoType.ClearedNuisance
                     );
                   } else if (
-                    Field.map!.puyo(checkX, checkY) === PuyoType.Point
+                    field.map!.puyo(checkX, checkY) === PuyoType.Point
                   ) {
                     // Point Puyo
-                    Field.map!.set(checkX, checkY, PuyoType.ClearedPoint);
+                    field.map!.set(checkX, checkY, PuyoType.ClearedPoint);
                     pointPuyoCleared++;
                   } else if (
-                    Field.map!.puyo(checkX, checkY) === PuyoType.Sun
+                    field.map!.puyo(checkX, checkY) === PuyoType.Sun
                   ) {
                     // Sun Puyo
-                    Field.map!.set(checkX, checkY, PuyoType.ClearedSun);
+                    field.map!.set(checkX, checkY, PuyoType.ClearedSun);
                     sunPuyoCleared++;
                   } else if (
-                    Field.map!.puyo(checkX, checkY) === PuyoType.Hard
+                    field.map!.puyo(checkX, checkY) === PuyoType.Hard
                   ) {
                     // Hard Puyo
-                    Field.map!.set(checkX, checkY, PuyoType.Nuisance);
+                    field.map!.set(checkX, checkY, PuyoType.Nuisance);
                   }
                 }
               }
@@ -501,7 +501,7 @@ export const Simulation = {
           });
           $("#field-cleared").text(clearedChain + " (" + clearedTotal + ")");
 
-          PuyoDisplay.renderer!.drawNuisanceTray(this.nuisance);
+          puyoDisplay.renderer!.drawNuisanceTray(this.nuisance);
 
           if (!this.stepMode) {
             // Set the timer if we aren't in step mode
@@ -516,9 +516,9 @@ export const Simulation = {
 
         if (this.skipMode) {
           // If we are in skip mode, stop
-          for (y = 0; y < Field.totalHeight; y++) {
-            for (x = 0; x < Field.width; x++) {
-              PuyoDisplay.renderer!.drawPuyo(x, y, Field.map!.get(x, y));
+          for (y = 0; y < field.totalHeight; y++) {
+            for (x = 0; x < field.width; x++) {
+              puyoDisplay.renderer!.drawPuyo(x, y, field.map!.get(x, y));
             }
           }
 
@@ -535,7 +535,7 @@ export const Simulation = {
           });
           $("#field-cleared").text(clearedChain + " (" + clearedTotal + ")");
 
-          PuyoDisplay.renderer!.drawNuisanceTray(this.nuisance);
+          puyoDisplay.renderer!.drawNuisanceTray(this.nuisance);
         } else {
           // Just toggle the buttons
           ControlsDisplay.toggleSimulationButtons(
@@ -552,11 +552,11 @@ export const Simulation = {
       $("#field-score").text(this.score); // Set the score to it's real value now
 
       // Remove any cleared puyo
-      for (y = Field.hiddenRows; y < Field.totalHeight; y++) {
+      for (y = field.hiddenRows; y < field.totalHeight; y++) {
         // Can start at 1 since you can't clear puyo in the hidden row
-        for (x = 0; x < Field.width; x++) {
-          if (Field.map!.get(x, y).isCleared()) {
-            Field.map!.set(x, y, PuyoType.None);
+        for (x = 0; x < field.width; x++) {
+          if (field.map!.get(x, y).isCleared()) {
+            field.map!.set(x, y, PuyoType.None);
           }
         }
       }
@@ -581,9 +581,9 @@ export const Simulation = {
 
         if (this.skipMode) {
           // If we are in skip mode, stop
-          for (y = 0; y < Field.totalHeight; y++) {
-            for (x = 0; x < Field.width; x++) {
-              PuyoDisplay.renderer!.drawPuyo(x, y, Field.map!.get(x, y));
+          for (y = 0; y < field.totalHeight; y++) {
+            for (x = 0; x < field.width; x++) {
+              puyoDisplay.renderer!.drawPuyo(x, y, field.map!.get(x, y));
             }
           }
 
@@ -600,7 +600,7 @@ export const Simulation = {
           });
           $("#field-cleared").text(clearedChain + " (" + clearedTotal + ")");
 
-          PuyoDisplay.renderer!.drawNuisanceTray(this.nuisance);
+          puyoDisplay.renderer!.drawNuisanceTray(this.nuisance);
         } else {
           // Just toggle the buttons
           ControlsDisplay.toggleSimulationButtons(
@@ -619,27 +619,27 @@ export const Simulation = {
     // Makes the puyo fall in place and returns if any puyo changed position
     var dropped = false;
 
-    for (var x = 0; x < Field.width; x++) {
-      for (var y = Field.totalHeight - 2; y >= 0; y--) {
+    for (var x = 0; x < field.width; x++) {
+      for (var y = field.totalHeight - 2; y >= 0; y--) {
         // No need to check the bottom row
         if (
-          Field.map!.puyo(x, y) !== PuyoType.None &&
-          Field.map!.puyo(x, y) !== PuyoType.Block &&
-          Field.map!.puyo(x, y + 1) === PuyoType.None
+          field.map!.puyo(x, y) !== PuyoType.None &&
+          field.map!.puyo(x, y) !== PuyoType.Block &&
+          field.map!.puyo(x, y + 1) === PuyoType.None
         ) {
           // There's an empty space below this puyo!
           dropped = true;
 
           var y2 = y;
           while (
-            y2 < Field.totalHeight - 1 &&
-            Field.map!.puyo(x, y2 + 1) === PuyoType.None
+            y2 < field.totalHeight - 1 &&
+            field.map!.puyo(x, y2 + 1) === PuyoType.None
           ) {
             y2++;
           }
 
-          Field.map!.set(x, y2, Field.map!.puyo(x, y));
-          Field.map!.set(x, y, PuyoType.None);
+          field.map!.set(x, y2, field.map!.puyo(x, y));
+          field.map!.set(x, y, PuyoType.None);
         }
       }
     }

@@ -5,12 +5,12 @@
  */
 
 import $ from "jquery";
-import { PuyoDisplay } from "./puyodisplay";
-import { Simulation } from "./simulation";
+import { puyoDisplay } from "./puyodisplay";
+import { simulation } from "./simulation";
 import { PuyoType } from "./constants";
-import { Content, IFieldType } from "./content";
-import { Field } from "./field";
-import { Tabs } from "./tabs";
+import { content, IFieldType } from "./content";
+import { field } from "./field";
+import { tabs } from "./tabs";
 
 interface IFieldDisplay {
   fieldContent?: IFieldType;
@@ -21,14 +21,14 @@ interface IFieldDisplay {
   display: () => void;
 }
 
-export const FieldDisplay: IFieldDisplay = {
+export const fieldDisplay: IFieldDisplay = {
   fieldContent: undefined, // A reference to the content of the field
   selectedPuyo: PuyoType.None, // Current Puyo that is selected
   insertPuyo: false, // Indicates if we are going to insert Puyo (the insert box is checked)
 
   init: function () {
     // Initalize
-    PuyoDisplay.init();
+    puyoDisplay.init();
     this.load(localStorage.getItem("chainsim.fieldStyle") || "standard", true);
   },
 
@@ -40,13 +40,13 @@ export const FieldDisplay: IFieldDisplay = {
     // Set the field content reference
     switch (style) {
       case "standard":
-        this.fieldContent = Content.Field.Standard;
+        this.fieldContent = content.Field.Standard;
         break;
       case "eyecandy":
-        this.fieldContent = Content.Field.EyeCandy;
+        this.fieldContent = content.Field.EyeCandy;
         break;
       default:
-        this.fieldContent = Content.Field.Basic;
+        this.fieldContent = content.Field.Basic;
         break;
     }
 
@@ -66,18 +66,18 @@ export const FieldDisplay: IFieldDisplay = {
         }
 
         $("#field").css({
-          width: Field.width * PuyoDisplay.puyoSize + "px",
-          height: Field.totalHeight * PuyoDisplay.puyoSize + "px",
+          width: field.width * puyoDisplay.puyoSize + "px",
+          height: field.totalHeight * puyoDisplay.puyoSize + "px",
         });
         $("#field-bg-2").css(
           "top",
-          Field.hiddenRows * PuyoDisplay.puyoSize + "px"
+          field.hiddenRows * puyoDisplay.puyoSize + "px"
         );
         $("#field-bg-3").css(
           "height",
-          Field.hiddenRows * PuyoDisplay.puyoSize + "px"
+          field.hiddenRows * puyoDisplay.puyoSize + "px"
         );
-        Tabs.fieldWidthChanged();
+        tabs.fieldWidthChanged();
 
         $("#simulator-field, #nuisance-tray").fadeIn(200);
         $("#field-style").prop("disabled", false);
@@ -95,15 +95,15 @@ export const FieldDisplay: IFieldDisplay = {
     }
 
     $("#field").css({
-      width: Field.width * PuyoDisplay.puyoSize + "px",
-      height: Field.totalHeight * PuyoDisplay.puyoSize + "px",
+      width: field.width * puyoDisplay.puyoSize + "px",
+      height: field.totalHeight * puyoDisplay.puyoSize + "px",
     });
-    $("#field-bg-2").css("top", Field.hiddenRows * PuyoDisplay.puyoSize + "px");
+    $("#field-bg-2").css("top", field.hiddenRows * puyoDisplay.puyoSize + "px");
     $("#field-bg-3").css(
       "height",
-      Field.hiddenRows * PuyoDisplay.puyoSize + "px"
+      field.hiddenRows * puyoDisplay.puyoSize + "px"
     );
-    Tabs.fieldWidthChanged();
+    tabs.fieldWidthChanged();
 
     // Set up the field cursor
     var self = this;
@@ -120,26 +120,26 @@ export const FieldDisplay: IFieldDisplay = {
 
       $("#field")
         .mouseenter(function (e) {
-          if (Simulation.running) {
+          if (simulation.running) {
             // Don't allow placing puyo when the simulator is running
             return;
           }
 
           offsetX = e.pageX - $(this).offset()!.left;
           offsetY = e.pageY - $(this).offset()!.top;
-          fieldX = Math.floor(offsetX / PuyoDisplay.puyoSize);
-          fieldY = Math.floor(offsetY / PuyoDisplay.puyoSize);
+          fieldX = Math.floor(offsetX / puyoDisplay.puyoSize);
+          fieldY = Math.floor(offsetY / puyoDisplay.puyoSize);
 
           $("<div>")
             .attr("id", "field-cursor")
             .css({
-              top: fieldY * PuyoDisplay.puyoSize + "px",
-              left: fieldX * PuyoDisplay.puyoSize + "px",
+              top: fieldY * puyoDisplay.puyoSize + "px",
+              left: fieldX * puyoDisplay.puyoSize + "px",
             })
             .appendTo(this);
         })
         .mousemove(function (e) {
-          if (Simulation.running) {
+          if (simulation.running) {
             // Don't allow placing puyo when the simulator is running
             return;
           }
@@ -159,8 +159,8 @@ export const FieldDisplay: IFieldDisplay = {
             return;
           }
 
-          newFieldX = Math.floor(offsetX / PuyoDisplay.puyoSize);
-          newFieldY = Math.floor(offsetY / PuyoDisplay.puyoSize);
+          newFieldX = Math.floor(offsetX / puyoDisplay.puyoSize);
+          newFieldY = Math.floor(offsetY / puyoDisplay.puyoSize);
 
           if (newFieldX !== fieldX || newFieldY !== fieldY) {
             // Are we hovering over another puyo now?
@@ -173,8 +173,8 @@ export const FieldDisplay: IFieldDisplay = {
             }
 
             $("#field-cursor").css({
-              top: fieldY * PuyoDisplay.puyoSize + "px",
-              left: fieldX * PuyoDisplay.puyoSize + "px",
+              top: fieldY * puyoDisplay.puyoSize + "px",
+              left: fieldX * puyoDisplay.puyoSize + "px",
             });
           }
         })
@@ -185,7 +185,7 @@ export const FieldDisplay: IFieldDisplay = {
         .mousedown(function (e) {
           e.preventDefault();
 
-          if (Simulation.running) {
+          if (simulation.running) {
             // Don't allow placing puyo when the simulator is running
             return;
           }
@@ -206,22 +206,22 @@ export const FieldDisplay: IFieldDisplay = {
             if (self.selectedPuyo === PuyoType.Delete) {
               // Delete this puyo and shift the ones on top down one row
               for (y = fieldY; y > 0; y--) {
-                Field.map!.set(fieldX, y, Field.map!.puyo(fieldX, y - 1));
+                field.map!.set(fieldX, y, field.map!.puyo(fieldX, y - 1));
               }
-              Field.map!.set(fieldX, 0, PuyoType.None);
+              field.map!.set(fieldX, 0, PuyoType.None);
             } else {
               if (self.insertPuyo) {
                 // Insert puyo
                 for (y = 0; y < fieldY; y++) {
-                  Field.map!.set(fieldX, y, Field.map!.puyo(fieldX, y + 1));
+                  field.map!.set(fieldX, y, field.map!.puyo(fieldX, y + 1));
                 }
               }
 
-              Field.map!.set(fieldX, fieldY, self.selectedPuyo);
+              field.map!.set(fieldX, fieldY, self.selectedPuyo);
             }
           } else if (rightMouseDown) {
             // Right click, delete puyo
-            Field.map!.set(fieldX, fieldY, PuyoType.None);
+            field.map!.set(fieldX, fieldY, PuyoType.None);
           }
         })
         .mouseup(function () {

@@ -18,7 +18,7 @@ export interface IFieldType {
   }[];
 }
 
-export const Content = {
+export const content = {
   Field: {
     Basic: <IFieldType>{
       CSSClass: "field-basic",
@@ -166,8 +166,8 @@ export const Content = {
         $("#field-bg-1").css(
           "background-image",
           "url('/images/eyecandy/field_stage_bg/" +
-            Content.Field.EyeCandy.StageBGs![
-              Math.floor(Math.random() * Content.Field.EyeCandy.StageBGs!.length)
+            content.Field.EyeCandy.StageBGs![
+              Math.floor(Math.random() * content.Field.EyeCandy.StageBGs!.length)
             ] +
             "')"
         );
@@ -178,9 +178,9 @@ export const Content = {
           $("#field-bg-2").css(
             "background-image",
             "url('/images/eyecandy/field_char_bg/" +
-              Content.Field.EyeCandy.CharaBGs![
+              content.Field.EyeCandy.CharaBGs![
                 Math.floor(
-                  Math.random() * Content.Field.EyeCandy.CharaBGs!.length
+                  Math.random() * content.Field.EyeCandy.CharaBGs!.length
                 )
               ] +
               "')"
@@ -189,7 +189,7 @@ export const Content = {
           $("#field-bg-2").css(
             "background-image",
             "url('/images/eyecandy/field_char_bg/" +
-              Content.Field.EyeCandy.CharaBGs![boardBackgroundId - 1] +
+              content.Field.EyeCandy.CharaBGs![boardBackgroundId - 1] +
               "')"
           );
         }

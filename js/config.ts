@@ -3,7 +3,7 @@
  *
  * Contains configuration values used throughout the simulator
  */
-export const Config = {
+export const config = {
   baseUrl: "https://puyonexus.com/chainsim",
   shareLinkUrl: "/chain/{0}",
   shareImageUrl: "/image/{0}.png",

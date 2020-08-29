@@ -14,11 +14,11 @@ import $ from "jquery";
 import Clipboard from "clipboard";
 import { default as contentHtml } from "./data/content.html";
 import { Utils } from "./utils";
-import { Field } from "./field";
-import { Simulation } from "./simulation";
-import { Tabs } from "./tabs";
-import { FieldDisplay } from "./fielddisplay";
-import { PuyoDisplay } from "./puyodisplay";
+import { field } from "./field";
+import { simulation } from "./simulation";
+import { tabs } from "./tabs";
+import { fieldDisplay } from "./fielddisplay";
+import { puyoDisplay } from "./puyodisplay";
 import { ControlsDisplay } from "./controlsdisplay";
 window.jQuery = $;
 require("bootstrap/js/dropdown.js");
@@ -30,8 +30,8 @@ require("bootstrap/js/dropdown.js");
  */
 
 $(document).ready(function () {
-  Field.init(); // Initalize the Field
-  FieldDisplay.init(); // Initalize the Field Display
+  field.init(); // Initalize the Field
+  fieldDisplay.init(); // Initalize the Field Display
 
   // Display the contents of the simulator
   $("#simulator").html(Utils.stringFormat(contentHtml, "/assets"));
@@ -45,7 +45,7 @@ $(document).ready(function () {
 
   // Handle resizing for #simulator
   $(window).resize(function () {
-    Tabs.fieldWidthChanged();
+    tabs.fieldWidthChanged();
   });
 
   // Show/hide elements depending on if we are viewing a shared chain
@@ -55,10 +55,10 @@ $(document).ready(function () {
     $(".hide-on-shared-chain").show();
   }
 
-  FieldDisplay.display(); // Display the Field
+  fieldDisplay.display(); // Display the Field
   ControlsDisplay.display(); // Display the Controls Display
-  PuyoDisplay.display(); // Display the Puyo Display
-  Tabs.display(); // Display the tabs
+  puyoDisplay.display(); // Display the Puyo Display
+  tabs.display(); // Display the tabs
 
   (function () {
     // Easter eggs :D
@@ -83,7 +83,7 @@ $(document).ready(function () {
     // It's simply the Konami code, silly!
     // Code: Up, Up, Down, Down, Left, Right, B, A, Enter
     easteregg([38, 38, 40, 40, 37, 39, 37, 39, 66, 65, 13], function () {
-      Field.setChain(
+      field.setChain(
         "421212224324123312131211442442211213431123321132142423" +
           "424324123341244343221344222431343211341112142312433213" +
           "342443412321234123124434123212341231334123212341231241" +
@@ -95,8 +95,8 @@ $(document).ready(function () {
         16,
         26 // Set to the 108 chain from Puyo~n
       );
-      Simulation.puyoToClear = 4;
-      $("#puyo-to-clear").val(Simulation.puyoToClear);
+      simulation.puyoToClear = 4;
+      $("#puyo-to-clear").val(simulation.puyoToClear);
     });
   })();
 });

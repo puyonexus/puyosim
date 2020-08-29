@@ -5,14 +5,14 @@
  */
 
 import $ from "jquery";
-import { Config } from "./config";
+import { config } from "./config";
 import { FieldDefaultWidth, FieldDefaultHeight, FieldDefaultHiddenRows, SimulationDefaultPuyoToClear, SimulationDefaultTargetPoints } from "./constants";
-import { Content } from "./content";
-import { FieldDisplay } from "./fielddisplay";
-import { PuyoDisplay } from "./puyodisplay";
+import { content } from "./content";
+import { fieldDisplay } from "./fielddisplay";
+import { puyoDisplay } from "./puyodisplay";
 import { Utils } from "./utils";
-import { Simulation } from "./simulation";
-import { Field } from "./field";
+import { simulation } from "./simulation";
+import { field } from "./field";
 import { default as attackPowersJson } from "./data/attackPowers.json";
 import { default as chainsJson } from "./data/chains.json";
 
@@ -65,7 +65,7 @@ interface ITabs {
   Settings: ISettingsTab;
 }
 
-export const Tabs: ITabs = {
+export const tabs: ITabs = {
   display: function () {
     // Displays the tab content and initalizes all of the tabs
     // Set up the tabs for the options
@@ -192,7 +192,7 @@ export const Tabs: ITabs = {
         }
       }
 
-      Field.setChain(
+      field.setChain(
         chain,
         this.chains[index].width || FieldDefaultWidth,
         this.chains[index].height || FieldDefaultHeight,
@@ -209,10 +209,10 @@ export const Tabs: ITabs = {
 
       this.chains.push({
         name: name,
-        width: Field.width,
-        height: Field.height,
-        hiddenRows: Field.hiddenRows,
-        chain: Field.mapToString(),
+        width: field.width,
+        height: field.height,
+        hiddenRows: field.hiddenRows,
+        chain: field.mapToString(),
         format: "base36",
       });
 
@@ -357,7 +357,7 @@ export const Tabs: ITabs = {
           colors = parseInt(String($(this).attr("data-colors")), 10),
           length = parseInt(String($(this).val()), 10);
 
-        Field.setChain(
+        field.setChain(
           self.chains[category].categories[subCategory].types[type].colors[
             colors
           ].chains[length].chain, // Chain
@@ -368,10 +368,10 @@ export const Tabs: ITabs = {
           FieldDefaultHiddenRows // Hidden rows (It's always 1 with these chains)
         );
 
-        Simulation.puyoToClear =
+        simulation.puyoToClear =
           self.chains[category].categories[subCategory].puyoToClear ||
           SimulationDefaultPuyoToClear;
-        $("#puyo-to-clear").val(Simulation.puyoToClear);
+        $("#puyo-to-clear").val(simulation.puyoToClear);
 
         $(this).prop("selectedIndex", 0);
       });
@@ -451,10 +451,10 @@ export const Tabs: ITabs = {
         .change(function () {
           switch ($(this).filter(":checked").val()) {
             case "classic":
-              Simulation.scoreMode = 0;
+              simulation.scoreMode = 0;
               break; // 0 = Classic scoring
             case "fever":
-              Simulation.scoreMode = 1;
+              simulation.scoreMode = 1;
               break; // 1 = Fever scoring
           }
         })
@@ -464,23 +464,23 @@ export const Tabs: ITabs = {
       // Puyo to Clear
       $("#puyo-to-clear")
         .change(function () {
-          Simulation.puyoToClear = parseInt(String($(this).val()), 10);
+          simulation.puyoToClear = parseInt(String($(this).val()), 10);
         })
         .html(Utils.createDropDownListOptions(Utils.range(2, 6, 1)))
-        .val(Simulation.puyoToClear); // Default to 4
+        .val(simulation.puyoToClear); // Default to 4
 
       // Target Points
       $("#target-points")
         .change(function () {
-          Simulation.targetPoints = parseInt(String($(this).val()), 10);
+          simulation.targetPoints = parseInt(String($(this).val()), 10);
         })
         .html(Utils.createDropDownListOptions(Utils.range(10, 990, 10)))
-        .val(Simulation.targetPoints); // Default to 70
+        .val(simulation.targetPoints); // Default to 70
 
       // Point Puyo bonus
       $("#point-puyo-bonus")
         .change(function () {
-          Simulation.pointPuyoBonus = parseInt(String($(this).val()), 10);
+          simulation.pointPuyoBonus = parseInt(String($(this).val()), 10);
         })
         .html(
           Utils.createDropDownListOptions({
@@ -495,35 +495,35 @@ export const Tabs: ITabs = {
             1000000: "1M",
           })
         )
-        .val(Simulation.pointPuyoBonus); // Default to 50
+        .val(simulation.pointPuyoBonus); // Default to 50
 
       // Field Size
       $("#field-size-width")
         .html(Utils.createDropDownListOptions(Utils.range(3, 16, 1)))
-        .val(Field.width); // Default to 6
+        .val(field.width); // Default to 6
       $("#field-size-height")
         .html(Utils.createDropDownListOptions(Utils.range(6, 26, 1)))
-        .val(Field.height); // Default to 12
+        .val(field.height); // Default to 12
 
       $("#set-field-size").click(function () {
         var w = parseInt(String($("#field-size-width").val()), 10),
           h = parseInt(String($("#field-size-height").val()), 10);
 
-        if (w !== Field.width || h !== Field.height) {
-          Field.setChain("", w, h, Field.hiddenRows);
+        if (w !== field.width || h !== field.height) {
+          field.setChain("", w, h, field.hiddenRows);
         }
       });
 
       // Hidden Rows
       $("#field-hidden-rows")
         .html(Utils.createDropDownListOptions(Utils.range(1, 2, 1)))
-        .val(Field.hiddenRows); // Default to 1
+        .val(field.hiddenRows); // Default to 1
 
       $("#set-hidden-rows").click(function () {
         var hr = parseInt(String($("#field-hidden-rows").val()), 10);
 
-        if (hr !== Field.hiddenRows) {
-          Field.setChain("", Field.width, Field.height, hr);
+        if (hr !== field.hiddenRows) {
+          field.setChain("", field.width, field.height, hr);
         }
       });
 
@@ -559,8 +559,8 @@ export const Tabs: ITabs = {
           );
           $(this).parent().addClass("selected");
 
-          Simulation.chainPowers = attackPowers[category].powers[value].values;
-          Simulation.chainPowerInc =
+          simulation.chainPowers = attackPowers[category].powers[value].values;
+          simulation.chainPowerInc =
             attackPowers[category].powers[value].increment || 0;
 
           $("#attack-powers-game").text(attackPowers[category].name);
@@ -597,11 +597,11 @@ export const Tabs: ITabs = {
       $("#get-links").click(function () {
         var data = {
           title: $("#share-chain-title").val(),
-          chain: Field.mapToString(),
-          width: Field.width,
-          height: Field.height,
-          hiddenRows: Field.hiddenRows,
-          popLimit: Simulation.puyoToClear,
+          chain: field.mapToString(),
+          width: field.width,
+          height: field.height,
+          hiddenRows: field.hiddenRows,
+          popLimit: simulation.puyoToClear,
         };
 
         $.post(
@@ -610,17 +610,17 @@ export const Tabs: ITabs = {
           function (response) {
             if (response.success) {
               $("#share-link").val(
-                Config.baseUrl +
-                  Utils.stringFormat(Config.shareLinkUrl, response.data.id)
+                config.baseUrl +
+                  Utils.stringFormat(config.shareLinkUrl, response.data.id)
               );
               $("#share-image").val(
-                Config.baseUrl +
-                  Utils.stringFormat(Config.shareImageUrl, response.data.id)
+                config.baseUrl +
+                  Utils.stringFormat(config.shareImageUrl, response.data.id)
               );
               $("#share-animated-image").val(
-                Config.baseUrl +
+                config.baseUrl +
                   Utils.stringFormat(
-                    Config.shareAnimatedImageUrl,
+                    config.shareAnimatedImageUrl,
                     response.data.id
                   )
               );
@@ -637,32 +637,32 @@ export const Tabs: ITabs = {
       if (window.chainData !== undefined) {
         if (window.chainData.id !== undefined) {
           $("#share-link").val(
-            Config.baseUrl +
-              Utils.stringFormat(Config.shareLinkUrl, window.chainData.id)
+            config.baseUrl +
+              Utils.stringFormat(config.shareLinkUrl, window.chainData.id)
           );
           $("#share-image").val(
-            Config.baseUrl +
-              Utils.stringFormat(Config.shareImageUrl, window.chainData.id)
+            config.baseUrl +
+              Utils.stringFormat(config.shareImageUrl, window.chainData.id)
           );
           $("#share-animated-image").val(
-            Config.baseUrl +
+            config.baseUrl +
               Utils.stringFormat(
-                Config.shareAnimatedImageUrl,
+                config.shareAnimatedImageUrl,
                 window.chainData.id
               )
           );
         } else if (window.chainData.legacyQueryString !== undefined) {
           $("#share-link").val(
-            Config.baseUrl +
+            config.baseUrl +
               Utils.stringFormat(
-                Config.shareLegacyLinkUrl,
+                config.shareLegacyLinkUrl,
                 window.chainData.legacyQueryString
               )
           );
           $("#share-image").val(
-            Config.baseUrl +
+            config.baseUrl +
               Utils.stringFormat(
-                Config.shareLegacyImageUrl,
+                config.shareLegacyImageUrl,
                 window.chainData.legacyQueryString
               )
           );
@@ -679,59 +679,59 @@ export const Tabs: ITabs = {
         .click(function () {
           var checked = $(this).prop("checked");
 
-          PuyoDisplay.animate.puyo = checked;
+          puyoDisplay.animate.puyo = checked;
           localStorage.setItem("chainsim.animate.puyo", checked ? "yes" : "no");
 
           // See if we need to enable or disable the animation
           if (
             checked &&
-            !PuyoDisplay.puyoAnimation.running &&
-            PuyoDisplay.puyoSkin!.frames !== undefined &&
-            PuyoDisplay.puyoSkin!.frames > 0
+            !puyoDisplay.puyoAnimation.running &&
+            puyoDisplay.puyoSkin!.frames !== undefined &&
+            puyoDisplay.puyoSkin!.frames > 0
           ) {
-            PuyoDisplay.puyoAnimation.start(PuyoDisplay.puyoSkin!.frames);
-          } else if (!checked && PuyoDisplay.puyoAnimation.running) {
-            PuyoDisplay.puyoAnimation.stop();
+            puyoDisplay.puyoAnimation.start(puyoDisplay.puyoSkin!.frames);
+          } else if (!checked && puyoDisplay.puyoAnimation.running) {
+            puyoDisplay.puyoAnimation.stop();
           }
         })
-        .prop("checked", PuyoDisplay.animate.puyo);
+        .prop("checked", puyoDisplay.animate.puyo);
 
       $("#animate-sun-puyo") // Sun Puyo animation
         .click(function () {
           var checked = $(this).prop("checked");
 
-          PuyoDisplay.animate.sunPuyo = checked;
+          puyoDisplay.animate.sunPuyo = checked;
           localStorage.setItem(
             "chainsim.animate.sunPuyo",
             checked ? "yes" : "no"
           );
 
           // See if we need to enable or disable the animation
-          if (checked && !PuyoDisplay.sunPuyoAnimation.running) {
-            PuyoDisplay.sunPuyoAnimation.start();
-          } else if (!checked && PuyoDisplay.sunPuyoAnimation.running) {
-            PuyoDisplay.sunPuyoAnimation.stop();
+          if (checked && !puyoDisplay.sunPuyoAnimation.running) {
+            puyoDisplay.sunPuyoAnimation.start();
+          } else if (!checked && puyoDisplay.sunPuyoAnimation.running) {
+            puyoDisplay.sunPuyoAnimation.stop();
           }
         })
-        .prop("checked", PuyoDisplay.animate.sunPuyo);
+        .prop("checked", puyoDisplay.animate.sunPuyo);
 
       $("#animate-nuisance-tray") // Nuisance Tray animation
         .click(function () {
           var checked = $(this).prop("checked");
 
-          PuyoDisplay.animate.nuisanceTray = checked;
+          puyoDisplay.animate.nuisanceTray = checked;
           localStorage.setItem(
             "chainsim.animate.nuisanceTray",
             checked ? "yes" : "no"
           );
         })
-        .prop("checked", PuyoDisplay.animate.puyo);
+        .prop("checked", puyoDisplay.animate.puyo);
 
       // Field Style
       $("#field-style")
         .change(function () {
           $(this).prop("disabled", true);
-          FieldDisplay.load($(this).val());
+          fieldDisplay.load($(this).val());
           localStorage.setItem("chainsim.fieldStyle", String($(this).val()));
         })
         .val(localStorage.getItem("chainsim.fieldStyle") || "standard"); // Default to Standard
@@ -742,12 +742,12 @@ export const Tabs: ITabs = {
         var index = 0;
         for (
           var i = 0;
-          i < Content.Field.EyeCandy.CharacterBackgrounds!.length;
+          i < content.Field.EyeCandy.CharacterBackgrounds!.length;
           i++
         ) {
           $("#character-background .dropdown-menu").append(
             "<h3>" +
-              Content.Field.EyeCandy.CharacterBackgrounds![i].name +
+              content.Field.EyeCandy.CharacterBackgrounds![i].name +
               "</h3>"
           );
           var category = $("<ul>");
@@ -756,7 +756,7 @@ export const Tabs: ITabs = {
           for (
             var j = 0;
             j <
-            Content.Field.EyeCandy.CharacterBackgrounds![i].backgrounds.length;
+            content.Field.EyeCandy.CharacterBackgrounds![i].backgrounds.length;
             j++
           ) {
             $("<li>")
@@ -765,7 +765,7 @@ export const Tabs: ITabs = {
               .attr("data-id", index)
               .html(
                 "<a>" +
-                  Content.Field.EyeCandy.CharacterBackgrounds![i].backgrounds[
+                  content.Field.EyeCandy.CharacterBackgrounds![i].backgrounds[
                     j
                   ] +
                   "</a>"
@@ -787,14 +787,14 @@ export const Tabs: ITabs = {
           );
           $(this).parent().addClass("selected");
 
-          if (FieldDisplay.fieldContent === Content.Field.EyeCandy) {
+          if (fieldDisplay.fieldContent === content.Field.EyeCandy) {
             if (id === 0) {
               $("#field-bg-2").css(
                 "background-image",
                 "url('/images/eyecandy/field_char_bg/" +
-                  Content.Field.EyeCandy.CharaBGs![
+                  content.Field.EyeCandy.CharaBGs![
                     Math.floor(
-                      Math.random() * Content.Field.EyeCandy.CharaBGs!.length
+                      Math.random() * content.Field.EyeCandy.CharaBGs!.length
                     )
                   ] +
                   "')"
@@ -803,17 +803,17 @@ export const Tabs: ITabs = {
               $("#field-bg-2").css(
                 "background-image",
                 "url('/images/eyecandy/field_char_bg/" +
-                  Content.Field.EyeCandy.CharaBGs![id - 1] +
+                  content.Field.EyeCandy.CharaBGs![id - 1] +
                   "')"
               );
             }
           }
 
           $("#character-background-game").text(
-            Content.Field.EyeCandy.CharacterBackgrounds![category].name
+            content.Field.EyeCandy.CharacterBackgrounds![category].name
           );
           $("#character-background-character").text(
-            Content.Field.EyeCandy.CharacterBackgrounds![category].backgrounds[
+            content.Field.EyeCandy.CharacterBackgrounds![category].backgrounds[
               value
             ]
           );
@@ -843,11 +843,11 @@ export const Tabs: ITabs = {
         }
 
         $("#character-background-game").text(
-          Content.Field.EyeCandy.CharacterBackgrounds![boardBackgroundCategory]
+          content.Field.EyeCandy.CharacterBackgrounds![boardBackgroundCategory]
             .name
         );
         $("#character-background-character").text(
-          Content.Field.EyeCandy.CharacterBackgrounds![boardBackgroundCategory]
+          content.Field.EyeCandy.CharacterBackgrounds![boardBackgroundCategory]
             .backgrounds[boardBackgroundValue]
         );
         $(
@@ -857,7 +857,7 @@ export const Tabs: ITabs = {
         ).addClass("selected");
       })();
 
-      $.each(PuyoDisplay.puyoSkins, function (index, value) {
+      $.each(puyoDisplay.puyoSkins, function (index, value) {
         $("<li>")
           .attr("data-value", value.id)
           .append(
@@ -866,7 +866,7 @@ export const Tabs: ITabs = {
                 .addClass("puyo-skin")
                 .css(
                   "background-position",
-                  "0px -" + index * PuyoDisplay.puyoSize + "px"
+                  "0px -" + index * puyoDisplay.puyoSize + "px"
                 )
             )
           )
@@ -877,7 +877,7 @@ export const Tabs: ITabs = {
         $("#puyo-skins li.selected").removeClass("selected");
         $($(this).parent()).addClass("selected");
 
-        PuyoDisplay.setPuyoSkin($(this).parent().attr("data-value")!);
+        puyoDisplay.setPuyoSkin($(this).parent().attr("data-value")!);
         localStorage.setItem(
           "chainsim.puyoSkin",
           $(this).parent().attr("data-value")!
@@ -886,19 +886,19 @@ export const Tabs: ITabs = {
         $("#puyo-skins .dropdown-toggle .puyo-skin").css(
           "background-position",
           "0px -" +
-            PuyoDisplay.getSkinIndex(PuyoDisplay.puyoSkin!.id) *
-              PuyoDisplay.puyoSize +
+            puyoDisplay.getSkinIndex(puyoDisplay.puyoSkin!.id) *
+              puyoDisplay.puyoSize +
             "px"
         );
       });
       $(
-        "#puyo-skins li[data-value='" + PuyoDisplay.puyoSkin!.id + "']"
+        "#puyo-skins li[data-value='" + puyoDisplay.puyoSkin!.id + "']"
       ).addClass("selected");
       $("#puyo-skins .dropdown-toggle .puyo-skin").css(
         "background-position",
         "0px -" +
-          PuyoDisplay.getSkinIndex(PuyoDisplay.puyoSkin!.id) *
-            PuyoDisplay.puyoSize +
+          puyoDisplay.getSkinIndex(puyoDisplay.puyoSkin!.id) *
+            puyoDisplay.puyoSize +
           "px"
       );
     },

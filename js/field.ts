@@ -5,10 +5,10 @@
  */
 
 import $ from "jquery";
-import { Tabs } from "./tabs";
+import { tabs } from "./tabs";
 import { FieldMap } from "./fieldmap";
-import { Simulation } from "./simulation";
-import { PuyoDisplay } from "./puyodisplay";
+import { simulation } from "./simulation";
+import { puyoDisplay } from "./puyodisplay";
 import { FieldDefaultWidth, FieldDefaultHeight, FieldDefaultHiddenRows, PuyoType, SimulationDefaultPuyoToClear } from "./constants";
 
 declare global {
@@ -41,7 +41,7 @@ interface IField {
   mapToString: () => string;
 }
 
-export const Field: IField = {
+export const field: IField = {
   width: FieldDefaultWidth, // Field Width (Default = 6)
   height: FieldDefaultHeight, // Field Height (Default = 12)
   hiddenRows: FieldDefaultHiddenRows, // Hidden Rows (Default = 1)
@@ -70,9 +70,9 @@ export const Field: IField = {
     h = h || FieldDefaultHeight;
     hr = hr || FieldDefaultHiddenRows;
 
-    if (Simulation.running) {
+    if (simulation.running) {
       // Stop the simulation
-      Simulation.back();
+      simulation.back();
     }
 
     if (w !== this.width || h !== this.height || hr !== this.hiddenRows) {
@@ -84,23 +84,23 @@ export const Field: IField = {
       this.mapEditor = new FieldMap(this.width, this.totalHeight);
       this.map = this.mapEditor;
 
-      if (PuyoDisplay.renderer) {
+      if (puyoDisplay.renderer) {
         // If we have a render, draw up the new field
-        PuyoDisplay.renderer!.uninit();
+        puyoDisplay.renderer!.uninit();
         $("#field").css({
-          width: this.width * PuyoDisplay.puyoSize + "px",
-          height: this.totalHeight * PuyoDisplay.puyoSize + "px",
+          width: this.width * puyoDisplay.puyoSize + "px",
+          height: this.totalHeight * puyoDisplay.puyoSize + "px",
         });
         $("#field-bg-2").css(
           "top",
-          Field.hiddenRows * PuyoDisplay.puyoSize + "px"
+          field.hiddenRows * puyoDisplay.puyoSize + "px"
         );
         $("#field-bg-3").css(
           "height",
-          Field.hiddenRows * PuyoDisplay.puyoSize + "px"
+          field.hiddenRows * puyoDisplay.puyoSize + "px"
         );
-        Tabs.fieldWidthChanged();
-        PuyoDisplay.renderer!.init();
+        tabs.fieldWidthChanged();
+        puyoDisplay.renderer!.init();
       }
 
       $("#field-size-width").val(this.width);
@@ -117,24 +117,24 @@ export const Field: IField = {
           this.map!.set(x, y, parseInt(chain.charAt(pos), 36));
           pos--;
 
-          if (!PuyoDisplay.renderer) {
+          if (!puyoDisplay.renderer) {
             continue;
           }
 
-          PuyoDisplay.renderer!.drawPuyo(x, y, this.map!.get(x, y));
-          if (!PuyoDisplay.puyoAnimation.running) {
+          puyoDisplay.renderer!.drawPuyo(x, y, this.map!.get(x, y));
+          if (!puyoDisplay.puyoAnimation.running) {
             // Redraw all puyo around us
             if (y > 0) {
-              PuyoDisplay.renderer!.drawPuyo(x, y - 1, this.map!.get(x, y - 1));
+              puyoDisplay.renderer!.drawPuyo(x, y - 1, this.map!.get(x, y - 1));
             }
             if (x > 0) {
-              PuyoDisplay.renderer!.drawPuyo(x - 1, y, this.map!.get(x - 1, y));
+              puyoDisplay.renderer!.drawPuyo(x - 1, y, this.map!.get(x - 1, y));
             }
             if (y < this.totalHeight - 1) {
-              PuyoDisplay.renderer!.drawPuyo(x, y + 1, this.map!.get(x, y + 1));
+              puyoDisplay.renderer!.drawPuyo(x, y + 1, this.map!.get(x, y + 1));
             }
             if (x < this.width - 1) {
-              PuyoDisplay.renderer!.drawPuyo(x + 1, y, this.map!.get(x + 1, y));
+              puyoDisplay.renderer!.drawPuyo(x + 1, y, this.map!.get(x + 1, y));
             }
           }
         }
@@ -156,9 +156,9 @@ export const Field: IField = {
       window.chainData.hiddenRows
     );
 
-    Simulation.puyoToClear =
+    simulation.puyoToClear =
       window.chainData.popLimit || SimulationDefaultPuyoToClear;
-    $("#puyo-to-clear").val(Simulation.puyoToClear);
+    $("#puyo-to-clear").val(simulation.puyoToClear);
 
     this.chainInURL = true;
   },

@@ -1,6 +1,6 @@
 import { PuyoType } from "./constants";
 import { Puyo } from "./puyo";
-import { PuyoDisplay } from "./puyodisplay";
+import { puyoDisplay } from "./puyodisplay";
 
 export class FieldMap {
   map: Puyo[][];
@@ -45,25 +45,25 @@ export class FieldMap {
   set(x: number, y: number, p: PuyoType) {
     this.map[x][y].setPuyo(p);
 
-    if (!PuyoDisplay.renderer) {
+    if (!puyoDisplay.renderer) {
       return;
     }
 
-    PuyoDisplay.renderer.drawPuyo(x, y, this.map[x][y]);
+    puyoDisplay.renderer.drawPuyo(x, y, this.map[x][y]);
 
-    if (!PuyoDisplay.puyoAnimation.running) {
+    if (!puyoDisplay.puyoAnimation.running) {
       // Redraw all puyo around us
       if (y > 0) {
-        PuyoDisplay.renderer.drawPuyo(x, y - 1, this.map[x][y - 1]);
+        puyoDisplay.renderer.drawPuyo(x, y - 1, this.map[x][y - 1]);
       }
       if (x > 0) {
-        PuyoDisplay.renderer.drawPuyo(x - 1, y, this.map[x - 1][y]);
+        puyoDisplay.renderer.drawPuyo(x - 1, y, this.map[x - 1][y]);
       }
       if (y < this.height - 1) {
-        PuyoDisplay.renderer.drawPuyo(x, y + 1, this.map[x][y + 1]);
+        puyoDisplay.renderer.drawPuyo(x, y + 1, this.map[x][y + 1]);
       }
       if (x < this.width - 1) {
-        PuyoDisplay.renderer.drawPuyo(x + 1, y, this.map[x + 1][y]);
+        puyoDisplay.renderer.drawPuyo(x + 1, y, this.map[x + 1][y]);
       }
     }
   }
