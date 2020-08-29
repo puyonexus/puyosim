@@ -1,11 +1,11 @@
-import { PuyoType } from "./constants";
-
 /*
  * Puyo
  *
  * Contains methods dealing with Puyo, which include getting puyo state
  * and URL conversions.
  */
+
+import { PuyoType } from "./constants";
 
 export class Puyo {
   puyo: PuyoType;
