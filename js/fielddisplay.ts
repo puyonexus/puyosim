@@ -7,7 +7,7 @@
 import $ from "jquery";
 import { PuyoDisplay } from "./puyodisplay";
 import { Simulation } from "./simulation";
-import { Constants, PuyoType } from "./constants";
+import { PuyoType } from "./constants";
 import { Content, IFieldType } from "./content";
 import { Field } from "./field";
 import { Tabs } from "./tabs";
@@ -23,7 +23,7 @@ interface IFieldDisplay {
 
 export const FieldDisplay: IFieldDisplay = {
   fieldContent: undefined, // A reference to the content of the field
-  selectedPuyo: Constants.Puyo.None, // Current Puyo that is selected
+  selectedPuyo: PuyoType.None, // Current Puyo that is selected
   insertPuyo: false, // Indicates if we are going to insert Puyo (the insert box is checked)
 
   init: function () {
@@ -203,12 +203,12 @@ export const FieldDisplay: IFieldDisplay = {
 
           if (leftMouseDown) {
             // Left click, place puyo
-            if (self.selectedPuyo === Constants.Puyo.Delete) {
+            if (self.selectedPuyo === PuyoType.Delete) {
               // Delete this puyo and shift the ones on top down one row
               for (y = fieldY; y > 0; y--) {
                 Field.map!.set(fieldX, y, Field.map!.puyo(fieldX, y - 1));
               }
-              Field.map!.set(fieldX, 0, Constants.Puyo.None);
+              Field.map!.set(fieldX, 0, PuyoType.None);
             } else {
               if (self.insertPuyo) {
                 // Insert puyo
@@ -221,7 +221,7 @@ export const FieldDisplay: IFieldDisplay = {
             }
           } else if (rightMouseDown) {
             // Right click, delete puyo
-            Field.map!.set(fieldX, fieldY, Constants.Puyo.None);
+            Field.map!.set(fieldX, fieldY, PuyoType.None);
           }
         })
         .mouseup(function () {
