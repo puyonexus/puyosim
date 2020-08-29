@@ -6,7 +6,7 @@
 
 import $ from "jquery";
 import { Config } from "./config";
-import { Constants } from "./constants";
+import { FieldDefaultWidth, FieldDefaultHeight, FieldDefaultHiddenRows, SimulationDefaultPuyoToClear, SimulationDefaultTargetPoints } from "./constants";
 import { Content } from "./content";
 import { FieldDisplay } from "./fielddisplay";
 import { PuyoDisplay } from "./puyodisplay";
@@ -194,9 +194,9 @@ export const Tabs: ITabs = {
 
       Field.setChain(
         chain,
-        this.chains[index].width || Constants.Field.DefaultWidth,
-        this.chains[index].height || Constants.Field.DefaultHeight,
-        this.chains[index].hiddenRows || Constants.Field.DefaultHiddenRows
+        this.chains[index].width || FieldDefaultWidth,
+        this.chains[index].height || FieldDefaultHeight,
+        this.chains[index].hiddenRows || FieldDefaultHiddenRows
       );
     },
 
@@ -362,15 +362,15 @@ export const Tabs: ITabs = {
             colors
           ].chains[length].chain, // Chain
           self.chains[category].categories[subCategory].fieldWidth ||
-            Constants.Field.DefaultWidth, // Field width
+            FieldDefaultWidth, // Field width
           self.chains[category].categories[subCategory].fieldHeight ||
-            Constants.Field.DefaultHeight, // Field height
-          Constants.Field.DefaultHiddenRows // Hidden rows (It's always 1 with these chains)
+            FieldDefaultHeight, // Field height
+          FieldDefaultHiddenRows // Hidden rows (It's always 1 with these chains)
         );
 
         Simulation.puyoToClear =
           self.chains[category].categories[subCategory].puyoToClear ||
-          Constants.Simulation.DefaultPuyoToClear;
+          SimulationDefaultPuyoToClear;
         $("#puyo-to-clear").val(Simulation.puyoToClear);
 
         $(this).prop("selectedIndex", 0);
@@ -578,7 +578,7 @@ export const Tabs: ITabs = {
           $("#target-points")
             .val(
               attackPowers[category].targetPoints ||
-                Constants.Simulation.DefaultTargetPoints
+                SimulationDefaultTargetPoints
             )
             .change();
         });

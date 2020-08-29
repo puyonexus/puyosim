@@ -5,7 +5,7 @@
  */
 
 import $ from "jquery";
-import { Constants, PuyoType } from "./constants";
+import { PuyoType, FieldDefaultWidth, FieldDefaultHeight, FieldDefaultHiddenRows } from "./constants";
 import { Field } from "./field";
 import { Simulation } from "./simulation";
 import { Puyo } from "./puyo";
@@ -154,7 +154,7 @@ export const PuyoDisplay: IPuyoDisplay = {
       // Returns the X position of the puyo
       var pos = 0;
 
-      if (p === Constants.Puyo.Sun) {
+      if (p === PuyoType.Sun) {
         // Sun Puyo
         if (self.sunPuyoAnimation.running) {
           return self.sunPuyoAnimation.frame;
@@ -172,7 +172,7 @@ export const PuyoDisplay: IPuyoDisplay = {
       }
 
       if (y < Field.hiddenRows) return 0;
-      if (p === Constants.Puyo.Nuisance || p === Constants.Puyo.Point) return 0;
+      if (p === PuyoType.Nuisance || p === PuyoType.Point) return 0;
 
       var L = x > 0 && Field.map!.puyo(x - 1, y) === p,
         R = x < Field.width - 1 && Field.map!.puyo(x + 1, y) === p,
@@ -188,91 +188,91 @@ export const PuyoDisplay: IPuyoDisplay = {
     }
 
     switch (p) {
-      case Constants.Puyo.None:
+      case PuyoType.None:
         posX = 0;
         posY = 0;
         break;
-      case Constants.Puyo.Delete:
+      case PuyoType.Delete:
         posX = 0;
         posY = 0;
         break;
 
-      case Constants.Puyo.Red:
+      case PuyoType.Red:
         posX = getXPosition(x, y, p);
         posY = 0;
         break;
-      case Constants.Puyo.Green:
+      case PuyoType.Green:
         posX = getXPosition(x, y, p);
         posY = 1;
         break;
-      case Constants.Puyo.Blue:
+      case PuyoType.Blue:
         posX = getXPosition(x, y, p);
         posY = 2;
         break;
-      case Constants.Puyo.Yellow:
+      case PuyoType.Yellow:
         posX = getXPosition(x, y, p);
         posY = 3;
         break;
-      case Constants.Puyo.Purple:
+      case PuyoType.Purple:
         posX = getXPosition(x, y, p);
         posY = 4;
         break;
 
-      case Constants.Puyo.Nuisance:
+      case PuyoType.Nuisance:
         posX = getXPosition(x, y, p);
         posY = 5;
         break;
-      case Constants.Puyo.Point:
+      case PuyoType.Point:
         posX = getXPosition(x, y, p);
         posY = 6;
         break;
-      case Constants.Puyo.Sun:
+      case PuyoType.Sun:
         posX = getXPosition(x, y, p);
         posY = 7;
         break;
-      case Constants.Puyo.Hard:
+      case PuyoType.Hard:
         posX = 0;
         posY = 8;
         break;
-      case Constants.Puyo.Iron:
+      case PuyoType.Iron:
         posX = 1;
         posY = 8;
         break;
-      case Constants.Puyo.Block:
+      case PuyoType.Block:
         posX = 2;
         posY = 8;
         break;
 
-      case Constants.Puyo.Cleared.Red:
+      case PuyoType.ClearedRed:
         posX = 3;
         posY = 8;
         break;
-      case Constants.Puyo.Cleared.Green:
+      case PuyoType.ClearedGreen:
         posX = 4;
         posY = 8;
         break;
-      case Constants.Puyo.Cleared.Blue:
+      case PuyoType.ClearedBlue:
         posX = 5;
         posY = 8;
         break;
-      case Constants.Puyo.Cleared.Yellow:
+      case PuyoType.ClearedYellow:
         posX = 6;
         posY = 8;
         break;
-      case Constants.Puyo.Cleared.Purple:
+      case PuyoType.ClearedPurple:
         posX = 7;
         posY = 8;
         break;
 
-      case Constants.Puyo.Cleared.Nuisance:
+      case PuyoType.ClearedNuisance:
         posX = 8;
         posY = 8;
         break;
-      case Constants.Puyo.Cleared.Point:
+      case PuyoType.ClearedPoint:
         posX = 9;
         posY = 8;
         break;
-      case Constants.Puyo.Cleared.Sun:
+      case PuyoType.ClearedSun:
         posX = 10;
         posY = 8;
         break;
@@ -332,26 +332,26 @@ export const PuyoDisplay: IPuyoDisplay = {
     init: function () {
       // Initalize the Canvas Renderer
       if (
-        (Field.width !== Constants.Field.DefaultWidth ||
-          Field.height !== Constants.Field.DefaultHeight) &&
+        (Field.width !== FieldDefaultWidth ||
+          Field.height !== FieldDefaultHeight) &&
         !$("#field-content").hasClass("alternate")
       ) {
         $("#field-content").addClass("alternate");
       } else if (
-        Field.width === Constants.Field.DefaultWidth &&
-        Field.height === Constants.Field.DefaultHeight &&
+        Field.width === FieldDefaultWidth &&
+        Field.height === FieldDefaultHeight &&
         $("#field-content").hasClass("alternate")
       ) {
         $("#field-content").removeClass("alternate");
       }
 
       if (
-        Field.hiddenRows !== Constants.Field.DefaultHiddenRows &&
+        Field.hiddenRows !== FieldDefaultHiddenRows &&
         !$("#field-bg-1").hasClass("alternate")
       ) {
         $("#field-bg-1").addClass("alternate");
       } else if (
-        Field.hiddenRows === Constants.Field.DefaultHiddenRows &&
+        Field.hiddenRows === FieldDefaultHiddenRows &&
         $("#field-bg-1").hasClass("alternate")
       ) {
         $("#field-bg-1").removeClass("alternate");
@@ -419,7 +419,7 @@ export const PuyoDisplay: IPuyoDisplay = {
         this.parent.puyoSize
       );
 
-      if (p.puyo !== Constants.Puyo.None && this.puyoImage !== undefined) {
+      if (p.puyo !== PuyoType.None && this.puyoImage !== undefined) {
         pos = this.parent.getImagePosition(x, y, p.puyo);
         if (y < Field.hiddenRows) {
           // Puyo in hidden row are partially transparent
@@ -756,7 +756,7 @@ export const PuyoDisplay: IPuyoDisplay = {
       for (var y = 0; y < Field.totalHeight; y++) {
         for (var x = 0; x < Field.width; x++) {
           var p = Field.map!.get(x, y);
-          if (p.puyo === Constants.Puyo.Sun) {
+          if (p.puyo === PuyoType.Sun) {
             // Only redraw sun puyo
             this.parent.renderer!.drawPuyo(x, y, p);
           }
@@ -799,7 +799,7 @@ export const PuyoDisplay: IPuyoDisplay = {
       for (var y = 0; y < Field.totalHeight; y++) {
         for (var x = 0; x < Field.width; x++) {
           var p = Field.map!.get(x, y);
-          if (p.puyo === Constants.Puyo.Sun) {
+          if (p.puyo === PuyoType.Sun) {
             // Only redraw sun puyo
             this.parent.renderer!.drawPuyo(x, y, p);
           }

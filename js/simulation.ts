@@ -5,7 +5,7 @@
  */
 
 import $ from "jquery";
-import { Constants } from "./constants";
+import { PuyoType, SimulationDefaultPuyoToClear, SimulationDefaultPointPuyoBonus, SimulationDefaultTargetPoints, SimulationDefaultSpeed } from "./constants";
 import { ControlsDisplay } from "./controlsdisplay";
 import { PuyoDisplay } from "./puyodisplay";
 import { FieldMap } from "./fieldmap";
@@ -69,10 +69,10 @@ export const Simulation = {
     672,
   ],
   chainPowerInc: 0, // Chain power increment
-  puyoToClear: Constants.Simulation.DefaultPuyoToClear, // Puyo To Clear (Default = 4)
-  pointPuyoBonus: Constants.Simulation.DefaultPointPuyoBonus, // Point Puyo Bonus (Default = 50)
-  targetPoints: Constants.Simulation.DefaultTargetPoints, // Target Points (Default = 70)
-  speed: Constants.Simulation.DefaultSpeed, // Speed that the simulator runs at (lower = faster; Default = 500)
+  puyoToClear: SimulationDefaultPuyoToClear, // Puyo To Clear (Default = 4)
+  pointPuyoBonus: SimulationDefaultPointPuyoBonus, // Point Puyo Bonus (Default = 50)
+  targetPoints: SimulationDefaultTargetPoints, // Target Points (Default = 70)
+  speed: SimulationDefaultSpeed, // Speed that the simulator runs at (lower = faster; Default = 500)
   scoreMode: 0, // Score Mode (0 = Classic, 1 = Fever)
 
   back: function () {
@@ -315,19 +315,19 @@ export const Simulation = {
 
               // Add the erased puyo to the group list
               switch (puyo) {
-                case Constants.Puyo.Red:
+                case PuyoType.Red:
                   groups[0].push(cleared);
                   break;
-                case Constants.Puyo.Green:
+                case PuyoType.Green:
                   groups[1].push(cleared);
                   break;
-                case Constants.Puyo.Blue:
+                case PuyoType.Blue:
                   groups[2].push(cleared);
                   break;
-                case Constants.Puyo.Yellow:
+                case PuyoType.Yellow:
                   groups[3].push(cleared);
                   break;
-                case Constants.Puyo.Purple:
+                case PuyoType.Purple:
                   groups[4].push(cleared);
                   break;
               }
@@ -336,20 +336,20 @@ export const Simulation = {
                 // Set the cleared sprite for the cleared puyo
                 pos = list[i];
                 switch (Field.map!.puyo(pos.x, pos.y)) {
-                  case Constants.Puyo.Red:
-                    Field.map!.set(pos.x, pos.y, Constants.Puyo.Cleared.Red);
+                  case PuyoType.Red:
+                    Field.map!.set(pos.x, pos.y, PuyoType.ClearedRed);
                     break;
-                  case Constants.Puyo.Green:
-                    Field.map!.set(pos.x, pos.y, Constants.Puyo.Cleared.Green);
+                  case PuyoType.Green:
+                    Field.map!.set(pos.x, pos.y, PuyoType.ClearedGreen);
                     break;
-                  case Constants.Puyo.Blue:
-                    Field.map!.set(pos.x, pos.y, Constants.Puyo.Cleared.Blue);
+                  case PuyoType.Blue:
+                    Field.map!.set(pos.x, pos.y, PuyoType.ClearedBlue);
                     break;
-                  case Constants.Puyo.Yellow:
-                    Field.map!.set(pos.x, pos.y, Constants.Puyo.Cleared.Yellow);
+                  case PuyoType.Yellow:
+                    Field.map!.set(pos.x, pos.y, PuyoType.ClearedYellow);
                     break;
-                  case Constants.Puyo.Purple:
-                    Field.map!.set(pos.x, pos.y, Constants.Puyo.Cleared.Purple);
+                  case PuyoType.Purple:
+                    Field.map!.set(pos.x, pos.y, PuyoType.ClearedPurple);
                     break;
                 }
 
@@ -371,31 +371,31 @@ export const Simulation = {
                   checkX = pos.x + this.positions[j].x; // Shortcuts
                   checkY = pos.y + this.positions[j].y; // Shortcuts
                   if (
-                    Field.map!.puyo(checkX, checkY) === Constants.Puyo.Nuisance
+                    Field.map!.puyo(checkX, checkY) === PuyoType.Nuisance
                   ) {
                     // Nuisance Puyo
                     Field.map!.set(
                       checkX,
                       checkY,
-                      Constants.Puyo.Cleared.Nuisance
+                      PuyoType.ClearedNuisance
                     );
                   } else if (
-                    Field.map!.puyo(checkX, checkY) === Constants.Puyo.Point
+                    Field.map!.puyo(checkX, checkY) === PuyoType.Point
                   ) {
                     // Point Puyo
-                    Field.map!.set(checkX, checkY, Constants.Puyo.Cleared.Point);
+                    Field.map!.set(checkX, checkY, PuyoType.ClearedPoint);
                     pointPuyoCleared++;
                   } else if (
-                    Field.map!.puyo(checkX, checkY) === Constants.Puyo.Sun
+                    Field.map!.puyo(checkX, checkY) === PuyoType.Sun
                   ) {
                     // Sun Puyo
-                    Field.map!.set(checkX, checkY, Constants.Puyo.Cleared.Sun);
+                    Field.map!.set(checkX, checkY, PuyoType.ClearedSun);
                     sunPuyoCleared++;
                   } else if (
-                    Field.map!.puyo(checkX, checkY) === Constants.Puyo.Hard
+                    Field.map!.puyo(checkX, checkY) === PuyoType.Hard
                   ) {
                     // Hard Puyo
-                    Field.map!.set(checkX, checkY, Constants.Puyo.Nuisance);
+                    Field.map!.set(checkX, checkY, PuyoType.Nuisance);
                   }
                 }
               }
@@ -556,7 +556,7 @@ export const Simulation = {
         // Can start at 1 since you can't clear puyo in the hidden row
         for (x = 0; x < Field.width; x++) {
           if (Field.map!.get(x, y).isCleared()) {
-            Field.map!.set(x, y, Constants.Puyo.None);
+            Field.map!.set(x, y, PuyoType.None);
           }
         }
       }
@@ -623,9 +623,9 @@ export const Simulation = {
       for (var y = Field.totalHeight - 2; y >= 0; y--) {
         // No need to check the bottom row
         if (
-          Field.map!.puyo(x, y) !== Constants.Puyo.None &&
-          Field.map!.puyo(x, y) !== Constants.Puyo.Block &&
-          Field.map!.puyo(x, y + 1) === Constants.Puyo.None
+          Field.map!.puyo(x, y) !== PuyoType.None &&
+          Field.map!.puyo(x, y) !== PuyoType.Block &&
+          Field.map!.puyo(x, y + 1) === PuyoType.None
         ) {
           // There's an empty space below this puyo!
           dropped = true;
@@ -633,13 +633,13 @@ export const Simulation = {
           var y2 = y;
           while (
             y2 < Field.totalHeight - 1 &&
-            Field.map!.puyo(x, y2 + 1) === Constants.Puyo.None
+            Field.map!.puyo(x, y2 + 1) === PuyoType.None
           ) {
             y2++;
           }
 
           Field.map!.set(x, y2, Field.map!.puyo(x, y));
-          Field.map!.set(x, y, Constants.Puyo.None);
+          Field.map!.set(x, y, PuyoType.None);
         }
       }
     }
