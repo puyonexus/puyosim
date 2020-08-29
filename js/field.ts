@@ -26,7 +26,22 @@ import { Constants } from "./constants";
 import { Simulation } from "./simulation";
 import { PuyoDisplay } from "./puyodisplay";
 
-export const Field = {
+interface IField {
+  width: number;
+  height: number;
+  hiddenRows: number;
+  totalHeight: number;
+  chainInURL: boolean;
+  map?: FieldMap;
+  mapEditor?: FieldMap;
+  mapSimulation?: FieldMap;
+  init: () => void;
+  setChain: (chain: any, w: any, h: any, hr?: any) => void;
+  setChainFromURL: () => void;
+  mapToString: () => string;
+}
+
+export const Field: IField = {
   width: Constants.Field.DefaultWidth, // Field Width (Default = 6)
   height: Constants.Field.DefaultHeight, // Field Height (Default = 12)
   hiddenRows: Constants.Field.DefaultHiddenRows, // Hidden Rows (Default = 1)
@@ -72,7 +87,7 @@ export const Field = {
 
       if (PuyoDisplay.renderer) {
         // If we have a render, draw up the new field
-        PuyoDisplay.renderer.uninit();
+        PuyoDisplay.renderer!.uninit();
         $("#field").css({
           width: this.width * PuyoDisplay.puyoSize + "px",
           height: this.totalHeight * PuyoDisplay.puyoSize + "px",
@@ -86,7 +101,7 @@ export const Field = {
           Field.hiddenRows * PuyoDisplay.puyoSize + "px"
         );
         Tabs.fieldWidthChanged();
-        PuyoDisplay.renderer.init();
+        PuyoDisplay.renderer!.init();
       }
 
       $("#field-size-width").val(this.width);
@@ -98,29 +113,29 @@ export const Field = {
     for (var y = this.totalHeight - 1; y >= 0; y--) {
       for (var x = this.width - 1; x >= 0; x--) {
         if (pos < 0) {
-          this.map.set(x, y, Constants.Puyo.None);
+          this.map!.set(x, y, Constants.Puyo.None);
         } else {
-          this.map.set(x, y, parseInt(chain.charAt(pos), 36));
+          this.map!.set(x, y, parseInt(chain.charAt(pos), 36));
           pos--;
 
           if (!PuyoDisplay.renderer) {
             continue;
           }
 
-          PuyoDisplay.renderer.drawPuyo(x, y, this.map.get(x, y));
+          PuyoDisplay.renderer!.drawPuyo(x, y, this.map!.get(x, y));
           if (!PuyoDisplay.puyoAnimation.running) {
             // Redraw all puyo around us
             if (y > 0) {
-              PuyoDisplay.renderer.drawPuyo(x, y - 1, this.map.get(x, y - 1));
+              PuyoDisplay.renderer!.drawPuyo(x, y - 1, this.map!.get(x, y - 1));
             }
             if (x > 0) {
-              PuyoDisplay.renderer.drawPuyo(x - 1, y, this.map.get(x - 1, y));
+              PuyoDisplay.renderer!.drawPuyo(x - 1, y, this.map!.get(x - 1, y));
             }
             if (y < this.totalHeight - 1) {
-              PuyoDisplay.renderer.drawPuyo(x, y + 1, this.map.get(x, y + 1));
+              PuyoDisplay.renderer!.drawPuyo(x, y + 1, this.map!.get(x, y + 1));
             }
             if (x < this.width - 1) {
-              PuyoDisplay.renderer.drawPuyo(x + 1, y, this.map.get(x + 1, y));
+              PuyoDisplay.renderer!.drawPuyo(x + 1, y, this.map!.get(x + 1, y));
             }
           }
         }
@@ -155,12 +170,12 @@ export const Field = {
       chainString = ""; // The chain string
     for (var y = 0; y < this.totalHeight; y++) {
       for (var x = 0; x < this.width; x++) {
-        if (this.mapEditor.puyo(x, y) === Constants.Puyo.None && !addZeros) {
+        if (this.mapEditor!.puyo(x, y) === Constants.Puyo.None && !addZeros) {
           continue; // Don't need to add zeros to the front of the string
         }
 
         addZeros = true;
-        chainString += this.mapEditor.puyo(x, y).toString(16);
+        chainString += this.mapEditor!.puyo(x, y).toString(16);
       }
     }
 
