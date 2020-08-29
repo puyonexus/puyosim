@@ -58,11 +58,11 @@ interface ISettingsTab {
 interface ITabs {
   display: () => void;
   fieldWidthChanged: () => void;
-  SavedChains: ISavedChainsTab;
-  Chains: IChainsTab;
-  Simulator: ISimulatorTab;
-  Links: ILinksTab;
-  Settings: ISettingsTab;
+  savedChains: ISavedChainsTab;
+  chains: IChainsTab;
+  simulator: ISimulatorTab;
+  links: ILinksTab;
+  settings: ISettingsTab;
 }
 
 export const tabs: ITabs = {
@@ -102,11 +102,11 @@ export const tabs: ITabs = {
       }
     });
 
-    this.SavedChains.init();
-    this.Chains.init();
-    this.Simulator.init();
-    this.Links.init();
-    this.Settings.init();
+    this.savedChains.init();
+    this.chains.init();
+    this.simulator.init();
+    this.links.init();
+    this.settings.init();
   },
 
   fieldWidthChanged: function () {
@@ -136,7 +136,7 @@ export const tabs: ITabs = {
     }
   },
 
-  SavedChains: {
+  savedChains: {
     chains: [], // Saved chains array
 
     init: function () {
@@ -297,7 +297,7 @@ export const tabs: ITabs = {
     },
   },
 
-  Chains: {
+  chains: {
     chains: [], // Chains
 
     init: function () {
@@ -443,7 +443,7 @@ export const tabs: ITabs = {
     },
   },
 
-  Simulator: {
+  simulator: {
     init: function () {
       // Initalizes this tab
       // Scoring
@@ -589,7 +589,7 @@ export const tabs: ITabs = {
     },
   },
 
-  Links: {
+  links: {
     init: function () {
       // Initalizes this tab
       var self = this;
@@ -671,7 +671,7 @@ export const tabs: ITabs = {
     },
   },
 
-  Settings: {
+  settings: {
     init: function () {
       // Initalizes this tab
       // Animation
