@@ -51,7 +51,7 @@ interface IPuyoDisplay {
   display: () => void;
   setPuyoSkin: (skin: string) => void;
   displayPuyoSelection: () => void;
-  getSkinIndex: (id: string) => void;
+  getSkinIndex: (id: string) => number;
   CanvasRenderer: ICanvasRenderer;
   puyoAnimation: {
     parent: IPuyoDisplay;

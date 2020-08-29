@@ -16,13 +16,62 @@ import { Field } from "./field";
 import { default as attackPowersJson } from "./data/attackPowers.json";
 import { default as chainsJson } from "./data/chains.json";
 
-export const Tabs = {
+interface ISavedChain {
+  name: string;
+  width: number;
+  height: number;
+  hiddenRows: number;
+  chain: string;
+  format: "base36"|"legacy";
+}
+
+interface ISavedChainsTab {
+  chains: ISavedChain[];
+  init: () => void;
+  load: (index: number) => void;
+  add: (name: string) => void;
+  remove: (index: number) => void;
+  saveChains: () => void;
+  display: () => void;
+  addToDisplay: (index: number) => void;
+  removeFromDisplay: (index: number) => void;
+};
+
+interface IChainsTab {
+  chains: typeof chainsJson;
+  init: () => void;
+  displaySubCategory: (category: any, subCategory: any) => void;
+};
+
+interface ISimulatorTab {
+  init: () => void;
+}
+
+interface ILinksTab {
+  init: () => void;
+}
+
+interface ISettingsTab {
+  init: () => void;
+}
+
+interface ITabs {
+  display: () => void;
+  fieldWidthChanged: () => void;
+  SavedChains: ISavedChainsTab;
+  Chains: IChainsTab;
+  Simulator: ISimulatorTab;
+  Links: ILinksTab;
+  Settings: ISettingsTab;
+}
+
+export const Tabs: ITabs = {
   display: function () {
     // Displays the tab content and initalizes all of the tabs
     // Set up the tabs for the options
     $("#simulator-tabs-select > li a[data-target]").click(function () {
       var $this = $(this),
-        $dataTarget = $this.attr("data-target"),
+        $dataTarget = $this.attr("data-target")!,
         $parent = $this.parent();
 
       $("#simulator-tabs-select > li.tab-active").removeClass("tab-active");
@@ -63,7 +112,7 @@ export const Tabs = {
   fieldWidthChanged: function () {
     // Called when the field width changes
     var $simulatorTabs = $("#simulator-tabs"),
-      $simulatorTabsWidth = $simulatorTabs.outerWidth(true),
+      $simulatorTabsWidth = $simulatorTabs.outerWidth(true)!,
       $simulatorTabsMinWidth = $simulatorTabs.data("min-width");
 
     if (
@@ -105,7 +154,7 @@ export const Tabs = {
       // Save chain
       $("#save-chain-save").click(function () {
         if ($("#save-chain-name").val() !== "") {
-          self.add($("#save-chain-name").val());
+          self.add(String($("#save-chain-name").val()));
           $("#save-chain-name").val("");
         }
       });
@@ -127,7 +176,7 @@ export const Tabs = {
       this.display();
     },
 
-    load: function (index) {
+    load: function (index: number) {
       // Load a chain
       var chain = this.chains[index].chain;
 
@@ -203,7 +252,7 @@ export const Tabs = {
         .on("click", "li .chain-name a", function () {
           self.load(
             parseInt(
-              $(this).parents("#saved-chains-list li").attr("data-value"),
+              $(this).parents("#saved-chains-list li").attr("data-value")!,
               10
             )
           );
@@ -211,7 +260,7 @@ export const Tabs = {
         .on("click", "li .icon-delete", function () {
           self.remove(
             parseInt(
-              $(this).parents("#saved-chains-list li").attr("data-value"),
+              $(this).parents("#saved-chains-list li").attr("data-value")!,
               10
             )
           );
@@ -277,8 +326,8 @@ export const Tabs = {
       }
 
       $("#preset-chains .dropdown-menu a").click(function () {
-        var category = parseInt($(this).parent().attr("data-category"), 10),
-          value = parseInt($(this).parent().attr("data-value"), 10);
+        var category = parseInt(String($(this).parent().attr("data-category")), 10),
+          value = parseInt(String($(this).parent().attr("data-value")), 10);
 
         $("#preset-chains .dropdown-menu li.selected").removeClass("selected");
         $(this).parent().addClass("selected");
@@ -297,15 +346,15 @@ export const Tabs = {
         }
 
         var category = parseInt(
-            $("#preset-chains .dropdown-menu .selected").attr("data-category"),
+            String($("#preset-chains .dropdown-menu .selected").attr("data-category")),
             10
           ),
           subCategory = parseInt(
-            $("#preset-chains .dropdown-menu .selected").attr("data-value"),
+            String($("#preset-chains .dropdown-menu .selected").attr("data-value")),
             10
           ),
-          type = parseInt($(this).attr("data-type"), 10),
-          colors = parseInt($(this).attr("data-colors"), 10),
+          type = parseInt(String($(this).attr("data-type")), 10),
+          colors = parseInt(String($(this).attr("data-colors")), 10),
           length = parseInt(String($(this).val()), 10);
 
         Field.setChain(
@@ -502,8 +551,8 @@ export const Tabs = {
         }
 
         $("#attack-powers .dropdown-menu a").click(function () {
-          var category = parseInt($(this).parent().attr("data-category"), 10),
-            value = parseInt($(this).parent().attr("data-value"), 10);
+          var category = parseInt(String($(this).parent().attr("data-category")), 10),
+            value = parseInt(String($(this).parent().attr("data-value")), 10);
 
           $("#attack-powers .dropdown-menu li.selected").removeClass(
             "selected"
@@ -637,10 +686,10 @@ export const Tabs = {
           if (
             checked &&
             !PuyoDisplay.puyoAnimation.running &&
-            PuyoDisplay.puyoSkin.frames !== undefined &&
-            PuyoDisplay.puyoSkin.frames > 0
+            PuyoDisplay.puyoSkin!.frames !== undefined &&
+            PuyoDisplay.puyoSkin!.frames > 0
           ) {
-            PuyoDisplay.puyoAnimation.start(PuyoDisplay.puyoSkin.frames);
+            PuyoDisplay.puyoAnimation.start(PuyoDisplay.puyoSkin!.frames);
           } else if (!checked && PuyoDisplay.puyoAnimation.running) {
             PuyoDisplay.puyoAnimation.stop();
           }
@@ -693,12 +742,12 @@ export const Tabs = {
         var index = 0;
         for (
           var i = 0;
-          i < Content.Field.EyeCandy.CharacterBackgrounds.length;
+          i < Content.Field.EyeCandy.CharacterBackgrounds!.length;
           i++
         ) {
           $("#character-background .dropdown-menu").append(
             "<h3>" +
-              Content.Field.EyeCandy.CharacterBackgrounds[i].name +
+              Content.Field.EyeCandy.CharacterBackgrounds![i].name +
               "</h3>"
           );
           var category = $("<ul>");
@@ -707,7 +756,7 @@ export const Tabs = {
           for (
             var j = 0;
             j <
-            Content.Field.EyeCandy.CharacterBackgrounds[i].backgrounds.length;
+            Content.Field.EyeCandy.CharacterBackgrounds![i].backgrounds.length;
             j++
           ) {
             $("<li>")
@@ -716,7 +765,7 @@ export const Tabs = {
               .attr("data-id", index)
               .html(
                 "<a>" +
-                  Content.Field.EyeCandy.CharacterBackgrounds[i].backgrounds[
+                  Content.Field.EyeCandy.CharacterBackgrounds![i].backgrounds[
                     j
                   ] +
                   "</a>"
@@ -729,9 +778,9 @@ export const Tabs = {
         }
 
         $("#character-background .dropdown-menu a").click(function () {
-          var category = parseInt($(this).parent().attr("data-category"), 10),
-            value = parseInt($(this).parent().attr("data-value"), 10),
-            id = parseInt($(this).parent().attr("data-id"), 10);
+          var category = parseInt($(this).parent().attr("data-category")!, 10),
+            value = parseInt($(this).parent().attr("data-value")!, 10),
+            id = parseInt($(this).parent().attr("data-id")!, 10);
 
           $("#character-background .dropdown-menu li.selected").removeClass(
             "selected"
@@ -743,9 +792,9 @@ export const Tabs = {
               $("#field-bg-2").css(
                 "background-image",
                 "url('/images/eyecandy/field_char_bg/" +
-                  Content.Field.EyeCandy.CharaBGs[
+                  Content.Field.EyeCandy.CharaBGs![
                     Math.floor(
-                      Math.random() * Content.Field.EyeCandy.CharaBGs.length
+                      Math.random() * Content.Field.EyeCandy.CharaBGs!.length
                     )
                   ] +
                   "')"
@@ -754,17 +803,17 @@ export const Tabs = {
               $("#field-bg-2").css(
                 "background-image",
                 "url('/images/eyecandy/field_char_bg/" +
-                  Content.Field.EyeCandy.CharaBGs[id - 1] +
+                  Content.Field.EyeCandy.CharaBGs![id - 1] +
                   "')"
               );
             }
           }
 
           $("#character-background-game").text(
-            Content.Field.EyeCandy.CharacterBackgrounds[category].name
+            Content.Field.EyeCandy.CharacterBackgrounds![category].name
           );
           $("#character-background-character").text(
-            Content.Field.EyeCandy.CharacterBackgrounds[category].backgrounds[
+            Content.Field.EyeCandy.CharacterBackgrounds![category].backgrounds[
               value
             ]
           );
@@ -780,29 +829,25 @@ export const Tabs = {
           boardBackgroundCategory =
             parseInt(
               $(
-                "#character-background .dropdown-menu li[data-id='" +
-                  boardBackgroundId +
-                  "']"
-              ).attr("data-category"),
+                `#character-background .dropdown-menu li[data-id='${boardBackgroundId}']`
+              ).attr("data-category")!,
               10
             ) || 0;
           boardBackgroundValue =
             parseInt(
               $(
-                "#character-background .dropdown-menu li[data-id='" +
-                  boardBackgroundId +
-                  "']"
-              ).attr("data-value"),
+                `#character-background .dropdown-menu li[data-id='${boardBackgroundId}']`
+              ).attr("data-value")!,
               10
             ) || 0;
         }
 
         $("#character-background-game").text(
-          Content.Field.EyeCandy.CharacterBackgrounds[boardBackgroundCategory]
+          Content.Field.EyeCandy.CharacterBackgrounds![boardBackgroundCategory]
             .name
         );
         $("#character-background-character").text(
-          Content.Field.EyeCandy.CharacterBackgrounds[boardBackgroundCategory]
+          Content.Field.EyeCandy.CharacterBackgrounds![boardBackgroundCategory]
             .backgrounds[boardBackgroundValue]
         );
         $(
@@ -832,27 +877,27 @@ export const Tabs = {
         $("#puyo-skins li.selected").removeClass("selected");
         $($(this).parent()).addClass("selected");
 
-        PuyoDisplay.setPuyoSkin($(this).parent().attr("data-value"));
+        PuyoDisplay.setPuyoSkin($(this).parent().attr("data-value")!);
         localStorage.setItem(
           "chainsim.puyoSkin",
-          $(this).parent().attr("data-value")
+          $(this).parent().attr("data-value")!
         );
 
         $("#puyo-skins .dropdown-toggle .puyo-skin").css(
           "background-position",
           "0px -" +
-            PuyoDisplay.getSkinIndex(PuyoDisplay.puyoSkin.id) *
+            PuyoDisplay.getSkinIndex(PuyoDisplay.puyoSkin!.id) *
               PuyoDisplay.puyoSize +
             "px"
         );
       });
       $(
-        "#puyo-skins li[data-value='" + PuyoDisplay.puyoSkin.id + "']"
+        "#puyo-skins li[data-value='" + PuyoDisplay.puyoSkin!.id + "']"
       ).addClass("selected");
       $("#puyo-skins .dropdown-toggle .puyo-skin").css(
         "background-position",
         "0px -" +
-          PuyoDisplay.getSkinIndex(PuyoDisplay.puyoSkin.id) *
+          PuyoDisplay.getSkinIndex(PuyoDisplay.puyoSkin!.id) *
             PuyoDisplay.puyoSize +
           "px"
       );
