@@ -5,18 +5,84 @@
  */
 
 import $ from "jquery";
-import { Constants } from "./constants";
+import { Constants, PuyoType } from "./constants";
 import { Field } from "./field";
 import { Simulation } from "./simulation";
+import { Puyo } from "./puyo";
 
-export const PuyoDisplay = {
+interface IPosition {
+  x: number;
+  y: number;
+};
+
+interface ICanvasRenderer {
+  ctx: CanvasRenderingContext2D;
+  nuisanceTrayCtx: CanvasRenderingContext2D;
+  puyoImage?: HTMLImageElement;
+  parent: IPuyoDisplay;
+  name: "CanvasRenderer";
+  init: () => void;
+  uninit: () => void;
+  drawPuyo: (x: number, y: number, p: Puyo) => void;
+  setPuyoSkin: () => void;
+  drawNuisanceTray: (n: number, animate: boolean) => void;
+  animateNuisanceTray: (step: number, pos: number[]) => void;
+};
+
+interface IPuyoSkin {
+  id: string;
+  image: string;
+  frames?: number;
+}
+
+interface IPuyoDisplay {
+  puyoSize: number;
+  renderer?: ICanvasRenderer;
+  puyoSkin?: IPuyoSkin;
+  nuisanceTrayTimer?: number;
+  animate: {
+      puyo: boolean;
+      sunPuyo: boolean;
+      nuisanceTray: boolean;
+  };
+  puyoSkins: IPuyoSkin[];
+  init: () => void;
+  getImagePosition: (x: number, y: number, p: PuyoType) => IPosition;
+  display: () => void;
+  setPuyoSkin: (skin: string) => void;
+  displayPuyoSelection: () => void;
+  getSkinIndex: (id: string) => void;
+  CanvasRenderer: ICanvasRenderer;
+  puyoAnimation: {
+    parent: IPuyoDisplay;
+    frame: number;
+    totalFrames: number;
+    timer?: number;
+    running: boolean;
+    animate: () => void;
+    start: (n: any) => void;
+    stop: () => void;
+  };
+  sunPuyoAnimation: {
+    parent: IPuyoDisplay;
+    frame: number;
+    totalFrames: number;
+    timer?: number;
+    running: boolean;
+    animate: () => void;
+    start: () => void;
+    stop: () => void;
+  }
+}
+
+export const PuyoDisplay: IPuyoDisplay = {
   // We're going to start out with our constants
   puyoSize: 32, // Puyo size in pixels (always 32)
 
   // Next we're going to set up our variables
   renderer: undefined, // The renderer object to use to display the puyo (Will always be set to CanvasRenderer)
   puyoSkin: undefined, // The current puyo skin
-  nuisanceTrayTimer: undefined, // The timer for the nuisance tray
+  nuisanceTrayTimer: undefined!, // The timer for the nuisance tray
 
   animate: {
     // Animation settings
@@ -78,13 +144,13 @@ export const PuyoDisplay = {
       "yes";
   },
 
-  getImagePosition: function (x, y, p) {
+  getImagePosition: function (x: number, y: number, p: PuyoType) {
     // Returns the position of the image for background-image (p = puyo object)
-    var posX,
-      posY,
+    var posX = 0,
+      posY = 0,
       self = this;
 
-    function getXPosition(x, y, p) {
+    function getXPosition(x: number, y: number, p: PuyoType): number {
       // Returns the X position of the puyo
       var pos = 0;
 
@@ -96,7 +162,7 @@ export const PuyoDisplay = {
           return 0;
         }
       }
-      if (self.puyoSkin.frames !== undefined && self.puyoSkin.frames > 0) {
+      if (self.puyoSkin!.frames !== undefined && self.puyoSkin!.frames > 0) {
         // Animated Puyo
         if (self.puyoAnimation.running) {
           return self.puyoAnimation.frame;
@@ -108,10 +174,10 @@ export const PuyoDisplay = {
       if (y < Field.hiddenRows) return 0;
       if (p === Constants.Puyo.Nuisance || p === Constants.Puyo.Point) return 0;
 
-      var L = x > 0 && Field.map.puyo(x - 1, y) === p,
-        R = x < Field.width - 1 && Field.map.puyo(x + 1, y) === p,
-        U = y > Field.hiddenRows && Field.map.puyo(x, y - 1) === p,
-        D = y < Field.totalHeight - 1 && Field.map.puyo(x, y + 1) === p;
+      var L = x > 0 && Field.map!.puyo(x - 1, y) === p,
+        R = x < Field.width - 1 && Field.map!.puyo(x + 1, y) === p,
+        U = y > Field.hiddenRows && Field.map!.puyo(x, y - 1) === p,
+        D = y < Field.totalHeight - 1 && Field.map!.puyo(x, y + 1) === p;
 
       if (L) pos += 8;
       if (R) pos += 4;
@@ -217,25 +283,25 @@ export const PuyoDisplay = {
 
   display: function () {
     // Display (in other words, initalize the renderer)
-    this.renderer.init();
+    this.renderer!.init();
 
     // Display the Puyo selection
     this.displayPuyoSelection();
   },
 
-  setPuyoSkin: function (skin) {
+  setPuyoSkin: function (skin: string) {
     // Sets the puyo skin
     for (var i = 0; i < this.puyoSkins.length; i++) {
       if (this.puyoSkins[i].id === skin) {
         this.puyoSkin = this.puyoSkins[i];
-        this.renderer.setPuyoSkin();
+        this.renderer!.setPuyoSkin();
 
         return;
       }
     }
 
     this.puyoSkin = this.puyoSkins[0];
-    this.renderer.setPuyoSkin();
+    this.renderer!.setPuyoSkin();
   },
 
   displayPuyoSelection: function () {
@@ -243,11 +309,11 @@ export const PuyoDisplay = {
       .not(".puyo-none, .puyo-delete")
       .css(
         "background-image",
-        "url('/images/puyo/" + this.puyoSkin.image + "')"
+        "url('/images/puyo/" + this.puyoSkin!.image + "')"
       );
   },
 
-  getSkinIndex: function (id) {
+  getSkinIndex: function (id: string) {
     for (var i = 0; i < this.puyoSkins.length; i++) {
       if (this.puyoSkins[i].id === id) return i;
     }
@@ -257,10 +323,10 @@ export const PuyoDisplay = {
 
   CanvasRenderer: {
     // CanvasRenderer (uses HTML5 Canvas to display the puyo on the field)
-    ctx: undefined, // Field canvas context
-    nuisanceTrayCtx: undefined, // Nuisance tray canvas context
+    ctx: undefined!, // Field canvas context
+    nuisanceTrayCtx: undefined!, // Nuisance tray canvas context
     puyoImage: undefined, // Puyo Image sheet
-    parent: undefined, // Parent object (will be filled in when parent class is initalized)
+    parent: undefined!, // Parent object (will be filled in when parent class is initalized)
     name: "CanvasRenderer", // Name of the renderer
 
     init: function () {
@@ -301,12 +367,12 @@ export const PuyoDisplay = {
       const fieldCanvas: HTMLCanvasElement = document.getElementById(
         "field-canvas"
       ) as HTMLCanvasElement;
-      this.ctx = fieldCanvas.getContext("2d");
+      this.ctx = fieldCanvas.getContext("2d")!;
 
       // Now draw everything
       for (var y = 0; y < Field.totalHeight; y++) {
         for (var x = 0; x < Field.width; x++) {
-          this.drawPuyo(x, y, Field.map.get(x, y));
+          this.drawPuyo(x, y, Field.map!.get(x, y));
         }
       }
 
@@ -325,7 +391,7 @@ export const PuyoDisplay = {
       const nuisanceTrayCanvas: HTMLCanvasElement = document.getElementById(
         "nuisance-tray-canvas"
       ) as HTMLCanvasElement;
-      this.nuisanceTrayCtx = nuisanceTrayCanvas.getContext("2d");
+      this.nuisanceTrayCtx = nuisanceTrayCanvas.getContext("2d")!;
 
       this.drawNuisanceTray(Simulation.nuisance, false);
     },
@@ -341,7 +407,7 @@ export const PuyoDisplay = {
       }
     },
 
-    drawPuyo: function (x, y, p) {
+    drawPuyo: function (x: number, y: number, p: Puyo) {
       // Draws the puyo at x, y
       var pos;
       if (this.ctx === undefined) return;
@@ -390,7 +456,7 @@ export const PuyoDisplay = {
       // Sets the puyo skin
       var newPuyoImage = new Image(),
         self = this;
-      newPuyoImage.src = "/images/puyo/" + this.parent.puyoSkin.image;
+      newPuyoImage.src = "/images/puyo/" + this.parent.puyoSkin!.image;
       newPuyoImage.onload = function () {
         if (self.parent.puyoAnimation.running) {
           // Stop the animation if it is running
@@ -405,11 +471,11 @@ export const PuyoDisplay = {
 
         if (
           self.parent.animate.puyo &&
-          self.parent.puyoSkin.frames !== undefined &&
-          self.parent.puyoSkin.frames > 0
+          self.parent.puyoSkin!.frames !== undefined &&
+          self.parent.puyoSkin!.frames > 0
         ) {
           // Is this puyo skin animated?
-          self.parent.puyoAnimation.start(self.parent.puyoSkin.frames);
+          self.parent.puyoAnimation.start(self.parent.puyoSkin!.frames);
         }
         if (self.parent.animate.sunPuyo) {
           // Animate sun puyo?
@@ -420,7 +486,7 @@ export const PuyoDisplay = {
           // Can we draw the puyo?
           for (var y = 0; y < Field.totalHeight; y++) {
             for (var x = 0; x < Field.width; x++) {
-              self.drawPuyo(x, y, Field.map.get(x, y));
+              self.drawPuyo(x, y, Field.map!.get(x, y));
             }
           }
         }
@@ -429,7 +495,7 @@ export const PuyoDisplay = {
           .not(".puyo-none, .puyo-delete")
           .css(
             "background-image",
-            "url('/images/puyo/" + self.parent.puyoSkin.image + "')"
+            "url('/images/puyo/" + self.parent.puyoSkin!.image + "')"
           );
 
         if (self.parent.nuisanceTrayTimer === undefined) {
@@ -438,7 +504,7 @@ export const PuyoDisplay = {
       };
     },
 
-    drawNuisanceTray: function (n, animate) {
+    drawNuisanceTray: function (n: number, animate: boolean) {
       // Draws nuisance in the nuisance tray
       var amounts = [1, 6, 30, 180, 360, 720, 1440],
         pos = [],
@@ -489,7 +555,7 @@ export const PuyoDisplay = {
       }
     },
 
-    animateNuisanceTray: function (step, pos) {
+    animateNuisanceTray: function (step: number, pos: number[]) {
       // Animates the nuisance tray
       if (step === 0) {
         // Step not initalized, so we are just starting the animation
@@ -525,7 +591,7 @@ export const PuyoDisplay = {
       this.nuisanceTrayCtx.globalAlpha = 1;
 
       var self = this;
-      this.parent.nuisanceTrayTimer = setTimeout(function () {
+      this.parent.nuisanceTrayTimer = window.setTimeout(function () {
         self.animateNuisanceTray(step + 5, pos);
       }, 1000 / 60);
     },
@@ -533,7 +599,7 @@ export const PuyoDisplay = {
 
   puyoAnimation: {
     // Puyo animation object
-    parent: undefined, // Parent object (will be filled in when parent class is initalized)
+    parent: undefined!, // Parent object (will be filled in when parent class is initalized)
     frame: 0, // Current frame the animation is on
     totalFrames: 0, // Total number of frames in the animation
     timer: undefined, // Timer for setInterval
@@ -548,10 +614,10 @@ export const PuyoDisplay = {
 
       for (var y = 0; y < Field.totalHeight; y++) {
         for (var x = 0; x < Field.width; x++) {
-          var p = Field.map.get(x, y);
+          var p = Field.map!.get(x, y);
           if (p.hasAnimation()) {
             // Only redraw puyo that can have animation
-            this.parent.renderer.drawPuyo(x, y, p);
+            this.parent.renderer!.drawPuyo(x, y, p);
           }
         }
       }
@@ -610,7 +676,7 @@ export const PuyoDisplay = {
       );
 
       var self = this;
-      this.timer = setTimeout(function () {
+      this.timer = window.setTimeout(function () {
         self.animate();
       }, 200);
     },
@@ -623,7 +689,7 @@ export const PuyoDisplay = {
       this.totalFrames = n;
 
       var self = this;
-      this.timer = setTimeout(function () {
+      this.timer = window.setTimeout(function () {
         self.animate();
       }, 200);
     },
@@ -636,10 +702,10 @@ export const PuyoDisplay = {
 
       for (var y = 0; y < Field.totalHeight; y++) {
         for (var x = 0; x < Field.width; x++) {
-          var p = Field.map.get(x, y);
+          var p = Field.map!.get(x, y);
           if (p.hasAnimation()) {
             // Only redraw puyo that can have animation
-            this.parent.renderer.drawPuyo(x, y, p);
+            this.parent.renderer!.drawPuyo(x, y, p);
           }
         }
       }
@@ -674,7 +740,7 @@ export const PuyoDisplay = {
 
   sunPuyoAnimation: {
     // Sun Puyo animation object
-    parent: undefined, // Parent object (will be filled in when parent class is initalized)
+    parent: undefined!, // Parent object (will be filled in when parent class is initalized)
     frame: 0, // Current frame the animation is on
     totalFrames: 8, // Total number of frames in the animation (always 8)
     timer: undefined, // Timer for setInterval
@@ -689,10 +755,10 @@ export const PuyoDisplay = {
 
       for (var y = 0; y < Field.totalHeight; y++) {
         for (var x = 0; x < Field.width; x++) {
-          var p = Field.map.get(x, y);
+          var p = Field.map!.get(x, y);
           if (p.puyo === Constants.Puyo.Sun) {
             // Only redraw sun puyo
-            this.parent.renderer.drawPuyo(x, y, p);
+            this.parent.renderer!.drawPuyo(x, y, p);
           }
         }
       }
@@ -707,7 +773,7 @@ export const PuyoDisplay = {
       );
 
       var self = this;
-      this.timer = setTimeout(function () {
+      this.timer = window.setTimeout(function () {
         self.animate();
       }, 120);
     },
@@ -719,7 +785,7 @@ export const PuyoDisplay = {
       this.frame = 0;
 
       var self = this;
-      this.timer = setTimeout(function () {
+      this.timer = window.setTimeout(function () {
         self.animate();
       }, 120);
     },
@@ -732,10 +798,10 @@ export const PuyoDisplay = {
 
       for (var y = 0; y < Field.totalHeight; y++) {
         for (var x = 0; x < Field.width; x++) {
-          var p = Field.map.get(x, y);
+          var p = Field.map!.get(x, y);
           if (p.puyo === Constants.Puyo.Sun) {
             // Only redraw sun puyo
-            this.parent.renderer.drawPuyo(x, y, p);
+            this.parent.renderer!.drawPuyo(x, y, p);
           }
         }
       }
