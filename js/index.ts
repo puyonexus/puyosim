@@ -62,7 +62,7 @@ $(document).ready(function () {
 
   (function () {
     // Easter eggs :D
-    function easteregg(keys, surprise) {
+    function easteregg(keys: number[], surprise: () => void) {
       // Set up the main easter egg function
       var key = 0;
 
@@ -70,7 +70,7 @@ $(document).ready(function () {
         if (e.which === keys[key]) {
           key++;
           if (key === keys.length) {
-            surprise.call();
+            surprise.call(null);
             key = 0;
           }
         } else {
