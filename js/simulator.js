@@ -3,67 +3,18 @@
  * https://github.com/puyonexus/puyosim/
  */
 
-import './common.js';
+import './common';
 import $ from 'jquery';
 import Clipboard from 'clipboard';
 import {default as attackPowersJson} from './attackPowers.json';
 import {default as chainsJson} from './chains.json';
 import {default as contentHtml} from './content.html';
+import {Constants} from './constants';
 window.jQuery = $;
 require('bootstrap/js/dropdown.js');
 
 (function () {
 "use strict";
-
-/*
- * Constants
- *
- * Contains constants used for the simulator.
- */
-
-var Constants = {};
-Constants.Puyo = {
-	None:   0,
-	Red:    1,
-	Green:  2,
-	Blue:   3,
-	Yellow: 4,
-	Purple: 5,
-
-	Nuisance: 6,
-	Point:    7,
-	Sun:      8,
-	Hard:     9,
-	Iron:     10,
-	Block:    11,
-
-	Delete: 12
-};
-
-Constants.Puyo.Cleared = {
-	Red:    13,
-	Green:  14,
-	Blue:   15,
-	Yellow: 16,
-	Purple: 17,
-	
-	Nuisance: 18,
-	Point:    19,
-	Sun:      20
-};
-
-Constants.Field = {
-	DefaultWidth:      6,
-	DefaultHeight:     12,
-	DefaultHiddenRows: 1
-};
-
-Constants.Simulation = {
-	DefaultSpeed:          500,
-	DefaultPuyoToClear:    4,
-	DefaultTargetPoints:   70,
-	DefaultPointPuyoBonus: 50
-};
 
 /*
  * Config
