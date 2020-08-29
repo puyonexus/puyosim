@@ -124,7 +124,7 @@ export const ControlsDisplay = {
     $("#field-cleared").text("0");
   },
 
-  toggleSimulationButtons: function (back, start, pause, step, skip) {
+  toggleSimulationButtons: function (back: boolean, start: boolean, pause: boolean, step: boolean, skip: boolean) {
     // Controls the display of the simulator control buttons
     $("#simulation-back").prop("disabled", !back);
     $("#simulation-start").prop("disabled", !start);
