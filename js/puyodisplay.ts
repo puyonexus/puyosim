@@ -5,7 +5,12 @@
  */
 
 import $ from "jquery";
-import { PuyoType, FieldDefaultWidth, FieldDefaultHeight, FieldDefaultHiddenRows } from "./constants";
+import {
+  PuyoType,
+  FieldDefaultWidth,
+  FieldDefaultHeight,
+  FieldDefaultHiddenRows,
+} from "./constants";
 import { Puyo } from "./puyo";
 import { PuyoSim } from "./puyosim";
 
@@ -162,7 +167,7 @@ class PuyoAnimation {
       "0 -" + 6 * this.sim.puyoDisplay.puyoSize + "px"
     );
   }
-};
+}
 
 // Sun Puyo animation class
 class SunPuyoAnimation {
@@ -409,7 +414,9 @@ class CanvasRenderer {
         self.sim.puyoDisplay.puyoSkin!.frames > 0
       ) {
         // Is this puyo skin animated?
-        self.sim.puyoDisplay.puyoAnimation.start(self.sim.puyoDisplay.puyoSkin!.frames);
+        self.sim.puyoDisplay.puyoAnimation.start(
+          self.sim.puyoDisplay.puyoSkin!.frames
+        );
       }
       if (self.sim.puyoDisplay.animate.sunPuyo) {
         // Animate sun puyo?
@@ -460,7 +467,11 @@ class CanvasRenderer {
       }
     }
 
-    if (this.sim.puyoDisplay.animate.nuisanceTray && animate !== false && n !== 0) {
+    if (
+      this.sim.puyoDisplay.animate.nuisanceTray &&
+      animate !== false &&
+      n !== 0
+    ) {
       // Make it nice and animate it
       this.animateNuisanceTray(0, pos);
     } else {
@@ -558,7 +569,7 @@ export class PuyoDisplay {
 
     // Animate the nuisance tray
     nuisanceTray: true,
-  }
+  };
 
   // Finally, we will list the available puyo skins here
   puyoSkins = [
@@ -644,9 +655,15 @@ export class PuyoDisplay {
       if (p === PuyoType.Nuisance || p === PuyoType.Point) return 0;
 
       var L = x > 0 && self.sim.field.map!.puyo(x - 1, y) === p,
-        R = x < self.sim.field.width - 1 && self.sim.field.map!.puyo(x + 1, y) === p,
-        U = y > self.sim.field.hiddenRows && self.sim.field.map!.puyo(x, y - 1) === p,
-        D = y < self.sim.field.totalHeight - 1 && self.sim.field.map!.puyo(x, y + 1) === p;
+        R =
+          x < self.sim.field.width - 1 &&
+          self.sim.field.map!.puyo(x + 1, y) === p,
+        U =
+          y > self.sim.field.hiddenRows &&
+          self.sim.field.map!.puyo(x, y - 1) === p,
+        D =
+          y < self.sim.field.totalHeight - 1 &&
+          self.sim.field.map!.puyo(x, y + 1) === p;
 
       if (L) pos += 8;
       if (R) pos += 4;
@@ -789,4 +806,4 @@ export class PuyoDisplay {
 
     return -1;
   }
-};
+}

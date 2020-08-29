@@ -5,7 +5,13 @@
  */
 
 import $ from "jquery";
-import { PuyoType, SimulationDefaultPuyoToClear, SimulationDefaultPointPuyoBonus, SimulationDefaultTargetPoints, SimulationDefaultSpeed } from "./constants";
+import {
+  PuyoType,
+  SimulationDefaultPuyoToClear,
+  SimulationDefaultPointPuyoBonus,
+  SimulationDefaultTargetPoints,
+  SimulationDefaultSpeed,
+} from "./constants";
 import { FieldMap } from "./fieldmap";
 import { PuyoSim } from "./puyosim";
 
@@ -51,7 +57,7 @@ export class Simulation {
     [0, 3, 6, 12, 24],
     [0, 2, 4, 8, 16],
   ];
-  
+
   // Group bonuses (Classic, Fever)
   groupBonus = [
     [0, 2, 3, 4, 5, 6, 7, 10],
@@ -142,7 +148,13 @@ export class Simulation {
     this.sim.puyoDisplay.renderer!.drawNuisanceTray(this.nuisance);
 
     // Display the "editor" chain on the puyo display and set the simulation buttons
-    this.sim.controlsDisplay.toggleSimulationButtons(false, true, false, true, true);
+    this.sim.controlsDisplay.toggleSimulationButtons(
+      false,
+      true,
+      false,
+      true,
+      true
+    );
     $(
       "#tab-simulator input, #tab-simulator select, #tab-simulator button"
     ).prop("disabled", false); // Disable simulator options
@@ -150,7 +162,11 @@ export class Simulation {
     this.sim.field.map = this.sim.field.mapEditor;
     for (var y = 0; y < this.sim.field.totalHeight; y++) {
       for (var x = 0; x < this.sim.field.width; x++) {
-        this.sim.puyoDisplay.renderer!.drawPuyo(x, y, this.sim.field.map!.get(x, y));
+        this.sim.puyoDisplay.renderer!.drawPuyo(
+          x,
+          y,
+          this.sim.field.map!.get(x, y)
+        );
       }
     }
   }
@@ -158,7 +174,13 @@ export class Simulation {
   start() {
     // Starts the chain
     if (!this.running) {
-      this.sim.controlsDisplay.toggleSimulationButtons(true, false, true, false, false); // Toggle simulation buttons
+      this.sim.controlsDisplay.toggleSimulationButtons(
+        true,
+        false,
+        true,
+        false,
+        false
+      ); // Toggle simulation buttons
       $(
         "#tab-simulator input, #tab-simulator select, #tab-simulator button"
       ).prop("disabled", true); // Disable simulator options
@@ -187,7 +209,13 @@ export class Simulation {
         }, this.speed);
       }
     } else if (this.running && (this.paused || this.stepMode)) {
-      this.sim.controlsDisplay.toggleSimulationButtons(true, false, true, false, false); // Toggle simulation buttons
+      this.sim.controlsDisplay.toggleSimulationButtons(
+        true,
+        false,
+        true,
+        false,
+        false
+      ); // Toggle simulation buttons
 
       this.paused = false;
       this.stepMode = false;
@@ -206,14 +234,26 @@ export class Simulation {
 
       this.paused = true;
 
-      this.sim.controlsDisplay.toggleSimulationButtons(true, true, false, true, true); // Toggle simulation buttons
+      this.sim.controlsDisplay.toggleSimulationButtons(
+        true,
+        true,
+        false,
+        true,
+        true
+      ); // Toggle simulation buttons
     }
   }
 
   step() {
     // Advances a step in the chain
     if (!this.running) {
-      this.sim.controlsDisplay.toggleSimulationButtons(true, true, false, true, true); // Toggle simulation buttons
+      this.sim.controlsDisplay.toggleSimulationButtons(
+        true,
+        true,
+        false,
+        true,
+        true
+      ); // Toggle simulation buttons
       $(
         "#tab-simulator input, #tab-simulator select, #tab-simulator button"
       ).prop("disabled", true); // Disable simulator options
@@ -236,7 +276,13 @@ export class Simulation {
         this.chain();
       }
     } else if (this.running && !this.skipMode && this.action !== -1) {
-      this.sim.controlsDisplay.toggleSimulationButtons(true, true, false, true, true); // Toggle simulation buttons
+      this.sim.controlsDisplay.toggleSimulationButtons(
+        true,
+        true,
+        false,
+        true,
+        true
+      ); // Toggle simulation buttons
 
       this.paused = false;
       this.stepMode = true;
@@ -248,7 +294,13 @@ export class Simulation {
   skip() {
     // Skips right to the end of the chain
     if (!this.running) {
-      this.sim.controlsDisplay.toggleSimulationButtons(true, false, false, false, false); // Toggle simulation buttons
+      this.sim.controlsDisplay.toggleSimulationButtons(
+        true,
+        false,
+        false,
+        false,
+        false
+      ); // Toggle simulation buttons
       $(
         "#tab-simulator input, #tab-simulator select, #tab-simulator button"
       ).prop("disabled", true); // Disable simulator options
@@ -269,7 +321,13 @@ export class Simulation {
       this.dropPuyo();
       this.chain();
     } else if (this.running && !this.skipMode && this.action !== -1) {
-      this.sim.controlsDisplay.toggleSimulationButtons(true, false, false, false, false); // Toggle simulation buttons
+      this.sim.controlsDisplay.toggleSimulationButtons(
+        true,
+        false,
+        false,
+        false,
+        false
+      ); // Toggle simulation buttons
 
       this.paused = false;
       this.stepMode = false;
@@ -325,12 +383,21 @@ export class Simulation {
               // Check the puyo to see if we can make a chain
               for (i = 0; i < 4; i++) {
                 // Check for out of bounds
-                if (this.positions[i].y === -1 && pos.y <= this.sim.field.hiddenRows)
+                if (
+                  this.positions[i].y === -1 &&
+                  pos.y <= this.sim.field.hiddenRows
+                )
                   continue;
                 if (this.positions[i].x === -1 && pos.x <= 0) continue;
-                if (this.positions[i].y === 1 && pos.y >= this.sim.field.totalHeight - 1)
+                if (
+                  this.positions[i].y === 1 &&
+                  pos.y >= this.sim.field.totalHeight - 1
+                )
                   continue;
-                if (this.positions[i].x === 1 && pos.x >= this.sim.field.width - 1)
+                if (
+                  this.positions[i].x === 1 &&
+                  pos.x >= this.sim.field.width - 1
+                )
                   continue;
 
                 // Check to see if the puyo match
@@ -381,23 +448,38 @@ export class Simulation {
                     this.sim.field.map!.set(pos.x, pos.y, PuyoType.ClearedRed);
                     break;
                   case PuyoType.Green:
-                    this.sim.field.map!.set(pos.x, pos.y, PuyoType.ClearedGreen);
+                    this.sim.field.map!.set(
+                      pos.x,
+                      pos.y,
+                      PuyoType.ClearedGreen
+                    );
                     break;
                   case PuyoType.Blue:
                     this.sim.field.map!.set(pos.x, pos.y, PuyoType.ClearedBlue);
                     break;
                   case PuyoType.Yellow:
-                    this.sim.field.map!.set(pos.x, pos.y, PuyoType.ClearedYellow);
+                    this.sim.field.map!.set(
+                      pos.x,
+                      pos.y,
+                      PuyoType.ClearedYellow
+                    );
                     break;
                   case PuyoType.Purple:
-                    this.sim.field.map!.set(pos.x, pos.y, PuyoType.ClearedPurple);
+                    this.sim.field.map!.set(
+                      pos.x,
+                      pos.y,
+                      PuyoType.ClearedPurple
+                    );
                     break;
                 }
 
                 // Check the nuisance/point/hard puyo around the current puyo
                 for (j = 0; j < 4; j++) {
                   // Check for out of bounds
-                  if (this.positions[j].y === -1 && pos.y <= this.sim.field.hiddenRows)
+                  if (
+                    this.positions[j].y === -1 &&
+                    pos.y <= this.sim.field.hiddenRows
+                  )
                     continue;
                   if (this.positions[j].x === -1 && pos.x <= 0) continue;
                   if (
@@ -405,14 +487,18 @@ export class Simulation {
                     pos.y >= this.sim.field.totalHeight - 1
                   )
                     continue;
-                  if (this.positions[j].x === 1 && pos.x >= this.sim.field.width - 1)
+                  if (
+                    this.positions[j].x === 1 &&
+                    pos.x >= this.sim.field.width - 1
+                  )
                     continue;
 
                   // Check to see if the puyo match
                   checkX = pos.x + this.positions[j].x; // Shortcuts
                   checkY = pos.y + this.positions[j].y; // Shortcuts
                   if (
-                    this.sim.field.map!.puyo(checkX, checkY) === PuyoType.Nuisance
+                    this.sim.field.map!.puyo(checkX, checkY) ===
+                    PuyoType.Nuisance
                   ) {
                     // Nuisance Puyo
                     this.sim.field.map!.set(
@@ -424,13 +510,21 @@ export class Simulation {
                     this.sim.field.map!.puyo(checkX, checkY) === PuyoType.Point
                   ) {
                     // Point Puyo
-                    this.sim.field.map!.set(checkX, checkY, PuyoType.ClearedPoint);
+                    this.sim.field.map!.set(
+                      checkX,
+                      checkY,
+                      PuyoType.ClearedPoint
+                    );
                     pointPuyoCleared++;
                   } else if (
                     this.sim.field.map!.puyo(checkX, checkY) === PuyoType.Sun
                   ) {
                     // Sun Puyo
-                    this.sim.field.map!.set(checkX, checkY, PuyoType.ClearedSun);
+                    this.sim.field.map!.set(
+                      checkX,
+                      checkY,
+                      PuyoType.ClearedSun
+                    );
                     sunPuyoCleared++;
                   } else if (
                     this.sim.field.map!.puyo(checkX, checkY) === PuyoType.Hard
@@ -559,7 +653,11 @@ export class Simulation {
           // If we are in skip mode, stop
           for (y = 0; y < this.sim.field.totalHeight; y++) {
             for (x = 0; x < this.sim.field.width; x++) {
-              this.sim.puyoDisplay.renderer!.drawPuyo(x, y, this.sim.field.map!.get(x, y));
+              this.sim.puyoDisplay.renderer!.drawPuyo(
+                x,
+                y,
+                this.sim.field.map!.get(x, y)
+              );
             }
           }
 
@@ -624,7 +722,11 @@ export class Simulation {
           // If we are in skip mode, stop
           for (y = 0; y < this.sim.field.totalHeight; y++) {
             for (x = 0; x < this.sim.field.width; x++) {
-              this.sim.puyoDisplay.renderer!.drawPuyo(x, y, this.sim.field.map!.get(x, y));
+              this.sim.puyoDisplay.renderer!.drawPuyo(
+                x,
+                y,
+                this.sim.field.map!.get(x, y)
+              );
             }
           }
 
@@ -687,4 +789,4 @@ export class Simulation {
 
     return dropped;
   }
-};
+}

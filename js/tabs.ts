@@ -6,7 +6,13 @@
 
 import $ from "jquery";
 import { config } from "./config";
-import { FieldDefaultWidth, FieldDefaultHeight, FieldDefaultHiddenRows, SimulationDefaultPuyoToClear, SimulationDefaultTargetPoints } from "./constants";
+import {
+  FieldDefaultWidth,
+  FieldDefaultHeight,
+  FieldDefaultHiddenRows,
+  SimulationDefaultPuyoToClear,
+  SimulationDefaultTargetPoints,
+} from "./constants";
 import { content } from "./content";
 import { Utils } from "./utils";
 import { default as attackPowersJson } from "./data/attackPowers.json";
@@ -19,7 +25,7 @@ interface ISavedChain {
   height: number;
   hiddenRows: number;
   chain: string;
-  format: "base36"|"legacy";
+  format: "base36" | "legacy";
 }
 
 class SavedChainsTab {
@@ -217,7 +223,10 @@ class ChainsTab {
     }
 
     $("#preset-chains .dropdown-menu a").click(function () {
-      var category = parseInt(String($(this).parent().attr("data-category")), 10),
+      var category = parseInt(
+          String($(this).parent().attr("data-category")),
+          10
+        ),
         value = parseInt(String($(this).parent().attr("data-value")), 10);
 
       $("#preset-chains .dropdown-menu li.selected").removeClass("selected");
@@ -237,11 +246,15 @@ class ChainsTab {
       }
 
       var category = parseInt(
-          String($("#preset-chains .dropdown-menu .selected").attr("data-category")),
+          String(
+            $("#preset-chains .dropdown-menu .selected").attr("data-category")
+          ),
           10
         ),
         subCategory = parseInt(
-          String($("#preset-chains .dropdown-menu .selected").attr("data-value")),
+          String(
+            $("#preset-chains .dropdown-menu .selected").attr("data-value")
+          ),
           10
         ),
         type = parseInt(String($(this).attr("data-type")), 10),
@@ -249,9 +262,8 @@ class ChainsTab {
         length = parseInt(String($(this).val()), 10);
 
       self.sim.field.setChain(
-        self.chains[category].categories[subCategory].types[type].colors[
-          colors
-        ].chains[length].chain, // Chain
+        self.chains[category].categories[subCategory].types[type].colors[colors]
+          .chains[length].chain, // Chain
         self.chains[category].categories[subCategory].fieldWidth ||
           FieldDefaultWidth, // Field width
         self.chains[category].categories[subCategory].fieldHeight ||
@@ -296,9 +308,7 @@ class ChainsTab {
         this.chains[category].categories[subCategory].types[i].colors.length;
         j++
       ) {
-        var select = $("<select>")
-          .attr("data-type", i)
-          .attr("data-colors", j);
+        var select = $("<select>").attr("data-type", i).attr("data-colors", j);
 
         // Add color amount as the first index
         $("<option>")
@@ -335,11 +345,11 @@ class ChainsTab {
 }
 
 class SimulatorTab {
-  constructor(readonly sim: PuyoSim) { }
+  constructor(readonly sim: PuyoSim) {}
 
   init() {
     const self = this;
-  
+
     // Initalizes this tab
     // Scoring
     $("input[type='radio'][name='score-mode']")
@@ -375,7 +385,10 @@ class SimulatorTab {
     // Point Puyo bonus
     $("#point-puyo-bonus")
       .change(function () {
-        self.sim.simulation.pointPuyoBonus = parseInt(String($(this).val()), 10);
+        self.sim.simulation.pointPuyoBonus = parseInt(
+          String($(this).val()),
+          10
+        );
       })
       .html(
         Utils.createDropDownListOptions({
@@ -418,7 +431,12 @@ class SimulatorTab {
       var hr = parseInt(String($("#field-hidden-rows").val()), 10);
 
       if (hr !== self.sim.field.hiddenRows) {
-        self.sim.field.setChain("", self.sim.field.width, self.sim.field.height, hr);
+        self.sim.field.setChain(
+          "",
+          self.sim.field.width,
+          self.sim.field.height,
+          hr
+        );
       }
     });
 
@@ -446,15 +464,17 @@ class SimulatorTab {
       }
 
       $("#attack-powers .dropdown-menu a").click(function () {
-        var category = parseInt(String($(this).parent().attr("data-category")), 10),
+        var category = parseInt(
+            String($(this).parent().attr("data-category")),
+            10
+          ),
           value = parseInt(String($(this).parent().attr("data-value")), 10);
 
-        $("#attack-powers .dropdown-menu li.selected").removeClass(
-          "selected"
-        );
+        $("#attack-powers .dropdown-menu li.selected").removeClass("selected");
         $(this).parent().addClass("selected");
 
-        self.sim.simulation.chainPowers = attackPowers[category].powers[value].values;
+        self.sim.simulation.chainPowers =
+          attackPowers[category].powers[value].values;
         self.sim.simulation.chainPowerInc =
           attackPowers[category].powers[value].increment || 0;
 
@@ -472,8 +492,7 @@ class SimulatorTab {
           .change();
         $("#target-points")
           .val(
-            attackPowers[category].targetPoints ||
-              SimulationDefaultTargetPoints
+            attackPowers[category].targetPoints || SimulationDefaultTargetPoints
           )
           .change();
       });
@@ -485,7 +504,7 @@ class SimulatorTab {
 }
 
 class LinksTab {
-  constructor(readonly sim: PuyoSim) { }
+  constructor(readonly sim: PuyoSim) {}
 
   init() {
     // Initalizes this tab
@@ -569,7 +588,7 @@ class LinksTab {
 }
 
 class SettingsTab {
-  constructor(readonly sim: PuyoSim) { }
+  constructor(readonly sim: PuyoSim) {}
 
   init() {
     const self = this;
@@ -590,7 +609,9 @@ class SettingsTab {
           self.sim.puyoDisplay.puyoSkin!.frames !== undefined &&
           self.sim.puyoDisplay.puyoSkin!.frames > 0
         ) {
-          self.sim.puyoDisplay.puyoAnimation.start(self.sim.puyoDisplay.puyoSkin!.frames);
+          self.sim.puyoDisplay.puyoAnimation.start(
+            self.sim.puyoDisplay.puyoSkin!.frames
+          );
         } else if (!checked && self.sim.puyoDisplay.puyoAnimation.running) {
           self.sim.puyoDisplay.puyoAnimation.stop();
         }
@@ -666,9 +687,7 @@ class SettingsTab {
             .attr("data-id", index)
             .html(
               "<a>" +
-                content.Field.EyeCandy.CharacterBackgrounds![i].backgrounds[
-                  j
-                ] +
+                content.Field.EyeCandy.CharacterBackgrounds![i].backgrounds[j] +
                 "</a>"
             )
             .appendTo(category);
@@ -787,8 +806,8 @@ class SettingsTab {
       $("#puyo-skins .dropdown-toggle .puyo-skin").css(
         "background-position",
         "0px -" +
-        self.sim.puyoDisplay.getSkinIndex(self.sim.puyoDisplay.puyoSkin!.id) *
-        self.sim.puyoDisplay.puyoSize +
+          self.sim.puyoDisplay.getSkinIndex(self.sim.puyoDisplay.puyoSkin!.id) *
+            self.sim.puyoDisplay.puyoSize +
           "px"
       );
     });
@@ -811,7 +830,7 @@ export class Tabs {
   simulator: SimulatorTab;
   links: LinksTab;
   settings: SettingsTab;
-  
+
   constructor(readonly sim: PuyoSim) {
     this.savedChains = new SavedChainsTab(sim);
     this.chains = new ChainsTab(sim);

@@ -13,8 +13,8 @@ export interface IFieldType {
   CharaBGs?: string[];
   Script?: () => void;
   CharacterBackgrounds?: {
-      name: string;
-      backgrounds: string[];
+    name: string;
+    backgrounds: string[];
   }[];
 }
 
@@ -167,13 +167,18 @@ export const content = {
           "background-image",
           "url('/images/eyecandy/field_stage_bg/" +
             content.Field.EyeCandy.StageBGs![
-              Math.floor(Math.random() * content.Field.EyeCandy.StageBGs!.length)
+              Math.floor(
+                Math.random() * content.Field.EyeCandy.StageBGs!.length
+              )
             ] +
             "')"
         );
 
         var boardBackgroundId =
-          parseInt(localStorage.getItem("chainsim.boardBackgroundId")||"", 10) || 0;
+          parseInt(
+            localStorage.getItem("chainsim.boardBackgroundId") || "",
+            10
+          ) || 0;
         if (boardBackgroundId === 0) {
           $("#field-bg-2").css(
             "background-image",

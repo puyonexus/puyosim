@@ -14,4 +14,6 @@ import { PuyoSim } from "./puyosim";
  */
 
 const puyoSim = new PuyoSim();
-$(() => { puyoSim.init(); });
+$(() => {
+  puyoSim.init();
+});

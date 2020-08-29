@@ -34,29 +34,29 @@ export class PuyoSim {
 
     // Initalize the Field Display
     this.fieldDisplay.init();
-  
+
     // Display the contents of the simulator
     $("#simulator").html(Utils.stringFormat(contentHtml, "/assets"));
-  
+
     // Enable auto-copying to clipboard
     if (Clipboard.isSupported()) {
       new Clipboard(".clipboard-button");
     } else {
       $(".clipboard-button").hide();
     }
-  
+
     // Handle resizing for #simulator
     $(window).resize(() => {
       this.tabs.fieldWidthChanged();
     });
-  
+
     // Show/hide elements depending on if we are viewing a shared chain
     if (window.chainData) {
       $(".show-on-shared-chain").show();
     } else {
       $(".hide-on-shared-chain").show();
     }
-  
+
     // Display the Field
     this.fieldDisplay.display();
 
@@ -68,7 +68,7 @@ export class PuyoSim {
 
     // Display the tabs
     this.tabs.display();
-  
+
     // Easter eggs :D
     function easteregg(keys: number[], surprise: () => void) {
       // Set up the main easter egg function
@@ -107,4 +107,4 @@ export class PuyoSim {
       $("#puyo-to-clear").val(this.simulation.puyoToClear);
     });
   }
-};
+}

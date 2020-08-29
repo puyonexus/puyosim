@@ -6,23 +6,29 @@
 
 import $ from "jquery";
 import { FieldMap } from "./fieldmap";
-import { FieldDefaultWidth, FieldDefaultHeight, FieldDefaultHiddenRows, PuyoType, SimulationDefaultPuyoToClear } from "./constants";
+import {
+  FieldDefaultWidth,
+  FieldDefaultHeight,
+  FieldDefaultHiddenRows,
+  PuyoType,
+  SimulationDefaultPuyoToClear,
+} from "./constants";
 import { PuyoSim } from "./puyosim";
 
 declare global {
   interface Window {
     chainData?: {
-      id?: number,
-      chain: string,
-      width: number,
-      height: number,
-      hiddenRows: number,
-      popLimit?: number,
-      title?: string,
+      id?: number;
+      chain: string;
+      width: number;
+      height: number;
+      hiddenRows: number;
+      popLimit?: number;
+      title?: string;
       legacyQueryString?: string;
     };
   }
-};
+}
 
 export class Field {
   // Field Width (Default = 6)
@@ -124,16 +130,32 @@ export class Field {
           if (!this.sim.puyoDisplay.puyoAnimation.running) {
             // Redraw all puyo around us
             if (y > 0) {
-              this.sim.puyoDisplay.renderer!.drawPuyo(x, y - 1, this.map!.get(x, y - 1));
+              this.sim.puyoDisplay.renderer!.drawPuyo(
+                x,
+                y - 1,
+                this.map!.get(x, y - 1)
+              );
             }
             if (x > 0) {
-              this.sim.puyoDisplay.renderer!.drawPuyo(x - 1, y, this.map!.get(x - 1, y));
+              this.sim.puyoDisplay.renderer!.drawPuyo(
+                x - 1,
+                y,
+                this.map!.get(x - 1, y)
+              );
             }
             if (y < this.totalHeight - 1) {
-              this.sim.puyoDisplay.renderer!.drawPuyo(x, y + 1, this.map!.get(x, y + 1));
+              this.sim.puyoDisplay.renderer!.drawPuyo(
+                x,
+                y + 1,
+                this.map!.get(x, y + 1)
+              );
             }
             if (x < this.width - 1) {
-              this.sim.puyoDisplay.renderer!.drawPuyo(x + 1, y, this.map!.get(x + 1, y));
+              this.sim.puyoDisplay.renderer!.drawPuyo(
+                x + 1,
+                y,
+                this.map!.get(x + 1, y)
+              );
             }
           }
         }
@@ -179,4 +201,4 @@ export class Field {
 
     return chainString;
   }
-};
+}

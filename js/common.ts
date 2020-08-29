@@ -2,7 +2,7 @@ declare global {
   interface Window {
     jQuery: any;
   }
-};
+}
 
 import $ from "jquery";
 window.jQuery = $;

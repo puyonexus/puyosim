@@ -19,9 +19,7 @@ export class FieldDisplay {
   // Indicates if we are going to insert Puyo (the insert box is checked)
   insertPuyo = false;
 
-  constructor(readonly sim: PuyoSim) {
-
-  }
+  constructor(readonly sim: PuyoSim) {}
 
   init() {
     // Initalize
@@ -64,7 +62,8 @@ export class FieldDisplay {
 
         $("#field").css({
           width: self.sim.field.width * self.sim.puyoDisplay.puyoSize + "px",
-          height: self.sim.field.totalHeight * self.sim.puyoDisplay.puyoSize + "px",
+          height:
+            self.sim.field.totalHeight * self.sim.puyoDisplay.puyoSize + "px",
         });
         $("#field-bg-2").css(
           "top",
@@ -95,7 +94,10 @@ export class FieldDisplay {
       width: this.sim.field.width * this.sim.puyoDisplay.puyoSize + "px",
       height: this.sim.field.totalHeight * this.sim.puyoDisplay.puyoSize + "px",
     });
-    $("#field-bg-2").css("top", this.sim.field.hiddenRows * this.sim.puyoDisplay.puyoSize + "px");
+    $("#field-bg-2").css(
+      "top",
+      this.sim.field.hiddenRows * this.sim.puyoDisplay.puyoSize + "px"
+    );
     $("#field-bg-3").css(
       "height",
       this.sim.field.hiddenRows * this.sim.puyoDisplay.puyoSize + "px"
@@ -203,14 +205,22 @@ export class FieldDisplay {
             if (self.selectedPuyo === PuyoType.Delete) {
               // Delete this puyo and shift the ones on top down one row
               for (y = fieldY; y > 0; y--) {
-                self.sim.field.map!.set(fieldX, y, self.sim.field.map!.puyo(fieldX, y - 1));
+                self.sim.field.map!.set(
+                  fieldX,
+                  y,
+                  self.sim.field.map!.puyo(fieldX, y - 1)
+                );
               }
               self.sim.field.map!.set(fieldX, 0, PuyoType.None);
             } else {
               if (self.insertPuyo) {
                 // Insert puyo
                 for (y = 0; y < fieldY; y++) {
-                  self.sim.field.map!.set(fieldX, y, self.sim.field.map!.puyo(fieldX, y + 1));
+                  self.sim.field.map!.set(
+                    fieldX,
+                    y,
+                    self.sim.field.map!.puyo(fieldX, y + 1)
+                  );
                 }
               }
 
@@ -237,4 +247,4 @@ export class FieldDisplay {
         });
     })();
   }
-};
+}

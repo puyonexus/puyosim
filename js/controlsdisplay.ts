@@ -20,7 +20,12 @@ export class ControlsDisplay {
     });
 
     $("#field-erase-all").click(function () {
-      self.sim.field.setChain("", self.sim.field.width, self.sim.field.height, self.sim.field.hiddenRows);
+      self.sim.field.setChain(
+        "",
+        self.sim.field.width,
+        self.sim.field.height,
+        self.sim.field.hiddenRows
+      );
     });
 
     if (self.sim.field.chainInURL) {
@@ -126,7 +131,13 @@ export class ControlsDisplay {
     $("#field-cleared").text("0");
   }
 
-  toggleSimulationButtons(back: boolean, start: boolean, pause: boolean, step: boolean, skip: boolean) {
+  toggleSimulationButtons(
+    back: boolean,
+    start: boolean,
+    pause: boolean,
+    step: boolean,
+    skip: boolean
+  ) {
     // Controls the display of the simulator control buttons
     $("#simulation-back").prop("disabled", !back);
     $("#simulation-start").prop("disabled", !start);
@@ -134,4 +145,4 @@ export class ControlsDisplay {
     $("#simulation-step").prop("disabled", !step);
     $("#simulation-skip").prop("disabled", !skip);
   }
-};
+}
