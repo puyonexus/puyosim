@@ -10,6 +10,8 @@ import {default as attackPowersJson} from './attackPowers.json';
 import {default as chainsJson} from './chains.json';
 import {default as contentHtml} from './content.html';
 import {Constants} from './constants';
+import {Puyo} from './puyo';
+import {Utils} from './utils';
 window.jQuery = $;
 require('bootstrap/js/dropdown.js');
 
@@ -28,78 +30,6 @@ var Config = {
 	shareAnimatedImageUrl: "/image/{0}.gif",
 	shareLegacyLinkUrl: "/?{0}",
 	shareLegacyImageUrl: "/chainimage.php?{0}",
-};
-
-/*
- * Puyo
- *
- * Contains methods dealing with Puyo, which include getting puyo state
- * and URL conversions.
- */
- 
-function Puyo(p) {
-	if (p !== undefined && this.isValid(p)) { // Is this a valid puyo?
-		this.puyo = p;
-	} else {
-		this.puyo = Constants.Puyo.None;
-	}
-}
-
-Puyo.prototype = {
-	isValid: function(p) { // Returns if puyo p is a valid puyo
-		return (
-			p === Constants.Puyo.Red    || p === Constants.Puyo.Green  || p === Constants.Puyo.Blue ||
-			p === Constants.Puyo.Yellow || p === Constants.Puyo.Purple ||
-
-			p === Constants.Puyo.Nuisance || p === Constants.Puyo.Hard  || p === Constants.Puyo.Point ||
-			p === Constants.Puyo.Sun      || p === Constants.Puyo.Iron  || p === Constants.Puyo.Block ||
-			
-			p === Constants.Puyo.Cleared.Red    || p === Constants.Puyo.Cleared.Green  || p === Constants.Puyo.Cleared.Blue ||
-			p === Constants.Puyo.Cleared.Yellow || p === Constants.Puyo.Cleared.Purple ||
-			
-			p === Constants.Puyo.Cleared.Nuisance || p === Constants.Puyo.Cleared.Point ||
-			p === Constants.Puyo.Cleared.Sun
-		);
-	},
-	
-	isColored: function() { // Returns if puyo is a colored puyo (not nuisance or other type)
-		return (
-			this.puyo === Constants.Puyo.Red    || this.puyo === Constants.Puyo.Green  || this.puyo === Constants.Puyo.Blue ||
-			this.puyo === Constants.Puyo.Yellow || this.puyo === Constants.Puyo.Purple
-		);
-	},
-	
-	isNuisance: function() { // Returns if puyo is a nuisance puyo
-		return (this.puyo === Constants.Puyo.Nuisance || this.puyo === Constants.Puyo.Hard || this.puyo === Constants.Puyo.Point);
-	},
-	
-	isCleared: function() { // Returns if puyo has been cleared
-		return (
-			this.puyo === Constants.Puyo.Cleared.Red    || this.puyo === Constants.Puyo.Cleared.Green  || 
-			this.puyo === Constants.Puyo.Cleared.Blue   || this.puyo === Constants.Puyo.Cleared.Yellow ||
-			this.puyo === Constants.Puyo.Cleared.Purple ||
-			
-			this.puyo === Constants.Puyo.Cleared.Nuisance || this.puyo === Constants.Puyo.Cleared.Point ||
-			this.puyo === Constants.Puyo.Cleared.Sun
-		);
-	},
-	
-	hasAnimation: function() { // Returns if the current puyo can have animation (excludes sun puyo)
-		return (
-			this.puyo === Constants.Puyo.Red    || this.puyo === Constants.Puyo.Green  || this.puyo === Constants.Puyo.Blue ||
-			this.puyo === Constants.Puyo.Yellow || this.puyo === Constants.Puyo.Purple ||
-
-			this.puyo === Constants.Puyo.Nuisance || this.puyo === Constants.Puyo.Hard  || this.puyo === Constants.Puyo.Point
-		);
-	},
-	
-	setPuyo: function(p) { // Set the puyo
-		if (this.isValid(p)) {
-			this.puyo = p;
-		} else {
-			this.puyo = Constants.Puyo.None;
-		}
-	}
 };
 
 /*
@@ -2165,72 +2095,6 @@ var Content = {
 		}
 	}
 };
-
-/*
- * Utils
- *
- * Useful utility functions
- */
-var Utils = {
-	stringFormat: function (format) {
-    	var args = Array.prototype.slice.call(arguments, 1);
-    	return format.replace(/{(\d+)}/g, function(match, number) { 
-     		return typeof args[number] != 'undefined'
-        		? args[number] 
-        		: match;
-    		});
-	},
-
-	escape: function (s) {
-		var escapeMap = {
-			"&": "&amp;",
-			"<": "&lt;",
-			">": "&gt;",
-			'"': '&quot;',
-			"'": '&#39;'
-		};
-
-		return s.replace(/&(?!\w+;)|[<>"']/g, function (s) {
-			return escapeMap[s] || s;
-		});
-	},
-
-	createDropDownListOptions: function (items) {
-		var html = '';
-
-		if (Array.isArray(items)) {
-			for (var i = 0; i < items.length; i++) {
-				html += $("<option>")
-					.val(items[i])
-					.text(items[i])[0]
-					.outerHTML;
-			}
-		} else { // Assume it's an object contains keys & values
-			$.each(items, function (key, value) {
-				html += $("<option>")
-					.val(key)
-					.text(value)[0]
-					.outerHTML;
-			});
-		}
-
-		return html;
-	},
-
-	range: function (start, end, step) {
-		if (step === undefined) {
-			step = 1;
-		}
-
-		var array = [];
-		var totalSteps = Math.floor((end - start) / step);
-		for (var i = 0; i <= totalSteps; i++) {
-			array.push(start + (i * step));
-		}
-
-		return array;
-	}
-}
 
 /*
  * Initalize
