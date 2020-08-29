@@ -162,7 +162,7 @@ export const Content = {
         );
 
         var boardBackgroundId =
-          parseInt(localStorage.getItem("chainsim.boardBackgroundId"), 10) || 0;
+          parseInt(localStorage.getItem("chainsim.boardBackgroundId")||"", 10) || 0;
         if (boardBackgroundId === 0) {
           $("#field-bg-2").css(
             "background-image",
