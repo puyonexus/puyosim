@@ -68,7 +68,7 @@ export class Field {
     }
   }
 
-  setChain(chain: any, w: any, h: any, hr?: any) {
+  setChain(chain: string, w: number, h: number, hr?: number) {
     // Sets the chain with the specified width and height
     var pos;
     w = w || FieldDefaultWidth;
@@ -91,7 +91,7 @@ export class Field {
 
       if (this.sim.puyoDisplay.renderer) {
         // If we have a render, draw up the new field
-        this.sim.puyoDisplay.renderer!.uninit();
+        this.sim.puyoDisplay.renderer.uninit();
         $("#field").css({
           width: this.width * this.sim.puyoDisplay.puyoSize + "px",
           height: this.totalHeight * this.sim.puyoDisplay.puyoSize + "px",
@@ -105,7 +105,7 @@ export class Field {
           this.sim.field.hiddenRows * this.sim.puyoDisplay.puyoSize + "px"
         );
         this.sim.tabs.fieldWidthChanged();
-        this.sim.puyoDisplay.renderer!.init();
+        this.sim.puyoDisplay.renderer.init();
       }
 
       $("#field-size-width").val(this.width);
@@ -126,32 +126,32 @@ export class Field {
             continue;
           }
 
-          this.sim.puyoDisplay.renderer!.drawPuyo(x, y, this.map!.get(x, y));
+          this.sim.puyoDisplay.renderer.drawPuyo(x, y, this.map!.get(x, y));
           if (!this.sim.puyoDisplay.puyoAnimation.running) {
             // Redraw all puyo around us
             if (y > 0) {
-              this.sim.puyoDisplay.renderer!.drawPuyo(
+              this.sim.puyoDisplay.renderer.drawPuyo(
                 x,
                 y - 1,
                 this.map!.get(x, y - 1)
               );
             }
             if (x > 0) {
-              this.sim.puyoDisplay.renderer!.drawPuyo(
+              this.sim.puyoDisplay.renderer.drawPuyo(
                 x - 1,
                 y,
                 this.map!.get(x - 1, y)
               );
             }
             if (y < this.totalHeight - 1) {
-              this.sim.puyoDisplay.renderer!.drawPuyo(
+              this.sim.puyoDisplay.renderer.drawPuyo(
                 x,
                 y + 1,
                 this.map!.get(x, y + 1)
               );
             }
             if (x < this.width - 1) {
-              this.sim.puyoDisplay.renderer!.drawPuyo(
+              this.sim.puyoDisplay.renderer.drawPuyo(
                 x + 1,
                 y,
                 this.map!.get(x + 1, y)

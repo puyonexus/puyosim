@@ -48,7 +48,7 @@ class PuyoAnimation {
         var p = this.sim.field.map!.get(x, y);
         if (p.hasAnimation()) {
           // Only redraw puyo that can have animation
-          this.sim.puyoDisplay.renderer!.drawPuyo(x, y, p);
+          this.sim.puyoDisplay.renderer.drawPuyo(x, y, p);
         }
       }
     }
@@ -136,7 +136,7 @@ class PuyoAnimation {
         var p = this.sim.field.map!.get(x, y);
         if (p.hasAnimation()) {
           // Only redraw puyo that can have animation
-          this.sim.puyoDisplay.renderer!.drawPuyo(x, y, p);
+          this.sim.puyoDisplay.renderer.drawPuyo(x, y, p);
         }
       }
     }
@@ -197,7 +197,7 @@ class SunPuyoAnimation {
         var p = this.sim.field.map!.get(x, y);
         if (p.puyo === PuyoType.Sun) {
           // Only redraw sun puyo
-          this.sim.puyoDisplay.renderer!.drawPuyo(x, y, p);
+          this.sim.puyoDisplay.renderer.drawPuyo(x, y, p);
         }
       }
     }
@@ -240,7 +240,7 @@ class SunPuyoAnimation {
         var p = this.sim.field.map!.get(x, y);
         if (p.puyo === PuyoType.Sun) {
           // Only redraw sun puyo
-          this.sim.puyoDisplay.renderer!.drawPuyo(x, y, p);
+          this.sim.puyoDisplay.renderer.drawPuyo(x, y, p);
         }
       }
     }
@@ -543,15 +543,12 @@ class CanvasRenderer {
 }
 
 export class PuyoDisplay {
-  canvasRenderer: CanvasRenderer;
+  renderer: CanvasRenderer;
   puyoAnimation: PuyoAnimation;
   sunPuyoAnimation: SunPuyoAnimation;
 
   // Puyo size in pixels (always 32)
   readonly puyoSize = 32;
-
-  // The renderer object to use to display the puyo (Will always be set to CanvasRenderer)
-  renderer!: CanvasRenderer;
 
   // The current puyo skin
   puyoSkin?: IPuyoSkin;
@@ -602,15 +599,12 @@ export class PuyoDisplay {
   ];
 
   constructor(readonly sim: PuyoSim) {
-    this.canvasRenderer = new CanvasRenderer(sim);
+    this.renderer = new CanvasRenderer(sim);
     this.puyoAnimation = new PuyoAnimation(sim);
     this.sunPuyoAnimation = new SunPuyoAnimation(sim);
   }
 
   init() {
-    // Set the renderer
-    this.renderer = this.canvasRenderer;
-
     // Set the puyo skin
     this.setPuyoSkin(localStorage.getItem("chainsim.puyoSkin") || "classic");
 
@@ -769,7 +763,7 @@ export class PuyoDisplay {
 
   display() {
     // Display (in other words, initalize the renderer)
-    this.renderer!.init();
+    this.renderer.init();
 
     // Display the Puyo selection
     this.displayPuyoSelection();
@@ -780,14 +774,14 @@ export class PuyoDisplay {
     for (var i = 0; i < this.puyoSkins.length; i++) {
       if (this.puyoSkins[i].id === skin) {
         this.puyoSkin = this.puyoSkins[i];
-        this.renderer!.setPuyoSkin();
+        this.renderer.setPuyoSkin();
 
         return;
       }
     }
 
     this.puyoSkin = this.puyoSkins[0];
-    this.renderer!.setPuyoSkin();
+    this.renderer.setPuyoSkin();
   }
 
   displayPuyoSelection() {

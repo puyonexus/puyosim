@@ -145,7 +145,7 @@ export class Simulation {
     $("#field-nuisance").text(this.nuisance);
     $("#field-cleared").text("0");
 
-    this.sim.puyoDisplay.renderer!.drawNuisanceTray(this.nuisance);
+    this.sim.puyoDisplay.renderer.drawNuisanceTray(this.nuisance);
 
     // Display the "editor" chain on the puyo display and set the simulation buttons
     this.sim.controlsDisplay.toggleSimulationButtons(
@@ -162,7 +162,7 @@ export class Simulation {
     this.sim.field.map = this.sim.field.mapEditor;
     for (var y = 0; y < this.sim.field.totalHeight; y++) {
       for (var x = 0; x < this.sim.field.width; x++) {
-        this.sim.puyoDisplay.renderer!.drawPuyo(
+        this.sim.puyoDisplay.renderer.drawPuyo(
           x,
           y,
           this.sim.field.map!.get(x, y)
@@ -636,7 +636,7 @@ export class Simulation {
           });
           $("#field-cleared").text(clearedChain + " (" + clearedTotal + ")");
 
-          this.sim.puyoDisplay.renderer!.drawNuisanceTray(this.nuisance);
+          this.sim.puyoDisplay.renderer.drawNuisanceTray(this.nuisance);
 
           if (!this.stepMode) {
             // Set the timer if we aren't in step mode
@@ -653,7 +653,7 @@ export class Simulation {
           // If we are in skip mode, stop
           for (y = 0; y < this.sim.field.totalHeight; y++) {
             for (x = 0; x < this.sim.field.width; x++) {
-              this.sim.puyoDisplay.renderer!.drawPuyo(
+              this.sim.puyoDisplay.renderer.drawPuyo(
                 x,
                 y,
                 this.sim.field.map!.get(x, y)
@@ -674,7 +674,7 @@ export class Simulation {
           });
           $("#field-cleared").text(clearedChain + " (" + clearedTotal + ")");
 
-          this.sim.puyoDisplay.renderer!.drawNuisanceTray(this.nuisance);
+          this.sim.puyoDisplay.renderer.drawNuisanceTray(this.nuisance);
         } else {
           // Just toggle the buttons
           this.sim.controlsDisplay.toggleSimulationButtons(
@@ -722,7 +722,7 @@ export class Simulation {
           // If we are in skip mode, stop
           for (y = 0; y < this.sim.field.totalHeight; y++) {
             for (x = 0; x < this.sim.field.width; x++) {
-              this.sim.puyoDisplay.renderer!.drawPuyo(
+              this.sim.puyoDisplay.renderer.drawPuyo(
                 x,
                 y,
                 this.sim.field.map!.get(x, y)
@@ -743,7 +743,7 @@ export class Simulation {
           });
           $("#field-cleared").text(clearedChain + " (" + clearedTotal + ")");
 
-          this.sim.puyoDisplay.renderer!.drawNuisanceTray(this.nuisance);
+          this.sim.puyoDisplay.renderer.drawNuisanceTray(this.nuisance);
         } else {
           // Just toggle the buttons
           this.sim.controlsDisplay.toggleSimulationButtons(
