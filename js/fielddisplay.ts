@@ -12,27 +12,23 @@ import { content, IFieldType } from "./content";
 import { field } from "./field";
 import { tabs } from "./tabs";
 
-interface IFieldDisplay {
+class FieldDisplay {
+  // A reference to the content of the field
   fieldContent?: IFieldType;
-  selectedPuyo: PuyoType;
-  insertPuyo: boolean;
-  init: () => void;
-  load: (style: any, init?: any) => void;
-  display: () => void;
-}
 
-export const fieldDisplay: IFieldDisplay = {
-  fieldContent: undefined, // A reference to the content of the field
-  selectedPuyo: PuyoType.None, // Current Puyo that is selected
-  insertPuyo: false, // Indicates if we are going to insert Puyo (the insert box is checked)
+  // Current Puyo that is selected
+  selectedPuyo = PuyoType.None;
 
-  init: function () {
+  // Indicates if we are going to insert Puyo (the insert box is checked)
+  insertPuyo = false;
+
+  init() {
     // Initalize
     puyoDisplay.init();
     this.load(localStorage.getItem("chainsim.fieldStyle") || "standard", true);
-  },
+  }
 
-  load: function (style, init?) {
+  load(style: any, init?: any) {
     // Loads the display and the style (need to do this after DOM ready)
     // Init specifies if this is the simulator is being loaded (aka style isn't being changed)
     init = init || false;
@@ -83,9 +79,9 @@ export const fieldDisplay: IFieldDisplay = {
         $("#field-style").prop("disabled", false);
       });
     }
-  },
+  }
 
-  display: function () {
+  display() {
     // Displays the field
     $("#simulator").removeClass("field-basic field-standard field-eyecandy");
     $("#simulator").addClass(this.fieldContent!.CSSClass);
@@ -239,5 +235,7 @@ export const fieldDisplay: IFieldDisplay = {
           return false;
         });
     })();
-  },
+  }
 };
+
+export const fieldDisplay = new FieldDisplay();
