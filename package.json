@@ -16,6 +16,8 @@
         "url": "https://github.com/puyonexus/puyosim.git"
     },
     "dependencies": {
+        "@types/clipboard": "^2.0.1",
+        "@types/jquery": "^3.5.1",
         "bootstrap": "3.4.1",
         "clipboard": "2.0.6",
         "common.css": "^1.0.1",
@@ -23,7 +25,8 @@
         "jquery": "3.5.1",
         "normalize.css": "8.0.1",
         "parcel-bundler": "^1.12.4",
-        "parcel-plugin-asset-copier": "^1.1.0"
+        "parcel-plugin-asset-copier": "^1.1.0",
+        "typescript": "^4.0.2"
     },
     "devDependencies": {
         "css-loader": "4.2.2",
