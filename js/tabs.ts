@@ -167,7 +167,7 @@ export const Tabs: ITabs = {
       var data = localStorage.getItem("chainsim.savedChains") || "";
       if (data !== "") {
         try {
-          this.chains = $.parseJSON(data);
+          this.chains = JSON.parse(data);
         } catch (e) {
           this.chains = [];
         }
