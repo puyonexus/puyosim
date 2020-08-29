@@ -47,7 +47,7 @@ var Field = {
 	mapSimulation: undefined, // The map used during the simulation
 
 	init: function() { // Initalize
-		this.mapEditor = new this.Map(this.width, this.totalHeight);
+		this.mapEditor = new FieldMap(this.width, this.totalHeight);
 		this.map = this.mapEditor;
 
 		if (window.chainData) { // We have a chain in the URL. Attempt to use it.
@@ -71,7 +71,7 @@ var Field = {
 			this.hiddenRows = hr;
 			this.totalHeight = h + hr;
 
-			this.mapEditor = new this.Map(this.width, this.totalHeight);
+			this.mapEditor = new FieldMap(this.width, this.totalHeight);
 			this.map = this.mapEditor;
 
 			if (PuyoDisplay.renderer) { // If we have a render, draw up the new field
@@ -151,7 +151,7 @@ var Field = {
 	}
 };
 
-Field.Map = function(w, h, m) { // Creates a puyo map, either a new one or from an existing one
+const FieldMap = function(w, h, m) { // Creates a puyo map, either a new one or from an existing one
 	this.map = [];
 	this.width = w;
 	this.height = h; // This is the total height (height + hidden rows)
@@ -174,7 +174,7 @@ Field.Map = function(w, h, m) { // Creates a puyo map, either a new one or from 
 	}
 };
 
-Field.Map.prototype = {
+FieldMap.prototype = {
 	puyo: function(x, y) { // Returns puyo at position (x,y)
 		return this.map[x][y].puyo;
 	},
@@ -282,7 +282,7 @@ var Simulation = {
 
 			// Set all variables
 			this.running = true;
-			Field.mapSimulation = new Field.Map(Field.width, Field.totalHeight, Field.mapEditor);
+			Field.mapSimulation = new FieldMap(Field.width, Field.totalHeight, Field.mapEditor);
 			Field.map = Field.mapSimulation;
 			
 			// Check to see if the puyo can fall and go from there
@@ -325,7 +325,7 @@ var Simulation = {
 			// Set all variables
 			this.running = true;
 			this.stepMode = true;
-			Field.mapSimulation = new Field.Map(Field.width, Field.totalHeight, Field.mapEditor);
+			Field.mapSimulation = new FieldMap(Field.width, Field.totalHeight, Field.mapEditor);
 			Field.map = Field.mapSimulation;
 			
 			// Check to see if the puyo can fall and go from there
@@ -351,7 +351,7 @@ var Simulation = {
 			// Set all variables
 			this.running = true;
 			this.skipMode = true;
-			Field.mapSimulation = new Field.Map(Field.width, Field.totalHeight, Field.mapEditor);
+			Field.mapSimulation = new FieldMap(Field.width, Field.totalHeight, Field.mapEditor);
 			Field.map = Field.mapSimulation;
 			
 			// Drop the puyo and start chaining
