@@ -3,5 +3,6 @@
         "strict": true,
         "resolveJsonModule": true,
         "esModuleInterop": true,
+        "noEmit": true
     }
 }
