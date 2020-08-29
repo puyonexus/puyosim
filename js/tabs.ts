@@ -25,12 +25,6 @@ interface ISavedChain {
   format: "base36"|"legacy";
 }
 
-interface IChainsTab {
-  chains: typeof chainsJson;
-  init: () => void;
-  displaySubCategory: (category: any, subCategory: any) => void;
-};
-
 interface ISimulatorTab {
   init: () => void;
 }
@@ -47,7 +41,7 @@ interface ITabs {
   display: () => void;
   fieldWidthChanged: () => void;
   savedChains: SavedChainsTab;
-  chains: IChainsTab;
+  chains: ChainsTab;
   simulator: ISimulatorTab;
   links: ILinksTab;
   settings: ISettingsTab;
@@ -215,6 +209,152 @@ class SavedChainsTab {
   }
 }
 
+class ChainsTab {
+  chains: typeof chainsJson = [];
+
+  init() {
+    // Initalizes this tab
+    var self = this;
+
+    this.chains = chainsJson;
+
+    // Categories
+    for (var i = 0; i < this.chains.length; i++) {
+      $("#preset-chains .dropdown-menu").append(
+        "<h3>" + this.chains[i].name + "</h3>"
+      );
+      var category = $("<ul>");
+
+      // Sub-categories
+      for (var j = 0; j < this.chains[i].categories.length; j++) {
+        $("<li>")
+          .attr("data-category", i)
+          .attr("data-value", j)
+          .html("<a>" + this.chains[i].categories[j].name + "</a>")
+          .appendTo(category);
+      }
+
+      $("#preset-chains .dropdown-menu").append(category);
+    }
+
+    $("#preset-chains .dropdown-menu a").click(function () {
+      var category = parseInt(String($(this).parent().attr("data-category")), 10),
+        value = parseInt(String($(this).parent().attr("data-value")), 10);
+
+      $("#preset-chains .dropdown-menu li.selected").removeClass("selected");
+      $(this).parent().addClass("selected");
+
+      $("#preset-chains-series").text(self.chains[category].name);
+      $("#preset-chains-group").text(
+        self.chains[category].categories[value].name
+      );
+
+      self.displaySubCategory(category, value);
+    });
+
+    $(document).on("change", "#preset-chains-list select", function () {
+      if ($(this).prop("selectedIndex") === 0) {
+        return;
+      }
+
+      var category = parseInt(
+          String($("#preset-chains .dropdown-menu .selected").attr("data-category")),
+          10
+        ),
+        subCategory = parseInt(
+          String($("#preset-chains .dropdown-menu .selected").attr("data-value")),
+          10
+        ),
+        type = parseInt(String($(this).attr("data-type")), 10),
+        colors = parseInt(String($(this).attr("data-colors")), 10),
+        length = parseInt(String($(this).val()), 10);
+
+      field.setChain(
+        self.chains[category].categories[subCategory].types[type].colors[
+          colors
+        ].chains[length].chain, // Chain
+        self.chains[category].categories[subCategory].fieldWidth ||
+          FieldDefaultWidth, // Field width
+        self.chains[category].categories[subCategory].fieldHeight ||
+          FieldDefaultHeight, // Field height
+        FieldDefaultHiddenRows // Hidden rows (It's always 1 with these chains)
+      );
+
+      simulation.puyoToClear =
+        self.chains[category].categories[subCategory].puyoToClear ||
+        SimulationDefaultPuyoToClear;
+      $("#puyo-to-clear").val(simulation.puyoToClear);
+
+      $(this).prop("selectedIndex", 0);
+    });
+
+    $(
+      "#preset-chains .dropdown-menu li[data-category='0'][data-value='1'] a"
+    ).click();
+  }
+
+  displaySubCategory(category: any, subCategory: any) {
+    $("#preset-chains-list").empty(); // Empty the list so we can put new stuff in it
+
+    // Chain types
+    for (
+      var i = 0;
+      i < this.chains[category].categories[subCategory].types.length;
+      i++
+    ) {
+      var row = $("<dl>"),
+        dd = $("<dd>");
+
+      // Name of the chain type
+      $("<dt>")
+        .text(this.chains[category].categories[subCategory].types[i].name)
+        .appendTo(row);
+
+      // Select boxes for each color
+      for (
+        var j = 0;
+        j <
+        this.chains[category].categories[subCategory].types[i].colors.length;
+        j++
+      ) {
+        var select = $("<select>")
+          .attr("data-type", i)
+          .attr("data-colors", j);
+
+        // Add color amount as the first index
+        $("<option>")
+          .text(
+            this.chains[category].categories[subCategory].types[i].colors[j]
+              .amount + " Col"
+          )
+          .appendTo(select);
+
+        // Add the list of chains
+        for (
+          var k = 0;
+          k <
+          this.chains[category].categories[subCategory].types[i].colors[j]
+            .chains.length;
+          k++
+        ) {
+          $("<option>")
+            .attr("value", k)
+            .text(
+              this.chains[category].categories[subCategory].types[i].colors[j]
+                .chains[k].length
+            )
+            .appendTo(select);
+        }
+
+        select.appendTo(dd);
+        dd.appendTo(row);
+      }
+
+      $("<li>").append(row).appendTo("#preset-chains-list");
+    }
+  }
+}
+
 export const tabs: ITabs = {
   display: function () {
     // Displays the tab content and initalizes all of the tabs
@@ -288,151 +428,7 @@ export const tabs: ITabs = {
 
   savedChains: new SavedChainsTab(),
 
-  chains: {
-    chains: [], // Chains
-
-    init: function () {
-      // Initalizes this tab
-      var self = this;
-
-      this.chains = chainsJson;
-
-      // Categories
-      for (var i = 0; i < this.chains.length; i++) {
-        $("#preset-chains .dropdown-menu").append(
-          "<h3>" + this.chains[i].name + "</h3>"
-        );
-        var category = $("<ul>");
-
-        // Sub-categories
-        for (var j = 0; j < this.chains[i].categories.length; j++) {
-          $("<li>")
-            .attr("data-category", i)
-            .attr("data-value", j)
-            .html("<a>" + this.chains[i].categories[j].name + "</a>")
-            .appendTo(category);
-        }
-
-        $("#preset-chains .dropdown-menu").append(category);
-      }
-
-      $("#preset-chains .dropdown-menu a").click(function () {
-        var category = parseInt(String($(this).parent().attr("data-category")), 10),
-          value = parseInt(String($(this).parent().attr("data-value")), 10);
-
-        $("#preset-chains .dropdown-menu li.selected").removeClass("selected");
-        $(this).parent().addClass("selected");
-
-        $("#preset-chains-series").text(self.chains[category].name);
-        $("#preset-chains-group").text(
-          self.chains[category].categories[value].name
-        );
-
-        self.displaySubCategory(category, value);
-      });
-
-      $(document).on("change", "#preset-chains-list select", function () {
-        if ($(this).prop("selectedIndex") === 0) {
-          return;
-        }
-
-        var category = parseInt(
-            String($("#preset-chains .dropdown-menu .selected").attr("data-category")),
-            10
-          ),
-          subCategory = parseInt(
-            String($("#preset-chains .dropdown-menu .selected").attr("data-value")),
-            10
-          ),
-          type = parseInt(String($(this).attr("data-type")), 10),
-          colors = parseInt(String($(this).attr("data-colors")), 10),
-          length = parseInt(String($(this).val()), 10);
-
-        field.setChain(
-          self.chains[category].categories[subCategory].types[type].colors[
-            colors
-          ].chains[length].chain, // Chain
-          self.chains[category].categories[subCategory].fieldWidth ||
-            FieldDefaultWidth, // Field width
-          self.chains[category].categories[subCategory].fieldHeight ||
-            FieldDefaultHeight, // Field height
-          FieldDefaultHiddenRows // Hidden rows (It's always 1 with these chains)
-        );
-
-        simulation.puyoToClear =
-          self.chains[category].categories[subCategory].puyoToClear ||
-          SimulationDefaultPuyoToClear;
-        $("#puyo-to-clear").val(simulation.puyoToClear);
-
-        $(this).prop("selectedIndex", 0);
-      });
-
-      $(
-        "#preset-chains .dropdown-menu li[data-category='0'][data-value='1'] a"
-      ).click();
-    },
-
-    displaySubCategory: function (category, subCategory) {
-      $("#preset-chains-list").empty(); // Empty the list so we can put new stuff in it
-
-      // Chain types
-      for (
-        var i = 0;
-        i < this.chains[category].categories[subCategory].types.length;
-        i++
-      ) {
-        var row = $("<dl>"),
-          dd = $("<dd>");
-
-        // Name of the chain type
-        $("<dt>")
-          .text(this.chains[category].categories[subCategory].types[i].name)
-          .appendTo(row);
-
-        // Select boxes for each color
-        for (
-          var j = 0;
-          j <
-          this.chains[category].categories[subCategory].types[i].colors.length;
-          j++
-        ) {
-          var select = $("<select>")
-            .attr("data-type", i)
-            .attr("data-colors", j);
-
-          // Add color amount as the first index
-          $("<option>")
-            .text(
-              this.chains[category].categories[subCategory].types[i].colors[j]
-                .amount + " Col"
-            )
-            .appendTo(select);
-
-          // Add the list of chains
-          for (
-            var k = 0;
-            k <
-            this.chains[category].categories[subCategory].types[i].colors[j]
-              .chains.length;
-            k++
-          ) {
-            $("<option>")
-              .attr("value", k)
-              .text(
-                this.chains[category].categories[subCategory].types[i].colors[j]
-                  .chains[k].length
-              )
-              .appendTo(select);
-          }
-
-          select.appendTo(dd);
-          dd.appendTo(row);
-        }
-
-        $("<li>").append(row).appendTo("#preset-chains-list");
-      }
-    },
-  },
+  chains: new ChainsTab(),
 
   simulator: {
     init: function () {
