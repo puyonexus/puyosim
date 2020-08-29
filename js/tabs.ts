@@ -25,24 +25,6 @@ interface ISavedChain {
   format: "base36"|"legacy";
 }
 
-interface ILinksTab {
-  init: () => void;
-}
-
-interface ISettingsTab {
-  init: () => void;
-}
-
-interface ITabs {
-  display: () => void;
-  fieldWidthChanged: () => void;
-  savedChains: SavedChainsTab;
-  chains: ChainsTab;
-  simulator: SimulatorTab;
-  links: ILinksTab;
-  settings: ISettingsTab;
-}
-
 class SavedChainsTab {
   // Saved chains array
   chains: ISavedChain[] = [];
@@ -497,8 +479,323 @@ class SimulatorTab {
   }
 }
 
-export const tabs: ITabs = {
-  display: function () {
+class LinksTab {
+  init() {
+    // Initalizes this tab
+    var self = this;
+
+    $("#get-links").click(function () {
+      var data = {
+        title: $("#share-chain-title").val(),
+        chain: field.mapToString(),
+        width: field.width,
+        height: field.height,
+        hiddenRows: field.hiddenRows,
+        popLimit: simulation.puyoToClear,
+      };
+
+      $.post(
+        "/api/save",
+        data,
+        function (response) {
+          if (response.success) {
+            $("#share-link").val(
+              config.baseUrl +
+                Utils.stringFormat(config.shareLinkUrl, response.data.id)
+            );
+            $("#share-image").val(
+              config.baseUrl +
+                Utils.stringFormat(config.shareImageUrl, response.data.id)
+            );
+            $("#share-animated-image").val(
+              config.baseUrl +
+                Utils.stringFormat(
+                  config.shareAnimatedImageUrl,
+                  response.data.id
+                )
+            );
+
+            // Hide elements that shouldn't be shown for shared chains, and show elements that should
+            $(".hide-on-shared-chain").hide();
+            $(".show-on-shared-chain").show();
+          }
+        },
+        "json"
+      );
+    });
+
+    if (window.chainData !== undefined) {
+      if (window.chainData.id !== undefined) {
+        $("#share-link").val(
+          config.baseUrl +
+            Utils.stringFormat(config.shareLinkUrl, window.chainData.id)
+        );
+        $("#share-image").val(
+          config.baseUrl +
+            Utils.stringFormat(config.shareImageUrl, window.chainData.id)
+        );
+        $("#share-animated-image").val(
+          config.baseUrl +
+            Utils.stringFormat(
+              config.shareAnimatedImageUrl,
+              window.chainData.id
+            )
+        );
+      } else if (window.chainData.legacyQueryString !== undefined) {
+        $("#share-link").val(
+          config.baseUrl +
+            Utils.stringFormat(
+              config.shareLegacyLinkUrl,
+              window.chainData.legacyQueryString
+            )
+        );
+        $("#share-image").val(
+          config.baseUrl +
+            Utils.stringFormat(
+              config.shareLegacyImageUrl,
+              window.chainData.legacyQueryString
+            )
+        );
+      }
+    }
+  }
+}
+
+class SettingsTab {
+  init() {
+    // Initalizes this tab
+    // Animation
+    $("#animate-puyo") // Puyo animation
+      .click(function () {
+        var checked = $(this).prop("checked");
+
+        puyoDisplay.animate.puyo = checked;
+        localStorage.setItem("chainsim.animate.puyo", checked ? "yes" : "no");
+
+        // See if we need to enable or disable the animation
+        if (
+          checked &&
+          !puyoDisplay.puyoAnimation.running &&
+          puyoDisplay.puyoSkin!.frames !== undefined &&
+          puyoDisplay.puyoSkin!.frames > 0
+        ) {
+          puyoDisplay.puyoAnimation.start(puyoDisplay.puyoSkin!.frames);
+        } else if (!checked && puyoDisplay.puyoAnimation.running) {
+          puyoDisplay.puyoAnimation.stop();
+        }
+      })
+      .prop("checked", puyoDisplay.animate.puyo);
+
+    $("#animate-sun-puyo") // Sun Puyo animation
+      .click(function () {
+        var checked = $(this).prop("checked");
+
+        puyoDisplay.animate.sunPuyo = checked;
+        localStorage.setItem(
+          "chainsim.animate.sunPuyo",
+          checked ? "yes" : "no"
+        );
+
+        // See if we need to enable or disable the animation
+        if (checked && !puyoDisplay.sunPuyoAnimation.running) {
+          puyoDisplay.sunPuyoAnimation.start();
+        } else if (!checked && puyoDisplay.sunPuyoAnimation.running) {
+          puyoDisplay.sunPuyoAnimation.stop();
+        }
+      })
+      .prop("checked", puyoDisplay.animate.sunPuyo);
+
+    $("#animate-nuisance-tray") // Nuisance Tray animation
+      .click(function () {
+        var checked = $(this).prop("checked");
+
+        puyoDisplay.animate.nuisanceTray = checked;
+        localStorage.setItem(
+          "chainsim.animate.nuisanceTray",
+          checked ? "yes" : "no"
+        );
+      })
+      .prop("checked", puyoDisplay.animate.puyo);
+
+    // Field Style
+    $("#field-style")
+      .change(function () {
+        $(this).prop("disabled", true);
+        fieldDisplay.load($(this).val());
+        localStorage.setItem("chainsim.fieldStyle", String($(this).val()));
+      })
+      .val(localStorage.getItem("chainsim.fieldStyle") || "standard"); // Default to Standard
+
+    // Character Background
+    (function () {
+      // Loop through each of the backgrounds
+      var index = 0;
+      for (
+        var i = 0;
+        i < content.Field.EyeCandy.CharacterBackgrounds!.length;
+        i++
+      ) {
+        $("#character-background .dropdown-menu").append(
+          "<h3>" +
+            content.Field.EyeCandy.CharacterBackgrounds![i].name +
+            "</h3>"
+        );
+        var category = $("<ul>");
+
+        // Loop through each of the powers in the category
+        for (
+          var j = 0;
+          j <
+          content.Field.EyeCandy.CharacterBackgrounds![i].backgrounds.length;
+          j++
+        ) {
+          $("<li>")
+            .attr("data-category", i)
+            .attr("data-value", j)
+            .attr("data-id", index)
+            .html(
+              "<a>" +
+                content.Field.EyeCandy.CharacterBackgrounds![i].backgrounds[
+                  j
+                ] +
+                "</a>"
+            )
+            .appendTo(category);
+          index++;
+        }
+
+        $("#character-background .dropdown-menu").append(category);
+      }
+
+      $("#character-background .dropdown-menu a").click(function () {
+        var category = parseInt($(this).parent().attr("data-category")!, 10),
+          value = parseInt($(this).parent().attr("data-value")!, 10),
+          id = parseInt($(this).parent().attr("data-id")!, 10);
+
+        $("#character-background .dropdown-menu li.selected").removeClass(
+          "selected"
+        );
+        $(this).parent().addClass("selected");
+
+        if (fieldDisplay.fieldContent === content.Field.EyeCandy) {
+          if (id === 0) {
+            $("#field-bg-2").css(
+              "background-image",
+              "url('/images/eyecandy/field_char_bg/" +
+                content.Field.EyeCandy.CharaBGs![
+                  Math.floor(
+                    Math.random() * content.Field.EyeCandy.CharaBGs!.length
+                  )
+                ] +
+                "')"
+            );
+          } else {
+            $("#field-bg-2").css(
+              "background-image",
+              "url('/images/eyecandy/field_char_bg/" +
+                content.Field.EyeCandy.CharaBGs![id - 1] +
+                "')"
+            );
+          }
+        }
+
+        $("#character-background-game").text(
+          content.Field.EyeCandy.CharacterBackgrounds![category].name
+        );
+        $("#character-background-character").text(
+          content.Field.EyeCandy.CharacterBackgrounds![category].backgrounds[
+            value
+          ]
+        );
+
+        localStorage.setItem("chainsim.boardBackgroundId", String(id));
+      });
+      var boardBackgroundId = localStorage.getItem(
+        "chainsim.boardBackgroundId"
+      );
+      var boardBackgroundCategory = 0;
+      var boardBackgroundValue = 0;
+      if (boardBackgroundId !== null) {
+        boardBackgroundCategory =
+          parseInt(
+            $(
+              `#character-background .dropdown-menu li[data-id='${boardBackgroundId}']`
+            ).attr("data-category")!,
+            10
+          ) || 0;
+        boardBackgroundValue =
+          parseInt(
+            $(
+              `#character-background .dropdown-menu li[data-id='${boardBackgroundId}']`
+            ).attr("data-value")!,
+            10
+          ) || 0;
+      }
+
+      $("#character-background-game").text(
+        content.Field.EyeCandy.CharacterBackgrounds![boardBackgroundCategory]
+          .name
+      );
+      $("#character-background-character").text(
+        content.Field.EyeCandy.CharacterBackgrounds![boardBackgroundCategory]
+          .backgrounds[boardBackgroundValue]
+      );
+      $(
+        "#character-background .dropdown-menu li[data-id='" +
+          boardBackgroundId +
+          "']"
+      ).addClass("selected");
+    })();
+
+    $.each(puyoDisplay.puyoSkins, function (index, value) {
+      $("<li>")
+        .attr("data-value", value.id)
+        .append(
+          $("<a>").append(
+            $("<span>")
+              .addClass("puyo-skin")
+              .css(
+                "background-position",
+                "0px -" + index * puyoDisplay.puyoSize + "px"
+              )
+          )
+        )
+        .appendTo("#puyo-skins .dropdown-menu");
+    });
+
+    $("#puyo-skins .dropdown-menu a").click(function () {
+      $("#puyo-skins li.selected").removeClass("selected");
+      $($(this).parent()).addClass("selected");
+
+      puyoDisplay.setPuyoSkin($(this).parent().attr("data-value")!);
+      localStorage.setItem(
+        "chainsim.puyoSkin",
+        $(this).parent().attr("data-value")!
+      );
+
+      $("#puyo-skins .dropdown-toggle .puyo-skin").css(
+        "background-position",
+        "0px -" +
+          puyoDisplay.getSkinIndex(puyoDisplay.puyoSkin!.id) *
+            puyoDisplay.puyoSize +
+          "px"
+      );
+    });
+    $(
+      "#puyo-skins li[data-value='" + puyoDisplay.puyoSkin!.id + "']"
+    ).addClass("selected");
+    $("#puyo-skins .dropdown-toggle .puyo-skin").css(
+      "background-position",
+      "0px -" +
+        puyoDisplay.getSkinIndex(puyoDisplay.puyoSkin!.id) *
+          puyoDisplay.puyoSize +
+        "px"
+    );
+  }
+}
+
+export const tabs = {
+  display() {
     // Displays the tab content and initalizes all of the tabs
     // Set up the tabs for the options
     $("#simulator-tabs-select > li a[data-target]").click(function () {
@@ -541,7 +838,7 @@ export const tabs: ITabs = {
     this.settings.init();
   },
 
-  fieldWidthChanged: function () {
+  fieldWidthChanged() {
     // Called when the field width changes
     var $simulatorTabs = $("#simulator-tabs"),
       $simulatorTabsWidth = $simulatorTabs.outerWidth(true)!,
@@ -574,318 +871,7 @@ export const tabs: ITabs = {
 
   simulator: new SimulatorTab(),
 
-  links: {
-    init: function () {
-      // Initalizes this tab
-      var self = this;
+  links: new LinksTab(),
 
-      $("#get-links").click(function () {
-        var data = {
-          title: $("#share-chain-title").val(),
-          chain: field.mapToString(),
-          width: field.width,
-          height: field.height,
-          hiddenRows: field.hiddenRows,
-          popLimit: simulation.puyoToClear,
-        };
-
-        $.post(
-          "/api/save",
-          data,
-          function (response) {
-            if (response.success) {
-              $("#share-link").val(
-                config.baseUrl +
-                  Utils.stringFormat(config.shareLinkUrl, response.data.id)
-              );
-              $("#share-image").val(
-                config.baseUrl +
-                  Utils.stringFormat(config.shareImageUrl, response.data.id)
-              );
-              $("#share-animated-image").val(
-                config.baseUrl +
-                  Utils.stringFormat(
-                    config.shareAnimatedImageUrl,
-                    response.data.id
-                  )
-              );
-
-              // Hide elements that shouldn't be shown for shared chains, and show elements that should
-              $(".hide-on-shared-chain").hide();
-              $(".show-on-shared-chain").show();
-            }
-          },
-          "json"
-        );
-      });
-
-      if (window.chainData !== undefined) {
-        if (window.chainData.id !== undefined) {
-          $("#share-link").val(
-            config.baseUrl +
-              Utils.stringFormat(config.shareLinkUrl, window.chainData.id)
-          );
-          $("#share-image").val(
-            config.baseUrl +
-              Utils.stringFormat(config.shareImageUrl, window.chainData.id)
-          );
-          $("#share-animated-image").val(
-            config.baseUrl +
-              Utils.stringFormat(
-                config.shareAnimatedImageUrl,
-                window.chainData.id
-              )
-          );
-        } else if (window.chainData.legacyQueryString !== undefined) {
-          $("#share-link").val(
-            config.baseUrl +
-              Utils.stringFormat(
-                config.shareLegacyLinkUrl,
-                window.chainData.legacyQueryString
-              )
-          );
-          $("#share-image").val(
-            config.baseUrl +
-              Utils.stringFormat(
-                config.shareLegacyImageUrl,
-                window.chainData.legacyQueryString
-              )
-          );
-        }
-      }
-    },
-  },
-
-  settings: {
-    init: function () {
-      // Initalizes this tab
-      // Animation
-      $("#animate-puyo") // Puyo animation
-        .click(function () {
-          var checked = $(this).prop("checked");
-
-          puyoDisplay.animate.puyo = checked;
-          localStorage.setItem("chainsim.animate.puyo", checked ? "yes" : "no");
-
-          // See if we need to enable or disable the animation
-          if (
-            checked &&
-            !puyoDisplay.puyoAnimation.running &&
-            puyoDisplay.puyoSkin!.frames !== undefined &&
-            puyoDisplay.puyoSkin!.frames > 0
-          ) {
-            puyoDisplay.puyoAnimation.start(puyoDisplay.puyoSkin!.frames);
-          } else if (!checked && puyoDisplay.puyoAnimation.running) {
-            puyoDisplay.puyoAnimation.stop();
-          }
-        })
-        .prop("checked", puyoDisplay.animate.puyo);
-
-      $("#animate-sun-puyo") // Sun Puyo animation
-        .click(function () {
-          var checked = $(this).prop("checked");
-
-          puyoDisplay.animate.sunPuyo = checked;
-          localStorage.setItem(
-            "chainsim.animate.sunPuyo",
-            checked ? "yes" : "no"
-          );
-
-          // See if we need to enable or disable the animation
-          if (checked && !puyoDisplay.sunPuyoAnimation.running) {
-            puyoDisplay.sunPuyoAnimation.start();
-          } else if (!checked && puyoDisplay.sunPuyoAnimation.running) {
-            puyoDisplay.sunPuyoAnimation.stop();
-          }
-        })
-        .prop("checked", puyoDisplay.animate.sunPuyo);
-
-      $("#animate-nuisance-tray") // Nuisance Tray animation
-        .click(function () {
-          var checked = $(this).prop("checked");
-
-          puyoDisplay.animate.nuisanceTray = checked;
-          localStorage.setItem(
-            "chainsim.animate.nuisanceTray",
-            checked ? "yes" : "no"
-          );
-        })
-        .prop("checked", puyoDisplay.animate.puyo);
-
-      // Field Style
-      $("#field-style")
-        .change(function () {
-          $(this).prop("disabled", true);
-          fieldDisplay.load($(this).val());
-          localStorage.setItem("chainsim.fieldStyle", String($(this).val()));
-        })
-        .val(localStorage.getItem("chainsim.fieldStyle") || "standard"); // Default to Standard
-
-      // Character Background
-      (function () {
-        // Loop through each of the backgrounds
-        var index = 0;
-        for (
-          var i = 0;
-          i < content.Field.EyeCandy.CharacterBackgrounds!.length;
-          i++
-        ) {
-          $("#character-background .dropdown-menu").append(
-            "<h3>" +
-              content.Field.EyeCandy.CharacterBackgrounds![i].name +
-              "</h3>"
-          );
-          var category = $("<ul>");
-
-          // Loop through each of the powers in the category
-          for (
-            var j = 0;
-            j <
-            content.Field.EyeCandy.CharacterBackgrounds![i].backgrounds.length;
-            j++
-          ) {
-            $("<li>")
-              .attr("data-category", i)
-              .attr("data-value", j)
-              .attr("data-id", index)
-              .html(
-                "<a>" +
-                  content.Field.EyeCandy.CharacterBackgrounds![i].backgrounds[
-                    j
-                  ] +
-                  "</a>"
-              )
-              .appendTo(category);
-            index++;
-          }
-
-          $("#character-background .dropdown-menu").append(category);
-        }
-
-        $("#character-background .dropdown-menu a").click(function () {
-          var category = parseInt($(this).parent().attr("data-category")!, 10),
-            value = parseInt($(this).parent().attr("data-value")!, 10),
-            id = parseInt($(this).parent().attr("data-id")!, 10);
-
-          $("#character-background .dropdown-menu li.selected").removeClass(
-            "selected"
-          );
-          $(this).parent().addClass("selected");
-
-          if (fieldDisplay.fieldContent === content.Field.EyeCandy) {
-            if (id === 0) {
-              $("#field-bg-2").css(
-                "background-image",
-                "url('/images/eyecandy/field_char_bg/" +
-                  content.Field.EyeCandy.CharaBGs![
-                    Math.floor(
-                      Math.random() * content.Field.EyeCandy.CharaBGs!.length
-                    )
-                  ] +
-                  "')"
-              );
-            } else {
-              $("#field-bg-2").css(
-                "background-image",
-                "url('/images/eyecandy/field_char_bg/" +
-                  content.Field.EyeCandy.CharaBGs![id - 1] +
-                  "')"
-              );
-            }
-          }
-
-          $("#character-background-game").text(
-            content.Field.EyeCandy.CharacterBackgrounds![category].name
-          );
-          $("#character-background-character").text(
-            content.Field.EyeCandy.CharacterBackgrounds![category].backgrounds[
-              value
-            ]
-          );
-
-          localStorage.setItem("chainsim.boardBackgroundId", String(id));
-        });
-        var boardBackgroundId = localStorage.getItem(
-          "chainsim.boardBackgroundId"
-        );
-        var boardBackgroundCategory = 0;
-        var boardBackgroundValue = 0;
-        if (boardBackgroundId !== null) {
-          boardBackgroundCategory =
-            parseInt(
-              $(
-                `#character-background .dropdown-menu li[data-id='${boardBackgroundId}']`
-              ).attr("data-category")!,
-              10
-            ) || 0;
-          boardBackgroundValue =
-            parseInt(
-              $(
-                `#character-background .dropdown-menu li[data-id='${boardBackgroundId}']`
-              ).attr("data-value")!,
-              10
-            ) || 0;
-        }
-
-        $("#character-background-game").text(
-          content.Field.EyeCandy.CharacterBackgrounds![boardBackgroundCategory]
-            .name
-        );
-        $("#character-background-character").text(
-          content.Field.EyeCandy.CharacterBackgrounds![boardBackgroundCategory]
-            .backgrounds[boardBackgroundValue]
-        );
-        $(
-          "#character-background .dropdown-menu li[data-id='" +
-            boardBackgroundId +
-            "']"
-        ).addClass("selected");
-      })();
-
-      $.each(puyoDisplay.puyoSkins, function (index, value) {
-        $("<li>")
-          .attr("data-value", value.id)
-          .append(
-            $("<a>").append(
-              $("<span>")
-                .addClass("puyo-skin")
-                .css(
-                  "background-position",
-                  "0px -" + index * puyoDisplay.puyoSize + "px"
-                )
-            )
-          )
-          .appendTo("#puyo-skins .dropdown-menu");
-      });
-
-      $("#puyo-skins .dropdown-menu a").click(function () {
-        $("#puyo-skins li.selected").removeClass("selected");
-        $($(this).parent()).addClass("selected");
-
-        puyoDisplay.setPuyoSkin($(this).parent().attr("data-value")!);
-        localStorage.setItem(
-          "chainsim.puyoSkin",
-          $(this).parent().attr("data-value")!
-        );
-
-        $("#puyo-skins .dropdown-toggle .puyo-skin").css(
-          "background-position",
-          "0px -" +
-            puyoDisplay.getSkinIndex(puyoDisplay.puyoSkin!.id) *
-              puyoDisplay.puyoSize +
-            "px"
-        );
-      });
-      $(
-        "#puyo-skins li[data-value='" + puyoDisplay.puyoSkin!.id + "']"
-      ).addClass("selected");
-      $("#puyo-skins .dropdown-toggle .puyo-skin").css(
-        "background-position",
-        "0px -" +
-          puyoDisplay.getSkinIndex(puyoDisplay.puyoSkin!.id) *
-            puyoDisplay.puyoSize +
-          "px"
-      );
-    },
-  },
+  settings: new SettingsTab(),
 };
