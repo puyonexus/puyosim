@@ -26,33 +26,32 @@ declare global {
   }
 };
 
-interface IField {
-  width: number;
-  height: number;
-  hiddenRows: number;
-  totalHeight: number;
-  chainInURL: boolean;
+class Field {
+  // Field Width (Default = 6)
+  width = FieldDefaultWidth;
+
+  // Field Height (Default = 12)
+  height = FieldDefaultHeight;
+
+  // Hidden Rows (Default = 1)
+  hiddenRows = FieldDefaultHiddenRows;
+
+  // Total height (height + hidden rows)
+  totalHeight = FieldDefaultHeight + FieldDefaultHiddenRows;
+
+  // A chain is in the URL and can be successfully set
+  chainInURL = false;
+
+  // Map that contains the puyo
   map?: FieldMap;
+
+  // The map used during the "editing" portion of the simulator
   mapEditor?: FieldMap;
+
+  // The map used during the simulation
   mapSimulation?: FieldMap;
-  init: () => void;
-  setChain: (chain: any, w: any, h: any, hr?: any) => void;
-  setChainFromURL: () => void;
-  mapToString: () => string;
-}
 
-export const field: IField = {
-  width: FieldDefaultWidth, // Field Width (Default = 6)
-  height: FieldDefaultHeight, // Field Height (Default = 12)
-  hiddenRows: FieldDefaultHiddenRows, // Hidden Rows (Default = 1)
-  totalHeight: FieldDefaultHeight + FieldDefaultHiddenRows, // Total height (height + hidden rows)
-
-  chainInURL: false, // A chain is in the URL and can be successfully set
-  map: undefined, // Map that contains the puyo
-  mapEditor: undefined, // The map used during the "editing" portion of the simulator
-  mapSimulation: undefined, // The map used during the simulation
-
-  init: function () {
+  init() {
     // Initalize
     this.mapEditor = new FieldMap(this.width, this.totalHeight);
     this.map = this.mapEditor;
@@ -61,9 +60,9 @@ export const field: IField = {
       // We have a chain in the URL. Attempt to use it.
       this.setChainFromURL();
     }
-  },
+  }
 
-  setChain: function (chain, w, h, hr?) {
+  setChain(chain: any, w: any, h: any, hr?: any) {
     // Sets the chain with the specified width and height
     var pos;
     w = w || FieldDefaultWidth;
@@ -140,9 +139,9 @@ export const field: IField = {
         }
       }
     }
-  },
+  }
 
-  setChainFromURL: function () {
+  setChainFromURL() {
     // Attempts to set the chain from the URL
     if (!window.chainData) {
       return;
@@ -161,9 +160,9 @@ export const field: IField = {
     $("#puyo-to-clear").val(simulation.puyoToClear);
 
     this.chainInURL = true;
-  },
+  }
 
-  mapToString: function () {
+  mapToString() {
     // Converts mapEditor to a string that can be shared
     var addZeros = false, // Add zeros to the front
       chainString = ""; // The chain string
@@ -179,5 +178,7 @@ export const field: IField = {
     }
 
     return chainString;
-  },
+  }
 };
+
+export const field = new Field();
