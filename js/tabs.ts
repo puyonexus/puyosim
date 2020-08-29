@@ -8,13 +8,10 @@ import $ from "jquery";
 import { config } from "./config";
 import { FieldDefaultWidth, FieldDefaultHeight, FieldDefaultHiddenRows, SimulationDefaultPuyoToClear, SimulationDefaultTargetPoints } from "./constants";
 import { content } from "./content";
-import { fieldDisplay } from "./fielddisplay";
-import { puyoDisplay } from "./puyodisplay";
 import { Utils } from "./utils";
-import { simulation } from "./simulation";
-import { field } from "./field";
 import { default as attackPowersJson } from "./data/attackPowers.json";
 import { default as chainsJson } from "./data/chains.json";
+import { PuyoSim } from "./puyosim";
 
 interface ISavedChain {
   name: string;
@@ -28,6 +25,8 @@ interface ISavedChain {
 class SavedChainsTab {
   // Saved chains array
   chains: ISavedChain[] = [];
+
+  constructor(readonly sim: PuyoSim) {}
 
   init() {
     // Initalizes this tab
@@ -82,7 +81,7 @@ class SavedChainsTab {
       }
     }
 
-    field.setChain(
+    this.sim.field.setChain(
       chain,
       this.chains[index].width || FieldDefaultWidth,
       this.chains[index].height || FieldDefaultHeight,
@@ -99,10 +98,10 @@ class SavedChainsTab {
 
     this.chains.push({
       name: name,
-      width: field.width,
-      height: field.height,
-      hiddenRows: field.hiddenRows,
-      chain: field.mapToString(),
+      width: this.sim.field.width,
+      height: this.sim.field.height,
+      hiddenRows: this.sim.field.hiddenRows,
+      chain: this.sim.field.mapToString(),
       format: "base36",
     });
 
@@ -190,6 +189,8 @@ class SavedChainsTab {
 class ChainsTab {
   chains: typeof chainsJson = [];
 
+  constructor(readonly sim: PuyoSim) {}
+
   init() {
     // Initalizes this tab
     var self = this;
@@ -247,7 +248,7 @@ class ChainsTab {
         colors = parseInt(String($(this).attr("data-colors")), 10),
         length = parseInt(String($(this).val()), 10);
 
-      field.setChain(
+      self.sim.field.setChain(
         self.chains[category].categories[subCategory].types[type].colors[
           colors
         ].chains[length].chain, // Chain
@@ -258,10 +259,10 @@ class ChainsTab {
         FieldDefaultHiddenRows // Hidden rows (It's always 1 with these chains)
       );
 
-      simulation.puyoToClear =
+      self.sim.simulation.puyoToClear =
         self.chains[category].categories[subCategory].puyoToClear ||
         SimulationDefaultPuyoToClear;
-      $("#puyo-to-clear").val(simulation.puyoToClear);
+      $("#puyo-to-clear").val(self.sim.simulation.puyoToClear);
 
       $(this).prop("selectedIndex", 0);
     });
@@ -334,17 +335,21 @@ class ChainsTab {
 }
 
 class SimulatorTab {
+  constructor(readonly sim: PuyoSim) { }
+
   init() {
+    const self = this;
+  
     // Initalizes this tab
     // Scoring
     $("input[type='radio'][name='score-mode']")
       .change(function () {
         switch ($(this).filter(":checked").val()) {
           case "classic":
-            simulation.scoreMode = 0;
+            self.sim.simulation.scoreMode = 0;
             break; // 0 = Classic scoring
           case "fever":
-            simulation.scoreMode = 1;
+            self.sim.simulation.scoreMode = 1;
             break; // 1 = Fever scoring
         }
       })
@@ -354,23 +359,23 @@ class SimulatorTab {
     // Puyo to Clear
     $("#puyo-to-clear")
       .change(function () {
-        simulation.puyoToClear = parseInt(String($(this).val()), 10);
+        self.sim.simulation.puyoToClear = parseInt(String($(this).val()), 10);
       })
       .html(Utils.createDropDownListOptions(Utils.range(2, 6, 1)))
-      .val(simulation.puyoToClear); // Default to 4
+      .val(self.sim.simulation.puyoToClear); // Default to 4
 
     // Target Points
     $("#target-points")
       .change(function () {
-        simulation.targetPoints = parseInt(String($(this).val()), 10);
+        self.sim.simulation.targetPoints = parseInt(String($(this).val()), 10);
       })
       .html(Utils.createDropDownListOptions(Utils.range(10, 990, 10)))
-      .val(simulation.targetPoints); // Default to 70
+      .val(self.sim.simulation.targetPoints); // Default to 70
 
     // Point Puyo bonus
     $("#point-puyo-bonus")
       .change(function () {
-        simulation.pointPuyoBonus = parseInt(String($(this).val()), 10);
+        self.sim.simulation.pointPuyoBonus = parseInt(String($(this).val()), 10);
       })
       .html(
         Utils.createDropDownListOptions({
@@ -385,35 +390,35 @@ class SimulatorTab {
           1000000: "1M",
         })
       )
-      .val(simulation.pointPuyoBonus); // Default to 50
+      .val(self.sim.simulation.pointPuyoBonus); // Default to 50
 
     // Field Size
     $("#field-size-width")
       .html(Utils.createDropDownListOptions(Utils.range(3, 16, 1)))
-      .val(field.width); // Default to 6
+      .val(self.sim.field.width); // Default to 6
     $("#field-size-height")
       .html(Utils.createDropDownListOptions(Utils.range(6, 26, 1)))
-      .val(field.height); // Default to 12
+      .val(self.sim.field.height); // Default to 12
 
     $("#set-field-size").click(function () {
       var w = parseInt(String($("#field-size-width").val()), 10),
         h = parseInt(String($("#field-size-height").val()), 10);
 
-      if (w !== field.width || h !== field.height) {
-        field.setChain("", w, h, field.hiddenRows);
+      if (w !== self.sim.field.width || h !== self.sim.field.height) {
+        self.sim.field.setChain("", w, h, self.sim.field.hiddenRows);
       }
     });
 
     // Hidden Rows
     $("#field-hidden-rows")
       .html(Utils.createDropDownListOptions(Utils.range(1, 2, 1)))
-      .val(field.hiddenRows); // Default to 1
+      .val(self.sim.field.hiddenRows); // Default to 1
 
     $("#set-hidden-rows").click(function () {
       var hr = parseInt(String($("#field-hidden-rows").val()), 10);
 
-      if (hr !== field.hiddenRows) {
-        field.setChain("", field.width, field.height, hr);
+      if (hr !== self.sim.field.hiddenRows) {
+        self.sim.field.setChain("", self.sim.field.width, self.sim.field.height, hr);
       }
     });
 
@@ -449,8 +454,8 @@ class SimulatorTab {
         );
         $(this).parent().addClass("selected");
 
-        simulation.chainPowers = attackPowers[category].powers[value].values;
-        simulation.chainPowerInc =
+        self.sim.simulation.chainPowers = attackPowers[category].powers[value].values;
+        self.sim.simulation.chainPowerInc =
           attackPowers[category].powers[value].increment || 0;
 
         $("#attack-powers-game").text(attackPowers[category].name);
@@ -480,6 +485,8 @@ class SimulatorTab {
 }
 
 class LinksTab {
+  constructor(readonly sim: PuyoSim) { }
+
   init() {
     // Initalizes this tab
     var self = this;
@@ -487,11 +494,11 @@ class LinksTab {
     $("#get-links").click(function () {
       var data = {
         title: $("#share-chain-title").val(),
-        chain: field.mapToString(),
-        width: field.width,
-        height: field.height,
-        hiddenRows: field.hiddenRows,
-        popLimit: simulation.puyoToClear,
+        chain: self.sim.field.mapToString(),
+        width: self.sim.field.width,
+        height: self.sim.field.height,
+        hiddenRows: self.sim.field.hiddenRows,
+        popLimit: self.sim.simulation.puyoToClear,
       };
 
       $.post(
@@ -562,66 +569,70 @@ class LinksTab {
 }
 
 class SettingsTab {
+  constructor(readonly sim: PuyoSim) { }
+
   init() {
+    const self = this;
+
     // Initalizes this tab
     // Animation
     $("#animate-puyo") // Puyo animation
       .click(function () {
         var checked = $(this).prop("checked");
 
-        puyoDisplay.animate.puyo = checked;
+        self.sim.puyoDisplay.animate.puyo = checked;
         localStorage.setItem("chainsim.animate.puyo", checked ? "yes" : "no");
 
         // See if we need to enable or disable the animation
         if (
           checked &&
-          !puyoDisplay.puyoAnimation.running &&
-          puyoDisplay.puyoSkin!.frames !== undefined &&
-          puyoDisplay.puyoSkin!.frames > 0
+          !self.sim.puyoDisplay.puyoAnimation.running &&
+          self.sim.puyoDisplay.puyoSkin!.frames !== undefined &&
+          self.sim.puyoDisplay.puyoSkin!.frames > 0
         ) {
-          puyoDisplay.puyoAnimation.start(puyoDisplay.puyoSkin!.frames);
-        } else if (!checked && puyoDisplay.puyoAnimation.running) {
-          puyoDisplay.puyoAnimation.stop();
+          self.sim.puyoDisplay.puyoAnimation.start(self.sim.puyoDisplay.puyoSkin!.frames);
+        } else if (!checked && self.sim.puyoDisplay.puyoAnimation.running) {
+          self.sim.puyoDisplay.puyoAnimation.stop();
         }
       })
-      .prop("checked", puyoDisplay.animate.puyo);
+      .prop("checked", self.sim.puyoDisplay.animate.puyo);
 
     $("#animate-sun-puyo") // Sun Puyo animation
       .click(function () {
         var checked = $(this).prop("checked");
 
-        puyoDisplay.animate.sunPuyo = checked;
+        self.sim.puyoDisplay.animate.sunPuyo = checked;
         localStorage.setItem(
           "chainsim.animate.sunPuyo",
           checked ? "yes" : "no"
         );
 
         // See if we need to enable or disable the animation
-        if (checked && !puyoDisplay.sunPuyoAnimation.running) {
-          puyoDisplay.sunPuyoAnimation.start();
-        } else if (!checked && puyoDisplay.sunPuyoAnimation.running) {
-          puyoDisplay.sunPuyoAnimation.stop();
+        if (checked && !self.sim.puyoDisplay.sunPuyoAnimation.running) {
+          self.sim.puyoDisplay.sunPuyoAnimation.start();
+        } else if (!checked && self.sim.puyoDisplay.sunPuyoAnimation.running) {
+          self.sim.puyoDisplay.sunPuyoAnimation.stop();
         }
       })
-      .prop("checked", puyoDisplay.animate.sunPuyo);
+      .prop("checked", this.sim.puyoDisplay.animate.sunPuyo);
 
     $("#animate-nuisance-tray") // Nuisance Tray animation
       .click(function () {
         var checked = $(this).prop("checked");
 
-        puyoDisplay.animate.nuisanceTray = checked;
+        self.sim.puyoDisplay.animate.nuisanceTray = checked;
         localStorage.setItem(
           "chainsim.animate.nuisanceTray",
           checked ? "yes" : "no"
         );
       })
-      .prop("checked", puyoDisplay.animate.puyo);
+      .prop("checked", this.sim.puyoDisplay.animate.puyo);
 
     // Field Style
     $("#field-style")
       .change(function () {
         $(this).prop("disabled", true);
-        fieldDisplay.load($(this).val());
+        self.sim.fieldDisplay.load($(this).val());
         localStorage.setItem("chainsim.fieldStyle", String($(this).val()));
       })
       .val(localStorage.getItem("chainsim.fieldStyle") || "standard"); // Default to Standard
@@ -677,7 +688,7 @@ class SettingsTab {
         );
         $(this).parent().addClass("selected");
 
-        if (fieldDisplay.fieldContent === content.Field.EyeCandy) {
+        if (self.sim.fieldDisplay.fieldContent === content.Field.EyeCandy) {
           if (id === 0) {
             $("#field-bg-2").css(
               "background-image",
@@ -747,7 +758,7 @@ class SettingsTab {
       ).addClass("selected");
     })();
 
-    $.each(puyoDisplay.puyoSkins, function (index, value) {
+    $.each(this.sim.puyoDisplay.puyoSkins, function (index, value) {
       $("<li>")
         .attr("data-value", value.id)
         .append(
@@ -756,7 +767,7 @@ class SettingsTab {
               .addClass("puyo-skin")
               .css(
                 "background-position",
-                "0px -" + index * puyoDisplay.puyoSize + "px"
+                "0px -" + index * self.sim.puyoDisplay.puyoSize + "px"
               )
           )
         )
@@ -767,7 +778,7 @@ class SettingsTab {
       $("#puyo-skins li.selected").removeClass("selected");
       $($(this).parent()).addClass("selected");
 
-      puyoDisplay.setPuyoSkin($(this).parent().attr("data-value")!);
+      self.sim.puyoDisplay.setPuyoSkin($(this).parent().attr("data-value")!);
       localStorage.setItem(
         "chainsim.puyoSkin",
         $(this).parent().attr("data-value")!
@@ -776,30 +787,38 @@ class SettingsTab {
       $("#puyo-skins .dropdown-toggle .puyo-skin").css(
         "background-position",
         "0px -" +
-          puyoDisplay.getSkinIndex(puyoDisplay.puyoSkin!.id) *
-            puyoDisplay.puyoSize +
+        self.sim.puyoDisplay.getSkinIndex(self.sim.puyoDisplay.puyoSkin!.id) *
+        self.sim.puyoDisplay.puyoSize +
           "px"
       );
     });
     $(
-      "#puyo-skins li[data-value='" + puyoDisplay.puyoSkin!.id + "']"
+      "#puyo-skins li[data-value='" + this.sim.puyoDisplay.puyoSkin!.id + "']"
     ).addClass("selected");
     $("#puyo-skins .dropdown-toggle .puyo-skin").css(
       "background-position",
       "0px -" +
-        puyoDisplay.getSkinIndex(puyoDisplay.puyoSkin!.id) *
-          puyoDisplay.puyoSize +
+        this.sim.puyoDisplay.getSkinIndex(this.sim.puyoDisplay.puyoSkin!.id) *
+          this.sim.puyoDisplay.puyoSize +
         "px"
     );
   }
 }
 
-class Tabs {
-  savedChains = new SavedChainsTab();
-  chains = new ChainsTab();
-  simulator = new SimulatorTab();
-  links = new LinksTab();
-  settings = new SettingsTab();
+export class Tabs {
+  savedChains: SavedChainsTab;
+  chains: ChainsTab;
+  simulator: SimulatorTab;
+  links: LinksTab;
+  settings: SettingsTab;
+  
+  constructor(readonly sim: PuyoSim) {
+    this.savedChains = new SavedChainsTab(sim);
+    this.chains = new ChainsTab(sim);
+    this.simulator = new SimulatorTab(sim);
+    this.links = new LinksTab(sim);
+    this.settings = new SettingsTab(sim);
+  }
 
   display() {
     // Displays the tab content and initalizes all of the tabs
@@ -871,5 +890,3 @@ class Tabs {
     }
   }
 }
-
-export const tabs = new Tabs();

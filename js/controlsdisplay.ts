@@ -5,26 +5,28 @@
  */
 
 import $ from "jquery";
-import { field } from "./field";
-import { fieldDisplay } from "./fielddisplay";
-import { simulation } from "./simulation";
 import { PuyoType, SimulationDefaultSpeed } from "./constants";
+import { PuyoSim } from "./puyosim";
 
-class ControlsDisplay {
+export class ControlsDisplay {
+  constructor(readonly sim: PuyoSim) {}
+
   display() {
+    const self = this;
+
     // Displays the controls
     $("#puyo-insertion").change(function () {
-      fieldDisplay.insertPuyo = $(this).prop("checked");
+      self.sim.fieldDisplay.insertPuyo = $(this).prop("checked");
     });
 
     $("#field-erase-all").click(function () {
-      field.setChain("", field.width, field.height, field.hiddenRows);
+      self.sim.field.setChain("", self.sim.field.width, self.sim.field.height, self.sim.field.hiddenRows);
     });
 
-    if (field.chainInURL) {
+    if (self.sim.field.chainInURL) {
       // Make the "Set from URL" button function if a chain can be set from the URL
       $("#field-set-from-url").click(function () {
-        field.setChainFromURL();
+        self.sim.field.setChainFromURL();
       });
     } else {
       // Otherwise hide it, because it is useless (it would essentially be the same as the "Erase All" button)
@@ -32,43 +34,43 @@ class ControlsDisplay {
     }
 
     $("#puyo-selection .puyo.puyo-none").click(function () {
-      fieldDisplay.selectedPuyo = PuyoType.None;
+      self.sim.fieldDisplay.selectedPuyo = PuyoType.None;
     });
     $("#puyo-selection .puyo.puyo-delete").click(function () {
-      fieldDisplay.selectedPuyo = PuyoType.Delete;
+      self.sim.fieldDisplay.selectedPuyo = PuyoType.Delete;
     });
     $("#puyo-selection .puyo.puyo-red").click(function () {
-      fieldDisplay.selectedPuyo = PuyoType.Red;
+      self.sim.fieldDisplay.selectedPuyo = PuyoType.Red;
     });
     $("#puyo-selection .puyo.puyo-green").click(function () {
-      fieldDisplay.selectedPuyo = PuyoType.Green;
+      self.sim.fieldDisplay.selectedPuyo = PuyoType.Green;
     });
     $("#puyo-selection .puyo.puyo-blue").click(function () {
-      fieldDisplay.selectedPuyo = PuyoType.Blue;
+      self.sim.fieldDisplay.selectedPuyo = PuyoType.Blue;
     });
     $("#puyo-selection .puyo.puyo-yellow").click(function () {
-      fieldDisplay.selectedPuyo = PuyoType.Yellow;
+      self.sim.fieldDisplay.selectedPuyo = PuyoType.Yellow;
     });
     $("#puyo-selection .puyo.puyo-purple").click(function () {
-      fieldDisplay.selectedPuyo = PuyoType.Purple;
+      self.sim.fieldDisplay.selectedPuyo = PuyoType.Purple;
     });
     $("#puyo-selection .puyo.puyo-nuisance").click(function () {
-      fieldDisplay.selectedPuyo = PuyoType.Nuisance;
+      self.sim.fieldDisplay.selectedPuyo = PuyoType.Nuisance;
     });
     $("#puyo-selection .puyo.puyo-point").click(function () {
-      fieldDisplay.selectedPuyo = PuyoType.Point;
+      self.sim.fieldDisplay.selectedPuyo = PuyoType.Point;
     });
     $("#puyo-selection .puyo.puyo-hard").click(function () {
-      fieldDisplay.selectedPuyo = PuyoType.Hard;
+      self.sim.fieldDisplay.selectedPuyo = PuyoType.Hard;
     });
     $("#puyo-selection .puyo.puyo-iron").click(function () {
-      fieldDisplay.selectedPuyo = PuyoType.Iron;
+      self.sim.fieldDisplay.selectedPuyo = PuyoType.Iron;
     });
     $("#puyo-selection .puyo.puyo-block").click(function () {
-      fieldDisplay.selectedPuyo = PuyoType.Block;
+      self.sim.fieldDisplay.selectedPuyo = PuyoType.Block;
     });
     $("#puyo-selection .puyo.puyo-sun").click(function () {
-      fieldDisplay.selectedPuyo = PuyoType.Sun;
+      self.sim.fieldDisplay.selectedPuyo = PuyoType.Sun;
     });
     $("#puyo-selection .puyo").click(function () {
       $("#puyo-selection .selected").removeClass("selected");
@@ -77,19 +79,19 @@ class ControlsDisplay {
     $("#puyo-selection .puyo.puyo-none").parent().addClass("selected");
 
     $("#simulation-back").click(function () {
-      simulation.back();
+      self.sim.simulation.back();
     });
     $("#simulation-start").click(function () {
-      simulation.start();
+      self.sim.simulation.start();
     });
     $("#simulation-pause").click(function () {
-      simulation.pause();
+      self.sim.simulation.pause();
     });
     $("#simulation-step").click(function () {
-      simulation.step();
+      self.sim.simulation.step();
     });
     $("#simulation-skip").click(function () {
-      simulation.skip();
+      self.sim.simulation.skip();
     });
 
     $.each(
@@ -112,7 +114,7 @@ class ControlsDisplay {
     );
     $("#simulation-speed")
       .change(function () {
-        simulation.speed = parseInt(String($(this).val()), 10);
+        self.sim.simulation.speed = parseInt(String($(this).val()), 10);
       })
       .val(SimulationDefaultSpeed);
 
@@ -133,5 +135,3 @@ class ControlsDisplay {
     $("#simulation-skip").prop("disabled", !skip);
   }
 };
-
-export const controlsDisplay = new ControlsDisplay();

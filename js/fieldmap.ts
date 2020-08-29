@@ -1,6 +1,6 @@
 import { PuyoType } from "./constants";
 import { Puyo } from "./puyo";
-import { puyoDisplay } from "./puyodisplay";
+import { PuyoSim } from "./puyosim";
 
 export class FieldMap {
   map: Puyo[][];
@@ -8,7 +8,7 @@ export class FieldMap {
   height: number;
 
   // Creates a puyo map, either a new one or from an existing one
-  constructor(w: number, h: number, m?: FieldMap) {
+  constructor(readonly sim: PuyoSim, w: number, h: number, m?: FieldMap) {
     this.map = [];
     this.width = w;
     this.height = h; /* This is the total height (height + hidden rows) */
@@ -45,25 +45,27 @@ export class FieldMap {
   set(x: number, y: number, p: PuyoType) {
     this.map[x][y].setPuyo(p);
 
-    if (!puyoDisplay.renderer) {
+    // TODO: This should be done elsewhere, almost certainly...
+
+    if (!this.sim.puyoDisplay.renderer) {
       return;
     }
 
-    puyoDisplay.renderer.drawPuyo(x, y, this.map[x][y]);
+    this.sim.puyoDisplay.renderer.drawPuyo(x, y, this.map[x][y]);
 
-    if (!puyoDisplay.puyoAnimation.running) {
+    if (!this.sim.puyoDisplay.puyoAnimation.running) {
       // Redraw all puyo around us
       if (y > 0) {
-        puyoDisplay.renderer.drawPuyo(x, y - 1, this.map[x][y - 1]);
+        this.sim.puyoDisplay.renderer.drawPuyo(x, y - 1, this.map[x][y - 1]);
       }
       if (x > 0) {
-        puyoDisplay.renderer.drawPuyo(x - 1, y, this.map[x - 1][y]);
+        this.sim.puyoDisplay.renderer.drawPuyo(x - 1, y, this.map[x - 1][y]);
       }
       if (y < this.height - 1) {
-        puyoDisplay.renderer.drawPuyo(x, y + 1, this.map[x][y + 1]);
+        this.sim.puyoDisplay.renderer.drawPuyo(x, y + 1, this.map[x][y + 1]);
       }
       if (x < this.width - 1) {
-        puyoDisplay.renderer.drawPuyo(x + 1, y, this.map[x + 1][y]);
+        this.sim.puyoDisplay.renderer.drawPuyo(x + 1, y, this.map[x + 1][y]);
       }
     }
   }

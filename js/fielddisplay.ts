@@ -5,14 +5,11 @@
  */
 
 import $ from "jquery";
-import { puyoDisplay } from "./puyodisplay";
-import { simulation } from "./simulation";
 import { PuyoType } from "./constants";
 import { content, IFieldType } from "./content";
-import { field } from "./field";
-import { tabs } from "./tabs";
+import { PuyoSim } from "./puyosim";
 
-class FieldDisplay {
+export class FieldDisplay {
   // A reference to the content of the field
   fieldContent?: IFieldType;
 
@@ -22,9 +19,13 @@ class FieldDisplay {
   // Indicates if we are going to insert Puyo (the insert box is checked)
   insertPuyo = false;
 
+  constructor(readonly sim: PuyoSim) {
+
+  }
+
   init() {
     // Initalize
-    puyoDisplay.init();
+    this.sim.puyoDisplay.init();
     this.load(localStorage.getItem("chainsim.fieldStyle") || "standard", true);
   }
 
@@ -62,18 +63,18 @@ class FieldDisplay {
         }
 
         $("#field").css({
-          width: field.width * puyoDisplay.puyoSize + "px",
-          height: field.totalHeight * puyoDisplay.puyoSize + "px",
+          width: self.sim.field.width * self.sim.puyoDisplay.puyoSize + "px",
+          height: self.sim.field.totalHeight * self.sim.puyoDisplay.puyoSize + "px",
         });
         $("#field-bg-2").css(
           "top",
-          field.hiddenRows * puyoDisplay.puyoSize + "px"
+          self.sim.field.hiddenRows * self.sim.puyoDisplay.puyoSize + "px"
         );
         $("#field-bg-3").css(
           "height",
-          field.hiddenRows * puyoDisplay.puyoSize + "px"
+          self.sim.field.hiddenRows * self.sim.puyoDisplay.puyoSize + "px"
         );
-        tabs.fieldWidthChanged();
+        self.sim.tabs.fieldWidthChanged();
 
         $("#simulator-field, #nuisance-tray").fadeIn(200);
         $("#field-style").prop("disabled", false);
@@ -91,15 +92,15 @@ class FieldDisplay {
     }
 
     $("#field").css({
-      width: field.width * puyoDisplay.puyoSize + "px",
-      height: field.totalHeight * puyoDisplay.puyoSize + "px",
+      width: this.sim.field.width * this.sim.puyoDisplay.puyoSize + "px",
+      height: this.sim.field.totalHeight * this.sim.puyoDisplay.puyoSize + "px",
     });
-    $("#field-bg-2").css("top", field.hiddenRows * puyoDisplay.puyoSize + "px");
+    $("#field-bg-2").css("top", this.sim.field.hiddenRows * this.sim.puyoDisplay.puyoSize + "px");
     $("#field-bg-3").css(
       "height",
-      field.hiddenRows * puyoDisplay.puyoSize + "px"
+      this.sim.field.hiddenRows * this.sim.puyoDisplay.puyoSize + "px"
     );
-    tabs.fieldWidthChanged();
+    this.sim.tabs.fieldWidthChanged();
 
     // Set up the field cursor
     var self = this;
@@ -116,26 +117,26 @@ class FieldDisplay {
 
       $("#field")
         .mouseenter(function (e) {
-          if (simulation.running) {
+          if (self.sim.simulation.running) {
             // Don't allow placing puyo when the simulator is running
             return;
           }
 
           offsetX = e.pageX - $(this).offset()!.left;
           offsetY = e.pageY - $(this).offset()!.top;
-          fieldX = Math.floor(offsetX / puyoDisplay.puyoSize);
-          fieldY = Math.floor(offsetY / puyoDisplay.puyoSize);
+          fieldX = Math.floor(offsetX / self.sim.puyoDisplay.puyoSize);
+          fieldY = Math.floor(offsetY / self.sim.puyoDisplay.puyoSize);
 
           $("<div>")
             .attr("id", "field-cursor")
             .css({
-              top: fieldY * puyoDisplay.puyoSize + "px",
-              left: fieldX * puyoDisplay.puyoSize + "px",
+              top: fieldY * self.sim.puyoDisplay.puyoSize + "px",
+              left: fieldX * self.sim.puyoDisplay.puyoSize + "px",
             })
             .appendTo(this);
         })
         .mousemove(function (e) {
-          if (simulation.running) {
+          if (self.sim.simulation.running) {
             // Don't allow placing puyo when the simulator is running
             return;
           }
@@ -155,8 +156,8 @@ class FieldDisplay {
             return;
           }
 
-          newFieldX = Math.floor(offsetX / puyoDisplay.puyoSize);
-          newFieldY = Math.floor(offsetY / puyoDisplay.puyoSize);
+          newFieldX = Math.floor(offsetX / self.sim.puyoDisplay.puyoSize);
+          newFieldY = Math.floor(offsetY / self.sim.puyoDisplay.puyoSize);
 
           if (newFieldX !== fieldX || newFieldY !== fieldY) {
             // Are we hovering over another puyo now?
@@ -169,8 +170,8 @@ class FieldDisplay {
             }
 
             $("#field-cursor").css({
-              top: fieldY * puyoDisplay.puyoSize + "px",
-              left: fieldX * puyoDisplay.puyoSize + "px",
+              top: fieldY * self.sim.puyoDisplay.puyoSize + "px",
+              left: fieldX * self.sim.puyoDisplay.puyoSize + "px",
             });
           }
         })
@@ -181,7 +182,7 @@ class FieldDisplay {
         .mousedown(function (e) {
           e.preventDefault();
 
-          if (simulation.running) {
+          if (self.sim.simulation.running) {
             // Don't allow placing puyo when the simulator is running
             return;
           }
@@ -202,22 +203,22 @@ class FieldDisplay {
             if (self.selectedPuyo === PuyoType.Delete) {
               // Delete this puyo and shift the ones on top down one row
               for (y = fieldY; y > 0; y--) {
-                field.map!.set(fieldX, y, field.map!.puyo(fieldX, y - 1));
+                self.sim.field.map!.set(fieldX, y, self.sim.field.map!.puyo(fieldX, y - 1));
               }
-              field.map!.set(fieldX, 0, PuyoType.None);
+              self.sim.field.map!.set(fieldX, 0, PuyoType.None);
             } else {
               if (self.insertPuyo) {
                 // Insert puyo
                 for (y = 0; y < fieldY; y++) {
-                  field.map!.set(fieldX, y, field.map!.puyo(fieldX, y + 1));
+                  self.sim.field.map!.set(fieldX, y, self.sim.field.map!.puyo(fieldX, y + 1));
                 }
               }
 
-              field.map!.set(fieldX, fieldY, self.selectedPuyo);
+              self.sim.field.map!.set(fieldX, fieldY, self.selectedPuyo);
             }
           } else if (rightMouseDown) {
             // Right click, delete puyo
-            field.map!.set(fieldX, fieldY, PuyoType.None);
+            self.sim.field.map!.set(fieldX, fieldY, PuyoType.None);
           }
         })
         .mouseup(function () {
@@ -237,5 +238,3 @@ class FieldDisplay {
     })();
   }
 };
-
-export const fieldDisplay = new FieldDisplay();

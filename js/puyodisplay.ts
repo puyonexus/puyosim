@@ -6,14 +6,8 @@
 
 import $ from "jquery";
 import { PuyoType, FieldDefaultWidth, FieldDefaultHeight, FieldDefaultHiddenRows } from "./constants";
-import { field } from "./field";
-import { simulation } from "./simulation";
 import { Puyo } from "./puyo";
-
-interface IPosition {
-  x: number;
-  y: number;
-};
+import { PuyoSim } from "./puyosim";
 
 interface IPuyoSkin {
   id: string;
@@ -23,9 +17,6 @@ interface IPuyoSkin {
 
 // Puyo animation class
 class PuyoAnimation {
-  // Parent object (will be filled in when parent class is initalized)
-  parent!: PuyoDisplay;
-
   // Current frame the animation is on
   frame = 0;
 
@@ -38,6 +29,8 @@ class PuyoAnimation {
   // If the animation is running
   running = false;
 
+  constructor(readonly sim: PuyoSim) {}
+
   animate() {
     // Animates the puyo
     this.frame++;
@@ -45,66 +38,66 @@ class PuyoAnimation {
       this.frame = 0;
     }
 
-    for (var y = 0; y < field.totalHeight; y++) {
-      for (var x = 0; x < field.width; x++) {
-        var p = field.map!.get(x, y);
+    for (var y = 0; y < this.sim.field.totalHeight; y++) {
+      for (var x = 0; x < this.sim.field.width; x++) {
+        var p = this.sim.field.map!.get(x, y);
         if (p.hasAnimation()) {
           // Only redraw puyo that can have animation
-          this.parent.renderer!.drawPuyo(x, y, p);
+          this.sim.puyoDisplay.renderer!.drawPuyo(x, y, p);
         }
       }
     }
 
     $("#puyo-selection .puyo.puyo-red").css(
       "background-position",
-      "-" + this.frame * this.parent.puyoSize + "px 0"
+      "-" + this.frame * this.sim.puyoDisplay.puyoSize + "px 0"
     );
     $("#puyo-selection .puyo.puyo-green").css(
       "background-position",
       "-" +
-        this.frame * this.parent.puyoSize +
+        this.frame * this.sim.puyoDisplay.puyoSize +
         "px -" +
-        1 * this.parent.puyoSize +
+        1 * this.sim.puyoDisplay.puyoSize +
         "px"
     );
     $("#puyo-selection .puyo.puyo-blue").css(
       "background-position",
       "-" +
-        this.frame * this.parent.puyoSize +
+        this.frame * this.sim.puyoDisplay.puyoSize +
         "px -" +
-        2 * this.parent.puyoSize +
+        2 * this.sim.puyoDisplay.puyoSize +
         "px"
     );
     $("#puyo-selection .puyo.puyo-yellow").css(
       "background-position",
       "-" +
-        this.frame * this.parent.puyoSize +
+        this.frame * this.sim.puyoDisplay.puyoSize +
         "px -" +
-        3 * this.parent.puyoSize +
+        3 * this.sim.puyoDisplay.puyoSize +
         "px"
     );
     $("#puyo-selection .puyo.puyo-purple").css(
       "background-position",
       "-" +
-        this.frame * this.parent.puyoSize +
+        this.frame * this.sim.puyoDisplay.puyoSize +
         "px -" +
-        4 * this.parent.puyoSize +
+        4 * this.sim.puyoDisplay.puyoSize +
         "px"
     );
     $("#puyo-selection .puyo.puyo-nuisance").css(
       "background-position",
       "-" +
-        this.frame * this.parent.puyoSize +
+        this.frame * this.sim.puyoDisplay.puyoSize +
         "px -" +
-        5 * this.parent.puyoSize +
+        5 * this.sim.puyoDisplay.puyoSize +
         "px"
     );
     $("#puyo-selection .puyo.puyo-point").css(
       "background-position",
       "-" +
-        this.frame * this.parent.puyoSize +
+        this.frame * this.sim.puyoDisplay.puyoSize +
         "px -" +
-        6 * this.parent.puyoSize +
+        6 * this.sim.puyoDisplay.puyoSize +
         "px"
     );
 
@@ -133,12 +126,12 @@ class PuyoAnimation {
     this.frame = 0;
     clearTimeout(this.timer);
 
-    for (var y = 0; y < field.totalHeight; y++) {
-      for (var x = 0; x < field.width; x++) {
-        var p = field.map!.get(x, y);
+    for (var y = 0; y < this.sim.field.totalHeight; y++) {
+      for (var x = 0; x < this.sim.field.width; x++) {
+        var p = this.sim.field.map!.get(x, y);
         if (p.hasAnimation()) {
           // Only redraw puyo that can have animation
-          this.parent.renderer!.drawPuyo(x, y, p);
+          this.sim.puyoDisplay.renderer!.drawPuyo(x, y, p);
         }
       }
     }
@@ -146,36 +139,33 @@ class PuyoAnimation {
     $("#puyo-selection .puyo.puyo-red").css("background-position", "0 0");
     $("#puyo-selection .puyo.puyo-green").css(
       "background-position",
-      "0 -" + 1 * this.parent.puyoSize + "px"
+      "0 -" + 1 * this.sim.puyoDisplay.puyoSize + "px"
     );
     $("#puyo-selection .puyo.puyo-blue").css(
       "background-position",
-      "0 -" + 2 * this.parent.puyoSize + "px"
+      "0 -" + 2 * this.sim.puyoDisplay.puyoSize + "px"
     );
     $("#puyo-selection .puyo.puyo-yellow").css(
       "background-position",
-      "0 -" + 3 * this.parent.puyoSize + "px"
+      "0 -" + 3 * this.sim.puyoDisplay.puyoSize + "px"
     );
     $("#puyo-selection .puyo.puyo-purple").css(
       "background-position",
-      "0 -" + 4 * this.parent.puyoSize + "px"
+      "0 -" + 4 * this.sim.puyoDisplay.puyoSize + "px"
     );
     $("#puyo-selection .puyo.puyo-nuisance").css(
       "background-position",
-      "0 -" + 5 * this.parent.puyoSize + "px"
+      "0 -" + 5 * this.sim.puyoDisplay.puyoSize + "px"
     );
     $("#puyo-selection .puyo.puyo-point").css(
       "background-position",
-      "0 -" + 6 * this.parent.puyoSize + "px"
+      "0 -" + 6 * this.sim.puyoDisplay.puyoSize + "px"
     );
   }
 };
 
 // Sun Puyo animation class
 class SunPuyoAnimation {
-  // Parent object (will be filled in when parent class is initalized)
-  parent!: PuyoDisplay;
-
   // Current frame the animation is on
   frame = 0;
 
@@ -188,6 +178,8 @@ class SunPuyoAnimation {
   // If the animation is running
   running = false;
 
+  constructor(readonly sim: PuyoSim) {}
+
   animate() {
     // Animates the puyo
     this.frame++;
@@ -195,12 +187,12 @@ class SunPuyoAnimation {
       this.frame = 0;
     }
 
-    for (var y = 0; y < field.totalHeight; y++) {
-      for (var x = 0; x < field.width; x++) {
-        var p = field.map!.get(x, y);
+    for (var y = 0; y < this.sim.field.totalHeight; y++) {
+      for (var x = 0; x < this.sim.field.width; x++) {
+        var p = this.sim.field.map!.get(x, y);
         if (p.puyo === PuyoType.Sun) {
           // Only redraw sun puyo
-          this.parent.renderer!.drawPuyo(x, y, p);
+          this.sim.puyoDisplay.renderer!.drawPuyo(x, y, p);
         }
       }
     }
@@ -208,9 +200,9 @@ class SunPuyoAnimation {
     $("#puyo-selection .puyo.puyo-sun").css(
       "background-position",
       "-" +
-        this.frame * this.parent.puyoSize +
+        this.frame * this.sim.puyoDisplay.puyoSize +
         "px -" +
-        7 * this.parent.puyoSize +
+        7 * this.sim.puyoDisplay.puyoSize +
         "px"
     );
 
@@ -238,19 +230,19 @@ class SunPuyoAnimation {
     this.frame = 0;
     clearTimeout(this.timer);
 
-    for (var y = 0; y < field.totalHeight; y++) {
-      for (var x = 0; x < field.width; x++) {
-        var p = field.map!.get(x, y);
+    for (var y = 0; y < this.sim.field.totalHeight; y++) {
+      for (var x = 0; x < this.sim.field.width; x++) {
+        var p = this.sim.field.map!.get(x, y);
         if (p.puyo === PuyoType.Sun) {
           // Only redraw sun puyo
-          this.parent.renderer!.drawPuyo(x, y, p);
+          this.sim.puyoDisplay.renderer!.drawPuyo(x, y, p);
         }
       }
     }
 
     $("#puyo-selection .puyo.puyo-sun").css(
       "background-position",
-      "0 -" + 7 * this.parent.puyoSize + "px"
+      "0 -" + 7 * this.sim.puyoDisplay.puyoSize + "px"
     );
   }
 }
@@ -266,35 +258,34 @@ class CanvasRenderer {
   // Puyo Image sheet
   puyoImage?: HTMLImageElement;
 
-  // Parent object (will be filled in when parent class is initalized)
-  parent!: PuyoDisplay;
-
   // Name of the renderer
   name = "CanvasRenderer";
+
+  constructor(readonly sim: PuyoSim) {}
 
   init() {
     // Initalize the Canvas Renderer
     if (
-      (field.width !== FieldDefaultWidth ||
-        field.height !== FieldDefaultHeight) &&
+      (this.sim.field.width !== FieldDefaultWidth ||
+        this.sim.field.height !== FieldDefaultHeight) &&
       !$("#field-content").hasClass("alternate")
     ) {
       $("#field-content").addClass("alternate");
     } else if (
-      field.width === FieldDefaultWidth &&
-      field.height === FieldDefaultHeight &&
+      this.sim.field.width === FieldDefaultWidth &&
+      this.sim.field.height === FieldDefaultHeight &&
       $("#field-content").hasClass("alternate")
     ) {
       $("#field-content").removeClass("alternate");
     }
 
     if (
-      field.hiddenRows !== FieldDefaultHiddenRows &&
+      this.sim.field.hiddenRows !== FieldDefaultHiddenRows &&
       !$("#field-bg-1").hasClass("alternate")
     ) {
       $("#field-bg-1").addClass("alternate");
     } else if (
-      field.hiddenRows === FieldDefaultHiddenRows &&
+      this.sim.field.hiddenRows === FieldDefaultHiddenRows &&
       $("#field-bg-1").hasClass("alternate")
     ) {
       $("#field-bg-1").removeClass("alternate");
@@ -303,8 +294,8 @@ class CanvasRenderer {
     $("<canvas>")
       .attr({
         id: "field-canvas",
-        width: field.width * this.parent.puyoSize,
-        height: field.totalHeight * this.parent.puyoSize,
+        width: this.sim.field.width * this.sim.puyoDisplay.puyoSize,
+        height: this.sim.field.totalHeight * this.sim.puyoDisplay.puyoSize,
       })
       .appendTo("#field");
     const fieldCanvas: HTMLCanvasElement = document.getElementById(
@@ -313,9 +304,9 @@ class CanvasRenderer {
     this.ctx = fieldCanvas.getContext("2d")!;
 
     // Now draw everything
-    for (var y = 0; y < field.totalHeight; y++) {
-      for (var x = 0; x < field.width; x++) {
-        this.drawPuyo(x, y, field.map!.get(x, y));
+    for (var y = 0; y < this.sim.field.totalHeight; y++) {
+      for (var x = 0; x < this.sim.field.width; x++) {
+        this.drawPuyo(x, y, this.sim.field.map!.get(x, y));
       }
     }
 
@@ -336,7 +327,7 @@ class CanvasRenderer {
     ) as HTMLCanvasElement;
     this.nuisanceTrayCtx = nuisanceTrayCanvas.getContext("2d")!;
 
-    this.drawNuisanceTray(simulation.nuisance, false);
+    this.drawNuisanceTray(this.sim.simulation.nuisance, false);
   }
 
   uninit() {
@@ -344,9 +335,9 @@ class CanvasRenderer {
     $("#field-canvas").remove();
     $("#nuisance-tray-canvas").remove();
 
-    if (this.parent.nuisanceTrayTimer !== undefined) {
+    if (this.sim.puyoDisplay.nuisanceTrayTimer !== undefined) {
       // Stop the timer if it is running
-      clearTimeout(this.parent.nuisanceTrayTimer);
+      clearTimeout(this.sim.puyoDisplay.nuisanceTrayTimer);
     }
   }
 
@@ -356,40 +347,40 @@ class CanvasRenderer {
     if (this.ctx === undefined) return;
 
     this.ctx.clearRect(
-      x * this.parent.puyoSize,
-      y * this.parent.puyoSize,
-      this.parent.puyoSize,
-      this.parent.puyoSize
+      x * this.sim.puyoDisplay.puyoSize,
+      y * this.sim.puyoDisplay.puyoSize,
+      this.sim.puyoDisplay.puyoSize,
+      this.sim.puyoDisplay.puyoSize
     );
 
     if (p.puyo !== PuyoType.None && this.puyoImage !== undefined) {
-      pos = this.parent.getImagePosition(x, y, p.puyo);
-      if (y < field.hiddenRows) {
+      pos = this.sim.puyoDisplay.getImagePosition(x, y, p.puyo);
+      if (y < this.sim.field.hiddenRows) {
         // Puyo in hidden row are partially transparent
         this.ctx.globalAlpha = 0.5;
         this.ctx.drawImage(
           this.puyoImage,
-          pos.x * this.parent.puyoSize,
-          pos.y * this.parent.puyoSize,
-          this.parent.puyoSize,
-          this.parent.puyoSize,
-          x * this.parent.puyoSize,
-          y * this.parent.puyoSize,
-          this.parent.puyoSize,
-          this.parent.puyoSize
+          pos.x * this.sim.puyoDisplay.puyoSize,
+          pos.y * this.sim.puyoDisplay.puyoSize,
+          this.sim.puyoDisplay.puyoSize,
+          this.sim.puyoDisplay.puyoSize,
+          x * this.sim.puyoDisplay.puyoSize,
+          y * this.sim.puyoDisplay.puyoSize,
+          this.sim.puyoDisplay.puyoSize,
+          this.sim.puyoDisplay.puyoSize
         );
         this.ctx.globalAlpha = 1;
       } else {
         this.ctx.drawImage(
           this.puyoImage,
-          pos.x * this.parent.puyoSize,
-          pos.y * this.parent.puyoSize,
-          this.parent.puyoSize,
-          this.parent.puyoSize,
-          x * this.parent.puyoSize,
-          y * this.parent.puyoSize,
-          this.parent.puyoSize,
-          this.parent.puyoSize
+          pos.x * this.sim.puyoDisplay.puyoSize,
+          pos.y * this.sim.puyoDisplay.puyoSize,
+          this.sim.puyoDisplay.puyoSize,
+          this.sim.puyoDisplay.puyoSize,
+          x * this.sim.puyoDisplay.puyoSize,
+          y * this.sim.puyoDisplay.puyoSize,
+          this.sim.puyoDisplay.puyoSize,
+          this.sim.puyoDisplay.puyoSize
         );
       }
     }
@@ -399,37 +390,37 @@ class CanvasRenderer {
     // Sets the puyo skin
     var newPuyoImage = new Image(),
       self = this;
-    newPuyoImage.src = "/images/puyo/" + this.parent.puyoSkin!.image;
+    newPuyoImage.src = "/images/puyo/" + this.sim.puyoDisplay.puyoSkin!.image;
     newPuyoImage.onload = function () {
-      if (self.parent.puyoAnimation.running) {
+      if (self.sim.puyoDisplay.puyoAnimation.running) {
         // Stop the animation if it is running
-        self.parent.puyoAnimation.stop();
+        self.sim.puyoDisplay.puyoAnimation.stop();
       }
-      if (self.parent.sunPuyoAnimation.running) {
+      if (self.sim.puyoDisplay.sunPuyoAnimation.running) {
         // Stop the sun puyo animation if it is running
-        self.parent.sunPuyoAnimation.stop();
+        self.sim.puyoDisplay.sunPuyoAnimation.stop();
       }
 
       self.puyoImage = newPuyoImage;
 
       if (
-        self.parent.animate.puyo &&
-        self.parent.puyoSkin!.frames !== undefined &&
-        self.parent.puyoSkin!.frames > 0
+        self.sim.puyoDisplay.animate.puyo &&
+        self.sim.puyoDisplay.puyoSkin!.frames !== undefined &&
+        self.sim.puyoDisplay.puyoSkin!.frames > 0
       ) {
         // Is this puyo skin animated?
-        self.parent.puyoAnimation.start(self.parent.puyoSkin!.frames);
+        self.sim.puyoDisplay.puyoAnimation.start(self.sim.puyoDisplay.puyoSkin!.frames);
       }
-      if (self.parent.animate.sunPuyo) {
+      if (self.sim.puyoDisplay.animate.sunPuyo) {
         // Animate sun puyo?
-        self.parent.sunPuyoAnimation.start();
+        self.sim.puyoDisplay.sunPuyoAnimation.start();
       }
 
       if ($("#field-canvas").length > 0) {
         // Can we draw the puyo?
-        for (var y = 0; y < field.totalHeight; y++) {
-          for (var x = 0; x < field.width; x++) {
-            self.drawPuyo(x, y, field.map!.get(x, y));
+        for (var y = 0; y < self.sim.field.totalHeight; y++) {
+          for (var x = 0; x < self.sim.field.width; x++) {
+            self.drawPuyo(x, y, self.sim.field.map!.get(x, y));
           }
         }
       }
@@ -438,11 +429,11 @@ class CanvasRenderer {
         .not(".puyo-none, .puyo-delete")
         .css(
           "background-image",
-          "url('/images/puyo/" + self.parent.puyoSkin!.image + "')"
+          "url('/images/puyo/" + self.sim.puyoDisplay.puyoSkin!.image + "')"
         );
 
-      if (self.parent.nuisanceTrayTimer === undefined) {
-        self.drawNuisanceTray(simulation.nuisance, false);
+      if (self.sim.puyoDisplay.nuisanceTrayTimer === undefined) {
+        self.drawNuisanceTray(self.sim.simulation.nuisance, false);
       }
     };
   }
@@ -469,14 +460,14 @@ class CanvasRenderer {
       }
     }
 
-    if (this.parent.animate.nuisanceTray && animate !== false && n !== 0) {
+    if (this.sim.puyoDisplay.animate.nuisanceTray && animate !== false && n !== 0) {
       // Make it nice and animate it
       this.animateNuisanceTray(0, pos);
     } else {
-      if (this.parent.nuisanceTrayTimer !== undefined) {
+      if (this.sim.puyoDisplay.nuisanceTrayTimer !== undefined) {
         // Stop the timer if it is running
-        clearTimeout(this.parent.nuisanceTrayTimer);
-        this.parent.nuisanceTrayTimer = undefined;
+        clearTimeout(this.sim.puyoDisplay.nuisanceTrayTimer);
+        this.sim.puyoDisplay.nuisanceTrayTimer = undefined;
       }
 
       this.nuisanceTrayCtx.clearRect(0, 0, 224, 64);
@@ -502,13 +493,13 @@ class CanvasRenderer {
     // Animates the nuisance tray
     if (step === 0) {
       // Step not initalized, so we are just starting the animation
-      if (this.parent.nuisanceTrayTimer !== undefined) {
+      if (this.sim.puyoDisplay.nuisanceTrayTimer !== undefined) {
         // Stop the timer if it is running
-        clearTimeout(this.parent.nuisanceTrayTimer);
+        clearTimeout(this.sim.puyoDisplay.nuisanceTrayTimer);
       }
     } else if (step > 80) {
       // Stop animating
-      this.parent.nuisanceTrayTimer = undefined;
+      this.sim.puyoDisplay.nuisanceTrayTimer = undefined;
       return;
     }
 
@@ -534,16 +525,16 @@ class CanvasRenderer {
     this.nuisanceTrayCtx.globalAlpha = 1;
 
     var self = this;
-    this.parent.nuisanceTrayTimer = window.setTimeout(function () {
+    this.sim.puyoDisplay.nuisanceTrayTimer = window.setTimeout(function () {
       self.animateNuisanceTray(step + 5, pos);
     }, 1000 / 60);
   }
 }
 
-class PuyoDisplay {
-  canvasRenderer = new CanvasRenderer();
-  puyoAnimation = new PuyoAnimation();
-  sunPuyoAnimation = new SunPuyoAnimation();
+export class PuyoDisplay {
+  canvasRenderer: CanvasRenderer;
+  puyoAnimation: PuyoAnimation;
+  sunPuyoAnimation: SunPuyoAnimation;
 
   // Puyo size in pixels (always 32)
   readonly puyoSize = 32;
@@ -599,13 +590,13 @@ class PuyoDisplay {
     { id: "sonic", image: "sonic.png" },
   ];
 
-  init() {
-    // Initalize the puyo display
-    // Set the parents of our children
-    this.canvasRenderer.parent = this;
-    this.puyoAnimation.parent = this;
-    this.sunPuyoAnimation.parent = this;
+  constructor(readonly sim: PuyoSim) {
+    this.canvasRenderer = new CanvasRenderer(sim);
+    this.puyoAnimation = new PuyoAnimation(sim);
+    this.sunPuyoAnimation = new SunPuyoAnimation(sim);
+  }
 
+  init() {
     // Set the renderer
     this.renderer = this.canvasRenderer;
 
@@ -649,13 +640,13 @@ class PuyoDisplay {
         }
       }
 
-      if (y < field.hiddenRows) return 0;
+      if (y < self.sim.field.hiddenRows) return 0;
       if (p === PuyoType.Nuisance || p === PuyoType.Point) return 0;
 
-      var L = x > 0 && field.map!.puyo(x - 1, y) === p,
-        R = x < field.width - 1 && field.map!.puyo(x + 1, y) === p,
-        U = y > field.hiddenRows && field.map!.puyo(x, y - 1) === p,
-        D = y < field.totalHeight - 1 && field.map!.puyo(x, y + 1) === p;
+      var L = x > 0 && self.sim.field.map!.puyo(x - 1, y) === p,
+        R = x < self.sim.field.width - 1 && self.sim.field.map!.puyo(x + 1, y) === p,
+        U = y > self.sim.field.hiddenRows && self.sim.field.map!.puyo(x, y - 1) === p,
+        D = y < self.sim.field.totalHeight - 1 && self.sim.field.map!.puyo(x, y + 1) === p;
 
       if (L) pos += 8;
       if (R) pos += 4;
@@ -799,5 +790,3 @@ class PuyoDisplay {
     return -1;
   }
 };
-
-export const puyoDisplay = new PuyoDisplay();
