@@ -21,32 +21,10 @@ interface IPuyoSkin {
   frames?: number;
 }
 
-interface IPuyoDisplay {
-  puyoSize: number;
-  renderer?: CanvasRenderer;
-  puyoSkin?: IPuyoSkin;
-  nuisanceTrayTimer?: number;
-  animate: {
-      puyo: boolean;
-      sunPuyo: boolean;
-      nuisanceTray: boolean;
-  };
-  puyoSkins: IPuyoSkin[];
-  init: () => void;
-  getImagePosition: (x: number, y: number, p: PuyoType) => IPosition;
-  display: () => void;
-  setPuyoSkin: (skin: string) => void;
-  displayPuyoSelection: () => void;
-  getSkinIndex: (id: string) => number;
-  canvasRenderer: CanvasRenderer;
-  puyoAnimation: PuyoAnimation;
-  sunPuyoAnimation: SunPuyoAnimation;
-}
-
 // Puyo animation class
 class PuyoAnimation {
   // Parent object (will be filled in when parent class is initalized)
-  parent!: IPuyoDisplay;
+  parent!: PuyoDisplay;
 
   // Current frame the animation is on
   frame = 0;
@@ -196,7 +174,7 @@ class PuyoAnimation {
 // Sun Puyo animation class
 class SunPuyoAnimation {
   // Parent object (will be filled in when parent class is initalized)
-  parent!: IPuyoDisplay;
+  parent!: PuyoDisplay;
 
   // Current frame the animation is on
   frame = 0;
@@ -289,7 +267,7 @@ class CanvasRenderer {
   puyoImage?: HTMLImageElement;
 
   // Parent object (will be filled in when parent class is initalized)
-  parent!: IPuyoDisplay;
+  parent!: PuyoDisplay;
 
   // Name of the renderer
   name = "CanvasRenderer";
@@ -562,24 +540,37 @@ class CanvasRenderer {
   }
 }
 
-export const puyoDisplay: IPuyoDisplay = {
-  // We're going to start out with our constants
-  puyoSize: 32, // Puyo size in pixels (always 32)
+class PuyoDisplay {
+  canvasRenderer = new CanvasRenderer();
+  puyoAnimation = new PuyoAnimation();
+  sunPuyoAnimation = new SunPuyoAnimation();
 
-  // Next we're going to set up our variables
-  renderer: undefined, // The renderer object to use to display the puyo (Will always be set to CanvasRenderer)
-  puyoSkin: undefined, // The current puyo skin
-  nuisanceTrayTimer: undefined!, // The timer for the nuisance tray
+  // Puyo size in pixels (always 32)
+  readonly puyoSize = 32;
 
-  animate: {
-    // Animation settings
-    puyo: true, // Animate Puyo (only the chalk puyo skin is animated)
-    sunPuyo: true, // Animate Sun Puyo
-    nuisanceTray: true, // Animate the nuisance tray
-  },
+  // The renderer object to use to display the puyo (Will always be set to CanvasRenderer)
+  renderer!: CanvasRenderer;
+
+  // The current puyo skin
+  puyoSkin?: IPuyoSkin;
+
+  // The timer for the nuisance tray
+  nuisanceTrayTimer?: number;
+
+  // Animation settings
+  animate = {
+    // Animate Puyo (only the chalk puyo skin is animated)
+    puyo: true,
+
+    // Animate Sun Puyo
+    sunPuyo: true,
+
+    // Animate the nuisance tray
+    nuisanceTray: true,
+  }
 
   // Finally, we will list the available puyo skins here
-  puyoSkins: [
+  puyoSkins = [
     { id: "classic", image: "classic.png" },
     { id: "puyo4", image: "puyo4.png" },
     { id: "fever", image: "fever.png" },
@@ -606,7 +597,7 @@ export const puyoDisplay: IPuyoDisplay = {
     { id: "real", image: "real.png" },
     { id: "shiki2", image: "shiki2.png" },
     { id: "sonic", image: "sonic.png" },
-  ],
+  ];
 
   init() {
     // Initalize the puyo display
@@ -629,7 +620,7 @@ export const puyoDisplay: IPuyoDisplay = {
     this.animate.nuisanceTray =
       (localStorage.getItem("chainsim.animate.nuisanceTray") || "yes") ===
       "yes";
-  },
+  }
 
   getImagePosition(x: number, y: number, p: PuyoType) {
     // Returns the position of the image for background-image (p = puyo object)
@@ -766,7 +757,7 @@ export const puyoDisplay: IPuyoDisplay = {
     }
 
     return { x: posX, y: posY };
-  },
+  }
 
   display() {
     // Display (in other words, initalize the renderer)
@@ -774,7 +765,7 @@ export const puyoDisplay: IPuyoDisplay = {
 
     // Display the Puyo selection
     this.displayPuyoSelection();
-  },
+  }
 
   setPuyoSkin(skin: string) {
     // Sets the puyo skin
@@ -789,7 +780,7 @@ export const puyoDisplay: IPuyoDisplay = {
 
     this.puyoSkin = this.puyoSkins[0];
     this.renderer!.setPuyoSkin();
-  },
+  }
 
   displayPuyoSelection() {
     $("#puyo-selection .puyo")
@@ -798,7 +789,7 @@ export const puyoDisplay: IPuyoDisplay = {
         "background-image",
         "url('/images/puyo/" + this.puyoSkin!.image + "')"
       );
-  },
+  }
 
   getSkinIndex(id: string) {
     for (var i = 0; i < this.puyoSkins.length; i++) {
@@ -806,9 +797,7 @@ export const puyoDisplay: IPuyoDisplay = {
     }
 
     return -1;
-  },
-
-  canvasRenderer: new CanvasRenderer(),
-  puyoAnimation: new PuyoAnimation(),
-  sunPuyoAnimation: new SunPuyoAnimation(),
+  }
 };
+
+export const puyoDisplay = new PuyoDisplay();
