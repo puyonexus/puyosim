@@ -49,7 +49,7 @@ export const Field = {
     }
   },
 
-  setChain: function (chain, w, h, hr) {
+  setChain: function (chain, w, h, hr?) {
     // Sets the chain with the specified width and height
     var pos;
     w = w || Constants.Field.DefaultWidth;

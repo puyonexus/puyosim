@@ -3,6 +3,12 @@
  * https://github.com/puyonexus/puyosim/
  */
 
+declare global {
+  interface Window {
+    jQuery: any;
+  }
+};
+
 import "./common";
 import $ from "jquery";
 import Clipboard from "clipboard";
