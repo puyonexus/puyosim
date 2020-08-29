@@ -4,24 +4,27 @@
  * Controls the aspects of the field, but doesn't display it
  */
 
+declare global {
+  interface Window {
+    chainData?: {
+      id?: number,
+      chain: string,
+      width: number,
+      height: number,
+      hiddenRows: number,
+      popLimit?: number,
+      title?: string,
+      legacyQueryString?: string;
+    };
+  }
+};
+
 import $ from "jquery";
 import { Tabs } from "./tabs";
 import { FieldMap } from "./fieldmap";
 import { Constants } from "./constants";
 import { Simulation } from "./simulation";
 import { PuyoDisplay } from "./puyodisplay";
-
-declare global {
-  interface Window {
-    chainData?: {
-      chain: string,
-      width: number,
-      height: number,
-      hiddenRows: number,
-      popLimit?: number,
-    };
-  }
-};
 
 export const Field = {
   width: Constants.Field.DefaultWidth, // Field Width (Default = 6)

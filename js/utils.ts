@@ -15,8 +15,7 @@ const escapeMap = new Map([
 ]);
 
 export class Utils {
-  static stringFormat(format: string) {
-    let args = Array.prototype.slice.call(arguments, 1);
+  static stringFormat(format: string, ...args: any) {
     return format.replace(/{(\d+)}/g, function (match, number) {
       return typeof args[number] != "undefined" ? args[number] : match;
     });
