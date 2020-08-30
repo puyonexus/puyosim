@@ -124,7 +124,7 @@ export class ControlsDisplay {
       })
       .val(SimulationDefaultSpeed);
 
-    this.toggleSimulationButtons(false, true, false, true, true);
+    this.updateSimulationButtons();
 
     $("#field-score").text("0");
     $("#field-chains").text("0");
@@ -132,13 +132,14 @@ export class ControlsDisplay {
     $("#field-cleared").text("0");
   }
 
-  toggleSimulationButtons(
-    back: boolean,
-    start: boolean,
-    pause: boolean,
-    step: boolean,
-    skip: boolean
-  ) {
+  updateSimulationButtons() {
+    const {running, paused, stepMode, finished} = this.sim.simulation;
+    const back = running;
+    const start = !running || paused || stepMode && !finished;
+    const pause = running && !paused && !stepMode && !finished;
+    const step = !running || paused || stepMode && !finished;
+    const skip = !running || paused || stepMode && !finished;
+
     // Controls the display of the simulator control buttons
     $("#simulation-back").prop("disabled", !back);
     $("#simulation-start").prop("disabled", !start);

@@ -152,13 +152,7 @@ export class Simulation {
     this.sim.puyoDisplay.renderer.drawNuisanceTray(this.nuisance);
 
     // Display the "editor" chain on the puyo display and set the simulation buttons
-    this.sim.controlsDisplay.toggleSimulationButtons(
-      false,
-      true,
-      false,
-      true,
-      true
-    );
+    this.sim.controlsDisplay.updateSimulationButtons();
     $(
       "#tab-simulator input, #tab-simulator select, #tab-simulator button"
     ).prop("disabled", false); // Disable simulator options
@@ -194,13 +188,7 @@ export class Simulation {
       this.sim.field.map = this.sim.field.mapSimulation;
 
       // Toggle simulation buttons
-      this.sim.controlsDisplay.toggleSimulationButtons(
-        true,
-        false,
-        true,
-        false,
-        false
-      );
+      this.sim.controlsDisplay.updateSimulationButtons();
 
       // Check to see if the puyo can fall and go from there
       this.action = 0;
@@ -219,13 +207,7 @@ export class Simulation {
       this.stepMode = false;
 
       // Toggle simulation buttons
-      this.sim.controlsDisplay.toggleSimulationButtons(
-        true,
-        false,
-        true,
-        false,
-        false
-      );
+      this.sim.controlsDisplay.updateSimulationButtons();
 
       this.chain();
     }
@@ -242,13 +224,7 @@ export class Simulation {
       this.paused = true;
 
       // Toggle simulation buttons
-      this.sim.controlsDisplay.toggleSimulationButtons(
-        true,
-        true,
-        false,
-        true,
-        true
-      );
+      this.sim.controlsDisplay.updateSimulationButtons();
     }
   }
 
@@ -272,13 +248,7 @@ export class Simulation {
       this.sim.field.map = this.sim.field.mapSimulation;
 
       // Toggle simulation buttons
-      this.sim.controlsDisplay.toggleSimulationButtons(
-        true,
-        true,
-        false,
-        true,
-        true
-      );
+      this.sim.controlsDisplay.updateSimulationButtons();
 
       // Check to see if the puyo can fall and go from there
       this.action = 0;
@@ -291,13 +261,7 @@ export class Simulation {
       this.stepMode = true;
       
       // Toggle simulation buttons
-      this.sim.controlsDisplay.toggleSimulationButtons(
-        true,
-        true,
-        false,
-        true,
-        true
-      );
+      this.sim.controlsDisplay.updateSimulationButtons();
 
       this.chain();
     }
@@ -323,13 +287,7 @@ export class Simulation {
       this.sim.field.map = this.sim.field.mapSimulation;
 
       // Toggle simulation buttons
-      this.sim.controlsDisplay.toggleSimulationButtons(
-        true,
-        false,
-        false,
-        false,
-        false
-      );
+      this.sim.controlsDisplay.updateSimulationButtons();
 
       // Drop the puyo and start chaining
       this.action = 0;
@@ -344,13 +302,7 @@ export class Simulation {
       this.chain();
 
       // Toggle simulation buttons
-      this.sim.controlsDisplay.toggleSimulationButtons(
-        true,
-        false,
-        false,
-        false,
-        false
-      );
+      this.sim.controlsDisplay.updateSimulationButtons();
     }
   }
 
@@ -678,20 +630,14 @@ export class Simulation {
           $("#field-score").text(this.score);
           $("#field-nuisance").text(this.nuisance);
           const clearedChain = this.cleared.map((n) => n.toString()).join(", ");
-          const clearedTotal = this.cleared.reduce((a, b) => a + b);
+          const clearedTotal = this.cleared.reduce((a, b) => a + b, 0);
           $("#field-cleared").text(clearedChain + " (" + clearedTotal + ")");
 
           this.sim.puyoDisplay.renderer.drawNuisanceTray(this.nuisance);
         } else {
           // Just toggle the buttons
           this.finished = true;
-          this.sim.controlsDisplay.toggleSimulationButtons(
-            true,
-            false,
-            false,
-            false,
-            false
-          );
+          this.sim.controlsDisplay.updateSimulationButtons();
         }
       }
     } else if (this.action === 1) {
@@ -749,13 +695,7 @@ export class Simulation {
         } else {
           // Just toggle the buttons
           this.finished = true;
-          this.sim.controlsDisplay.toggleSimulationButtons(
-            true,
-            false,
-            false,
-            false,
-            false
-          );
+          this.sim.controlsDisplay.updateSimulationButtons();
         }
       }
     }
