@@ -33,7 +33,7 @@ export class ChainsTab {
       $("#preset-chains .dropdown-menu").append(category);
     }
 
-    $("#preset-chains .dropdown-menu a").click(function () {
+    $("#preset-chains .dropdown-menu a").on("click", function () {
       const category = parseInt(
         String($(this).parent().attr("data-category")),
         10
@@ -92,7 +92,7 @@ export class ChainsTab {
 
     $(
       "#preset-chains .dropdown-menu li[data-category='0'][data-value='1'] a"
-    ).click();
+    ).trigger("click");
   }
 
   displaySubCategory(category: number, subCategory: number) {

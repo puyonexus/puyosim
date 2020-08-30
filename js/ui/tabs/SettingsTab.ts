@@ -11,7 +11,7 @@ export class SettingsTab {
     // Initalizes this tab
     // Animation
     $("#animate-puyo") // Puyo animation
-      .click(function () {
+      .on("click", function () {
         const checked = $(this).prop("checked");
 
         self.sim.puyoDisplay.animate.puyo = checked;
@@ -34,7 +34,7 @@ export class SettingsTab {
       .prop("checked", self.sim.puyoDisplay.animate.puyo);
 
     $("#animate-sun-puyo") // Sun Puyo animation
-      .click(function () {
+      .on("click", function () {
         const checked = $(this).prop("checked");
 
         self.sim.puyoDisplay.animate.sunPuyo = checked;
@@ -53,7 +53,7 @@ export class SettingsTab {
       .prop("checked", this.sim.puyoDisplay.animate.sunPuyo);
 
     $("#animate-nuisance-tray") // Nuisance Tray animation
-      .click(function () {
+      .on("click", function () {
         const checked = $(this).prop("checked");
 
         self.sim.puyoDisplay.animate.nuisanceTray = checked;
@@ -66,7 +66,7 @@ export class SettingsTab {
 
     // Field Style
     $("#field-style")
-      .change(function () {
+      .on("change", function () {
         $(this).prop("disabled", true);
         self.sim.fieldDisplay.load(String($(this).val()));
         localStorage.setItem("chainsim.fieldStyle", String($(this).val()));
@@ -111,7 +111,7 @@ export class SettingsTab {
       $("#character-background .dropdown-menu").append(category);
     }
 
-    $("#character-background .dropdown-menu a").click(function () {
+    $("#character-background .dropdown-menu a").on("click", function () {
       // TODO: remove usages of this
       const category = parseInt($(this).parent().attr("data-category") || "", 10);
       const value = parseInt($(this).parent().attr("data-value") || "", 10);
@@ -207,7 +207,7 @@ export class SettingsTab {
         .appendTo("#puyo-skins .dropdown-menu");
     });
 
-    $("#puyo-skins .dropdown-menu a").click(function () {
+    $("#puyo-skins .dropdown-menu a").on("click", function () {
       $("#puyo-skins li.selected").removeClass("selected");
       $($(this).parent()).addClass("selected");
 

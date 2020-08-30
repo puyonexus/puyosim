@@ -8,7 +8,7 @@ export class LinksTab {
 
   init() {
     // Initalizes this tab
-    $("#get-links").click(() => {
+    $("#get-links").on("click", () => {
       const data = {
         title: $("#share-chain-title").val(),
         chain: this.sim.field.mapToString(),

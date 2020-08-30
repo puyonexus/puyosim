@@ -123,7 +123,7 @@ export class FieldDisplay {
     let y;
 
     $("#field")
-      .mouseenter(function (e) {
+      .on("mouseenter", function (e) {
         if (self.sim.simulation.running) {
           // Don't allow placing puyo when the simulator is running
           return;
@@ -149,7 +149,7 @@ export class FieldDisplay {
           // TODO: Remove usage of 'this'.
           .appendTo(this);
       })
-      .mousemove(function (e) {
+      .on("mousemove", function (e) {
         if (self.sim.simulation.running) {
           // Don't allow placing puyo when the simulator is running
           return;
@@ -176,7 +176,7 @@ export class FieldDisplay {
         ) {
           // Check for out of bounds before continuing
           // TODO: Remove usage of 'this'.
-          $(this).mouseleave();
+          $(this).trigger("mouseleave");
           return;
         }
 
@@ -191,7 +191,7 @@ export class FieldDisplay {
           if (mouseDown) {
             // Place puyo
             // TODO: Remove usage of 'this'.
-            $(this).mousedown();
+            $(this).trigger("mousedown");
           }
 
           $("#field-cursor").css({
@@ -200,12 +200,12 @@ export class FieldDisplay {
           });
         }
       })
-      .mouseleave(function () {
+      .on("mouseleave", function () {
         // TODO: Remove usage of 'this'.
-        $(this).mouseup();
+        $(this).trigger("mouseup");
         $("#field-cursor").remove();
       })
-      .mousedown((e) => {
+      .on("mousedown", (e) => {
         e.preventDefault();
 
         if (self.sim.simulation.running) {
@@ -255,7 +255,7 @@ export class FieldDisplay {
           self.sim.field.map.set(fieldX, fieldY, PuyoType.None);
         }
       })
-      .mouseup(() => {
+      .on("mouseup", () => {
         mouseDown = false;
 
         if (leftMouseDown) {

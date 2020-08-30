@@ -13,7 +13,7 @@ export class SimulatorTab {
     // Initalizes this tab
     // Scoring
     $("input[type='radio'][name='score-mode']")
-      .change(function () {
+      .on("change", function () {
         // TODO: remove usage of this
         switch ($(this).filter(":checked").val()) {
           case "classic":
@@ -29,7 +29,7 @@ export class SimulatorTab {
 
     // Puyo to Clear
     $("#puyo-to-clear")
-      .change(function () {
+      .on("change", function () {
         // TODO: remove usage of this
         self.sim.simulation.puyoToClear = parseInt(String($(this).val()), 10);
       })
@@ -38,7 +38,7 @@ export class SimulatorTab {
 
     // Target Points
     $("#target-points")
-      .change(function () {
+      .on("change", function () {
         // TODO: remove usage of this
         self.sim.simulation.targetPoints = parseInt(String($(this).val()), 10);
       })
@@ -47,7 +47,7 @@ export class SimulatorTab {
 
     // Point Puyo bonus
     $("#point-puyo-bonus")
-      .change(function () {
+      .on("change", function () {
         self.sim.simulation.pointPuyoBonus = parseInt(
           // TODO: remove usage of this
           String($(this).val()),
@@ -77,7 +77,7 @@ export class SimulatorTab {
       .html(Utils.createDropDownListOptions(Utils.range(6, 26, 1)))
       .val(this.sim.field.height); // Default to 12
 
-    $("#set-field-size").click(() => {
+    $("#set-field-size").on("click", () => {
       const w = parseInt(String($("#field-size-width").val()), 10);
       const h = parseInt(String($("#field-size-height").val()), 10);
 
@@ -91,7 +91,7 @@ export class SimulatorTab {
       .html(Utils.createDropDownListOptions(Utils.range(1, 2, 1)))
       .val(this.sim.field.hiddenRows); // Default to 1
 
-    $("#set-hidden-rows").click(() => {
+    $("#set-hidden-rows").on("click", () => {
       const hr = parseInt(String($("#field-hidden-rows").val()), 10);
 
       if (hr !== this.sim.field.hiddenRows) {
@@ -126,7 +126,7 @@ export class SimulatorTab {
       $("#attack-powers .dropdown-menu").append(category);
     }
 
-    $("#attack-powers .dropdown-menu a").click(function () {
+    $("#attack-powers .dropdown-menu a").on("click", function () {
       const category = parseInt(
         // TODO: remove usage of this
         String($(this).parent().attr("data-category")),
@@ -155,15 +155,15 @@ export class SimulatorTab {
           "']"
       )
         .prop("checked", true)
-        .change();
+        .trigger("change");
       $("#target-points")
         .val(
           attackPowers[category].targetPoints || SimulationDefaultTargetPoints
         )
-        .change();
+        .trigger("change");
     });
     $(
       "#attack-powers .dropdown-menu li[data-category='0'][data-value='1'] a"
-    ).click();
+    ).trigger("click");
   }
 }

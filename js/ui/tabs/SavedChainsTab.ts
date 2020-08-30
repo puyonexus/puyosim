@@ -29,7 +29,7 @@ export class SavedChainsTab {
     }
 
     // Save chain
-    $("#save-chain-save").click(() => {
+    $("#save-chain-save").on("click", () => {
       if ($("#save-chain-name").val() !== "") {
         this.add(String($("#save-chain-name").val()));
         $("#save-chain-name").val("");

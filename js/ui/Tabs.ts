@@ -30,7 +30,7 @@ export class Tabs {
   display() {
     // Displays the tab content and initalizes all of the tabs
     // Set up the tabs for the options
-    $("#simulator-tabs-select > li a[data-target]").click(function () {
+    $("#simulator-tabs-select > li a[data-target]").on("click", function () {
       const $this = $(this);
       const $dataTarget = $this.attr("data-target") || "";
       const $parent = $this.parent();
@@ -51,9 +51,9 @@ export class Tabs {
       "#simulator-tabs-select > li a[data-target='#" +
         (localStorage.getItem("chainsim.lastTab") || "tab-share") +
         "']"
-    ).click();
+    ).trigger("click");
 
-    $(".simulator-tabs-toggle").click(() => {
+    $(".simulator-tabs-toggle").on("click", () => {
       const $simulatorTabs = $("#simulator-tabs");
 
       if ($simulatorTabs.hasClass("toggled")) {

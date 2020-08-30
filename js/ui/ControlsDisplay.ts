@@ -15,12 +15,12 @@ export class ControlsDisplay {
     const self = this;
 
     // Displays the controls
-    $("#puyo-insertion").change(function () {
+    $("#puyo-insertion").on("change", function () {
       // TODO: Remove usage of this.
       self.sim.fieldDisplay.insertPuyo = $(this).prop("checked");
     });
 
-    $("#field-erase-all").click(() => {
+    $("#field-erase-all").on("click", () => {
       this.sim.field.setChain(
         "",
         this.sim.field.width,
@@ -31,7 +31,7 @@ export class ControlsDisplay {
 
     if (this.sim.field.chainInURL) {
       // Make the "Set from URL" button function if a chain can be set from the URL
-      $("#field-set-from-url").click(() => {
+      $("#field-set-from-url").on("click", () => {
         this.sim.field.setChainFromURL();
       });
     } else {
@@ -39,65 +39,65 @@ export class ControlsDisplay {
       $("#field-set-from-url").hide();
     }
 
-    $("#puyo-selection .puyo.puyo-none").click(() => {
+    $("#puyo-selection .puyo.puyo-none").on("click", () => {
       this.sim.fieldDisplay.selectedPuyo = PuyoType.None;
     });
-    $("#puyo-selection .puyo.puyo-delete").click(() => {
+    $("#puyo-selection .puyo.puyo-delete").on("click", () => {
       this.sim.fieldDisplay.selectedPuyo = PuyoType.Delete;
     });
-    $("#puyo-selection .puyo.puyo-red").click(() => {
+    $("#puyo-selection .puyo.puyo-red").on("click", () => {
       this.sim.fieldDisplay.selectedPuyo = PuyoType.Red;
     });
-    $("#puyo-selection .puyo.puyo-green").click(() => {
+    $("#puyo-selection .puyo.puyo-green").on("click", () => {
       this.sim.fieldDisplay.selectedPuyo = PuyoType.Green;
     });
-    $("#puyo-selection .puyo.puyo-blue").click(() => {
+    $("#puyo-selection .puyo.puyo-blue").on("click", () => {
       this.sim.fieldDisplay.selectedPuyo = PuyoType.Blue;
     });
-    $("#puyo-selection .puyo.puyo-yellow").click(() => {
+    $("#puyo-selection .puyo.puyo-yellow").on("click", () => {
       this.sim.fieldDisplay.selectedPuyo = PuyoType.Yellow;
     });
-    $("#puyo-selection .puyo.puyo-purple").click(() => {
+    $("#puyo-selection .puyo.puyo-purple").on("click", () => {
       this.sim.fieldDisplay.selectedPuyo = PuyoType.Purple;
     });
-    $("#puyo-selection .puyo.puyo-nuisance").click(() => {
+    $("#puyo-selection .puyo.puyo-nuisance").on("click", () => {
       this.sim.fieldDisplay.selectedPuyo = PuyoType.Nuisance;
     });
-    $("#puyo-selection .puyo.puyo-point").click(() => {
+    $("#puyo-selection .puyo.puyo-point").on("click", () => {
       this.sim.fieldDisplay.selectedPuyo = PuyoType.Point;
     });
-    $("#puyo-selection .puyo.puyo-hard").click(() => {
+    $("#puyo-selection .puyo.puyo-hard").on("click", () => {
       this.sim.fieldDisplay.selectedPuyo = PuyoType.Hard;
     });
-    $("#puyo-selection .puyo.puyo-iron").click(() => {
+    $("#puyo-selection .puyo.puyo-iron").on("click", () => {
       this.sim.fieldDisplay.selectedPuyo = PuyoType.Iron;
     });
-    $("#puyo-selection .puyo.puyo-block").click(() => {
+    $("#puyo-selection .puyo.puyo-block").on("click", () => {
       this.sim.fieldDisplay.selectedPuyo = PuyoType.Block;
     });
-    $("#puyo-selection .puyo.puyo-sun").click(() => {
+    $("#puyo-selection .puyo.puyo-sun").on("click", () => {
       this.sim.fieldDisplay.selectedPuyo = PuyoType.Sun;
     });
-    $("#puyo-selection .puyo").click(function () {
+    $("#puyo-selection .puyo").on("click", function () {
       $("#puyo-selection .selected").removeClass("selected");
       // TODO: Remove usage of this.
       $(this).parent().addClass("selected");
     });
     $("#puyo-selection .puyo.puyo-none").parent().addClass("selected");
 
-    $("#simulation-back").click(() => {
+    $("#simulation-back").on("click", () => {
       this.sim.simulation.back();
     });
-    $("#simulation-start").click(() => {
+    $("#simulation-start").on("click", () => {
       this.sim.simulation.start();
     });
-    $("#simulation-pause").click(() => {
+    $("#simulation-pause").on("click", () => {
       this.sim.simulation.pause();
     });
-    $("#simulation-step").click(() => {
+    $("#simulation-step").on("click", () => {
       this.sim.simulation.step();
     });
-    $("#simulation-skip").click(() => {
+    $("#simulation-skip").on("click", () => {
       this.sim.simulation.skip();
     });
 
@@ -120,7 +120,7 @@ export class ControlsDisplay {
       }
     );
     $("#simulation-speed")
-      .change(function () {
+      .on("change", function () {
         // TODO: Remove usage of this.
         self.sim.simulation.speed = parseInt(String($(this).val()), 10);
       })
