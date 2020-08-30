@@ -44,7 +44,7 @@ export class SavedChainsTab extends Component<Props> {
   componentDidMount() {
     Promise.resolve().then(() => this.initLegacy());
   }
-  
+
   // Saved chains array
   chains: ISavedChain[] = [];
 

@@ -83,7 +83,7 @@ export class SettingsTab extends Component<Props> {
       </div>
     );
   }
-  
+
   componentDidMount() {
     Promise.resolve().then(() => this.initLegacy());
   }
@@ -93,7 +93,7 @@ export class SettingsTab extends Component<Props> {
     if (!sim) {
       return;
     }
-  
+
     // Initalizes this tab
     // Animation
     $("#animate-puyo") // Puyo animation

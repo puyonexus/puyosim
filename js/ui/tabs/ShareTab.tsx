@@ -67,7 +67,7 @@ export class ShareTab extends Component<Props> {
       </div>
     );
   }
-  
+
   componentDidMount() {
     Promise.resolve().then(() => this.initLegacy());
   }
