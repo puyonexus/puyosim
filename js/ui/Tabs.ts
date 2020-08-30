@@ -5,12 +5,12 @@
  */
 
 import $ from "jquery";
-import { PuyoSim } from "./puyosim";
-import { SavedChainsTab } from "./savedchainstab";
-import { ChainsTab } from "./chainstab";
-import { SimulatorTab } from "./simulatortab";
-import { LinksTab } from "./linkstab";
-import { SettingsTab } from "./settingstab";
+import { PuyoSim } from "../PuyoSim";
+import { SavedChainsTab } from "./tabs/SavedChainsTab";
+import { ChainsTab } from "./tabs/ChainsTab";
+import { SimulatorTab } from "./tabs/SimulatorTab";
+import { LinksTab } from "./tabs/LinksTab";
+import { SettingsTab } from "./tabs/SettingsTab";
 
 export class Tabs {
   savedChains: SavedChainsTab;

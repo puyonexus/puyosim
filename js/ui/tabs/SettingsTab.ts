@@ -1,6 +1,6 @@
 import $ from "jquery";
-import { PuyoSim } from "./puyosim";
-import { content } from "./content";
+import { PuyoSim } from "../../PuyoSim";
+import { content } from "../../data/content";
 
 export class SettingsTab {
   constructor(readonly sim: PuyoSim) {}

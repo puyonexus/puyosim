@@ -5,15 +5,15 @@
  */
 
 import $ from "jquery";
-import { FieldMap } from "./fieldmap";
+import { FieldMap } from "./FieldMap";
 import {
   FieldDefaultWidth,
   FieldDefaultHeight,
   FieldDefaultHiddenRows,
   PuyoType,
   SimulationDefaultPuyoToClear,
-} from "./constants";
-import { PuyoSim } from "./puyosim";
+} from "../constants";
+import { PuyoSim } from "../puyosim";
 
 declare global {
   interface Window {

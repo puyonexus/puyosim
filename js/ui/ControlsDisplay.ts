@@ -5,8 +5,8 @@
  */
 
 import $ from "jquery";
-import { PuyoType, SimulationDefaultSpeed } from "./constants";
-import { PuyoSim } from "./puyosim";
+import { PuyoType, SimulationDefaultSpeed } from "../constants";
+import { PuyoSim } from "../PuyoSim";
 
 export class ControlsDisplay {
   constructor(readonly sim: PuyoSim) {}

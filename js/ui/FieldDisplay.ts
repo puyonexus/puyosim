@@ -5,9 +5,9 @@
  */
 
 import $ from "jquery";
-import { PuyoType } from "./constants";
-import { content, IFieldType } from "./content";
-import { PuyoSim } from "./puyosim";
+import { PuyoType } from "../constants";
+import { content, IFieldType } from "../data/content";
+import { PuyoSim } from "../PuyoSim";
 
 export class FieldDisplay {
   // A reference to the content of the field

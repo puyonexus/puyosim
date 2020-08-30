@@ -11,9 +11,9 @@ import {
   SimulationDefaultPointPuyoBonus,
   SimulationDefaultTargetPoints,
   SimulationDefaultSpeed,
-} from "./constants";
-import { FieldMap } from "./fieldmap";
-import { PuyoSim } from "./puyosim";
+} from "../constants";
+import { FieldMap } from "./FieldMap";
+import { PuyoSim } from "../puyosim";
 
 export class Simulation {
   // Simulator is running

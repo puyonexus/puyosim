@@ -1,7 +1,7 @@
 import $ from "jquery";
-import { PuyoSim } from "./puyosim";
-import { FieldDefaultWidth, FieldDefaultHeight, FieldDefaultHiddenRows, PuyoType } from "./constants";
-import { Puyo } from "./puyo";
+import { PuyoSim } from "../../PuyoSim";
+import { FieldDefaultWidth, FieldDefaultHeight, FieldDefaultHiddenRows, PuyoType } from "../../constants";
+import { Puyo } from "../../simulator/Puyo";
 
 // CanvasRenderer (uses HTML5 Canvas to display the puyo on the field)
 export class CanvasRenderer {

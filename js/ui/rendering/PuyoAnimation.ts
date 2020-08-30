@@ -1,5 +1,5 @@
 import $ from "jquery";
-import { PuyoSim } from "./puyosim";
+import { PuyoSim } from "../../PuyoSim";
 
 // Puyo animation class
 export class PuyoAnimation {

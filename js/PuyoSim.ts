@@ -3,12 +3,12 @@ import $ from "jquery";
 import Clipboard from "clipboard";
 import { default as contentHtml } from "./data/content.html";
 import { Utils } from "./utils";
-import { Field } from "./field";
-import { Simulation } from "./simulation";
-import { Tabs } from "./tabs";
-import { FieldDisplay } from "./fielddisplay";
-import { PuyoDisplay } from "./puyodisplay";
-import { ControlsDisplay } from "./controlsdisplay";
+import { Field } from "./simulator/Field";
+import { Simulation } from "./simulator/Simulation";
+import { Tabs } from "./ui/Tabs";
+import { FieldDisplay } from "./ui/FieldDisplay";
+import { PuyoDisplay } from "./ui/rendering/PuyoDisplay";
+import { ControlsDisplay } from "./ui/ControlsDisplay";
 
 // An instance of PuyoSim.
 export class PuyoSim {

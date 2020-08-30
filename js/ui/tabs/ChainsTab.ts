@@ -1,7 +1,7 @@
 import $ from "jquery";
-import { PuyoSim } from "./puyosim";
-import { default as chainsJson } from "./data/chains.json";
-import { FieldDefaultWidth, FieldDefaultHeight, FieldDefaultHiddenRows, SimulationDefaultPuyoToClear } from "./constants";
+import { PuyoSim } from "../../PuyoSim";
+import { default as chainsJson } from "../../data/chains.json";
+import { FieldDefaultWidth, FieldDefaultHeight, FieldDefaultHiddenRows, SimulationDefaultPuyoToClear } from "../../constants";
 
 export class ChainsTab {
   chains: typeof chainsJson = [];

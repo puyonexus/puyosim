@@ -1,8 +1,8 @@
 import $ from "jquery";
-import { PuyoSim } from "./puyosim";
-import { Utils } from "./utils";
-import { SimulationDefaultTargetPoints } from "./constants";
-import { default as attackPowersJson } from "./data/attackPowers.json";
+import { PuyoSim } from "../../PuyoSim";
+import { Utils } from "../../Utils";
+import { SimulationDefaultTargetPoints } from "../../constants";
+import { default as attackPowersJson } from "../../data/attackPowers.json";
 
 export class SimulatorTab {
   constructor(readonly sim: PuyoSim) {}

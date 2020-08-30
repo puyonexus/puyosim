@@ -5,11 +5,11 @@
  */
 
 import $ from "jquery";
-import { PuyoType } from "./constants";
-import { PuyoSim } from "./puyosim";
-import { CanvasRenderer } from "./canvasrenderer";
-import { PuyoAnimation } from "./puyoanimation";
-import { SunPuyoAnimation } from "./sunpuyoanimation";
+import { PuyoType } from "../../constants";
+import { PuyoSim } from "../../PuyoSim";
+import { CanvasRenderer } from "./CanvasRenderer";
+import { PuyoAnimation } from "./PuyoAnimation";
+import { SunPuyoAnimation } from "./SunPuyoAnimation";
 
 interface IPuyoSkin {
   id: string;

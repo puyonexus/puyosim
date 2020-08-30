@@ -1,6 +1,6 @@
 import $ from "jquery";
-import { PuyoSim } from "./puyosim";
-import { PuyoType } from "./constants";
+import { PuyoSim } from "../../PuyoSim";
+import { PuyoType } from "../../constants";
 
 // Sun Puyo animation class
 export class SunPuyoAnimation {

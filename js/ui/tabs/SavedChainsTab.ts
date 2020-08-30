@@ -1,7 +1,7 @@
 import $ from "jquery";
-import { PuyoSim } from "./puyosim";
-import { FieldDefaultWidth, FieldDefaultHeight, FieldDefaultHiddenRows } from "./constants";
-import { Utils } from "./utils";
+import { PuyoSim } from "../../PuyoSim";
+import { FieldDefaultWidth, FieldDefaultHeight, FieldDefaultHiddenRows } from "../../constants";
+import { Utils } from "../../Utils";
 
 interface ISavedChain {
   name: string;

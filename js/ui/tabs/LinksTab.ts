@@ -1,7 +1,7 @@
 import $ from "jquery";
-import { PuyoSim } from "./puyosim";
-import { config } from "./config";
-import { Utils } from "./utils";
+import { PuyoSim } from "../../PuyoSim";
+import { config } from "../../config";
+import { Utils } from "../../Utils";
 
 export class LinksTab {
   constructor(readonly sim: PuyoSim) {}

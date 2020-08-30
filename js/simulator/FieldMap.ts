@@ -1,6 +1,6 @@
-import { PuyoType } from "./constants";
-import { Puyo } from "./puyo";
-import { PuyoSim } from "./puyosim";
+import { PuyoType } from "../constants";
+import { Puyo } from "./Puyo";
+import { PuyoSim } from "../puyosim";
 
 export class FieldMap {
   map: Puyo[][];

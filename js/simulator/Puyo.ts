@@ -5,7 +5,7 @@
  * and URL conversions.
  */
 
-import { PuyoType } from "./constants";
+import { PuyoType } from "../constants";
 
 export class Puyo {
   puyo: PuyoType;
