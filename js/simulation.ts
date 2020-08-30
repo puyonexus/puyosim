@@ -160,8 +160,8 @@ export class Simulation {
     ).prop("disabled", false); // Disable simulator options
 
     this.sim.field.map = this.sim.field.mapEditor;
-    for (var y = 0; y < this.sim.field.totalHeight; y++) {
-      for (var x = 0; x < this.sim.field.width; x++) {
+    for (let y = 0; y < this.sim.field.totalHeight; y++) {
+      for (let x = 0; x < this.sim.field.width; x++) {
         this.sim.puyoDisplay.renderer.drawPuyo(
           x,
           y,
@@ -203,10 +203,7 @@ export class Simulation {
         this.chain();
       } else {
         // Puyo dropped, delay chaining
-        var self = this;
-        this.timer = window.setTimeout(function () {
-          self.chain();
-        }, this.speed);
+        this.timer = window.setTimeout(() => { this.chain(); }, this.speed);
       }
     } else if (this.running && (this.paused || this.stepMode)) {
       this.sim.controlsDisplay.toggleSimulationButtons(
@@ -337,22 +334,28 @@ export class Simulation {
     }
   }
 
+  // This preforms the chain
   chain() {
-    // This preforms the chain
-    var self = this, // References to this object
-      i,
-      j,
-      x,
-      y; // Loop variables
+    // Loop variables
+    let i;
+    let j;
+    let x;
+    let y;
 
+    // Preform the chain
     if (this.action === 0) {
-      // Preform the chain
-      var check: boolean[][] = [], // "Check" array (will be filled in right after this)
-        chainMade = false, // Indiciates if a chain has been made
-        puyoCleared = 0, // Number of puyo that were cleared in the chain
-        pointPuyoCleared = 0, // Number of point puyo cleared
-        sunPuyoCleared = 0, // Number of sun puyo cleared
-        groups: number[][] = [[], [], [], [], []]; // Groups to sort the colors
+      // "Check" array (will be filled in right after this)
+      const check: boolean[][] = [];
+      // Indiciates if a chain has been made
+      let chainMade = false;
+      // Number of puyo that were cleared in the chain
+      let puyoCleared = 0;
+      // Number of point puyo cleared
+      let pointPuyoCleared = 0;
+      // Number of sun puyo cleared
+      let sunPuyoCleared = 0;
+      // Groups to sort the colors
+      const groups: number[][] = [[], [], [], [], []];
 
       // Create the "check" array
       for (x = 0; x < this.sim.field.width; x++) {
@@ -366,15 +369,19 @@ export class Simulation {
       for (y = this.sim.field.hiddenRows; y < this.sim.field.totalHeight; y++) {
         // Don't check the hidden row
         for (x = 0; x < this.sim.field.width; x++) {
+          // Is a colored puyo
           if (!check[x][y] && this.sim.field.map.get(x, y).isColored()) {
-            // Is a colored puyo
-            var cleared = 1, // Amount of puyo cleared
-              checked = 1, // Amount of puyo checked
-              puyo = this.sim.field.map.puyo(x, y), // Puyo currently being checked
-              list = [{ x: x, y: y }], // List of puyo to clear
-              pos,
-              checkX,
-              checkY;
+            // Amount of puyo cleared
+            let cleared = 1;
+            // Amount of puyo checked
+            let checked = 1;
+            // Puyo currently being checked
+            const puyo = this.sim.field.map.puyo(x, y);
+            // List of puyo to clear
+            const list = [{ x, y }];
+            let pos;
+             let checkX;
+            let checkY;
 
             check[x][y] = true;
 
@@ -542,53 +549,53 @@ export class Simulation {
       if (chainMade) {
         // Has a chain been made?
         // Calculate the clear bonus (whhich requires it's own function)
-        var clearBonus = (function (groups, self) {
-          var clearBonus = 0, // Clear Bonus
-            colors = 0, // Colors erased
-            total = 0; // Amount of groups erased
+        const clearBonus = (() => {
+          // Clear Bonus
+          let result = 0;
+          // Colors erased
+          let colors = 0;
+          // Amount of groups erased
+          let total = 0;
 
-          for (var color = 0; color < groups.length; color++) {
+          for (const color of groups) {
             // Loop through all the colors.
-            if (groups[color].length > 0) colors++;
-            for (var i = 0; i < groups[color].length; i++) {
+            if (color.length > 0) colors++;
+            for (const group of color) {
               // Loop through all the groups
               total++;
 
               // Add the group bonus
               // When Puyo to clear is < 4, we have to use the value at (Puyo in group - puyo to clear)
               // When Puyo to clear is >= 4, we have to use the value at (Puyo in group - 4)
-              var puyoOffset = Math.min(4, self.puyoToClear);
-              if (groups[color][i] > 6 + puyoOffset) {
-                clearBonus += self.groupBonus[self.scoreMode][7];
+              const puyoOffset = Math.min(4, this.puyoToClear);
+              if (group > 6 + puyoOffset) {
+                result += this.groupBonus[this.scoreMode][7];
               } else {
-                clearBonus +=
-                  self.groupBonus[self.scoreMode][
-                    groups[color][i] - puyoOffset
-                  ];
+                result += this.groupBonus[this.scoreMode][group - puyoOffset];
               }
             }
           }
 
-          clearBonus += self.colorBonus[self.scoreMode][colors - 1]; // Add the color bonus
+          result += this.colorBonus[this.scoreMode][colors - 1]; // Add the color bonus
 
           // Add the chain power now
-          var power = 0;
-          if (self.chains >= self.chainPowers.length) {
-            power = self.prevChainPower + self.chainPowerInc;
+          let power = 0;
+          if (this.chains >= this.chainPowers.length) {
+            power = this.prevChainPower + this.chainPowerInc;
           } else {
-            power = self.chainPowers[self.chains];
+            power = this.chainPowers[this.chains];
           }
 
-          self.prevChainPower = power;
-          clearBonus += power;
+          this.prevChainPower = power;
+          result += power;
 
-          clearBonus = Math.min(Math.max(clearBonus, 1), 999); // Limit the clear bonus to between 1 to 999.
+          result = Math.min(Math.max(result, 1), 999); // Limit the clear bonus to between 1 to 999.
 
-          return clearBonus;
-        })(groups, this);
+          return result;
+        })();
 
         // Calculate the scoring
-        var bonus = puyoCleared * 10 * clearBonus;
+        let bonus = puyoCleared * 10 * clearBonus;
         bonus += pointPuyoCleared * this.pointPuyoBonus;
 
         this.chains++;
@@ -597,7 +604,7 @@ export class Simulation {
         // Store how many puyos are cleared in this chain
         this.cleared.push(puyoCleared);
 
-        var nuisanceCalculated =
+        const nuisanceCalculated =
           bonus / this.targetPoints + this.leftoverNuisance; // Calculate nuisance
         this.nuisance += Math.floor(nuisanceCalculated); // Round down and add to nuisance
         this.leftoverNuisance = nuisanceCalculated % 1; // Save leftover nuisance for the next chain
@@ -626,23 +633,17 @@ export class Simulation {
               clearBonus
           );
           $("#field-nuisance").text(this.nuisance);
-          var clearedChain = this.cleared
-            .map(function (i) {
-              return i.toString();
-            })
+          const clearedChain = this.cleared
+            .map(n => n.toString())
             .join(", ");
-          var clearedTotal = this.cleared.reduce(function (a, b) {
-            return a + b;
-          });
+          const clearedTotal = this.cleared.reduce((a, b) => a + b);
           $("#field-cleared").text(clearedChain + " (" + clearedTotal + ")");
 
           this.sim.puyoDisplay.renderer.drawNuisanceTray(this.nuisance);
 
           if (!this.stepMode) {
             // Set the timer if we aren't in step mode
-            this.timer = window.setTimeout(function () {
-              self.chain();
-            }, this.speed);
+            this.timer = window.setTimeout(() => { this.chain(); }, this.speed);
           }
         }
       } else {
@@ -664,14 +665,10 @@ export class Simulation {
           $("#field-chains").text(this.chains);
           $("#field-score").text(this.score);
           $("#field-nuisance").text(this.nuisance);
-          var clearedChain = this.cleared
-            .map(function (i) {
-              return i.toString();
-            })
+          const clearedChain = this.cleared
+            .map(n => n.toString())
             .join(", ");
-          var clearedTotal = this.cleared.reduce(function (a, b) {
-            return a + b;
-          });
+          const clearedTotal = this.cleared.reduce((a, b) => a + b);
           $("#field-cleared").text(clearedChain + " (" + clearedTotal + ")");
 
           this.sim.puyoDisplay.renderer.drawNuisanceTray(this.nuisance);
@@ -710,9 +707,7 @@ export class Simulation {
           this.chain();
         } else if (!this.stepMode) {
           // Set the timer if we aren't in step mode
-          this.timer = window.setTimeout(function () {
-            self.chain();
-          }, this.speed);
+          this.timer = window.setTimeout(() => { this.chain(); }, this.speed);
         }
       } else {
         // No puyo dropped, stop the chain
@@ -733,14 +728,10 @@ export class Simulation {
           $("#field-chains").text(this.chains);
           $("#field-score").text(this.score);
           $("#field-nuisance").text(this.nuisance);
-          var clearedChain = this.cleared
-            .map(function (i) {
-              return i.toString();
-            })
+          const clearedChain = this.cleared
+            .map(n => n.toString())
             .join(", ");
-          var clearedTotal = this.cleared.reduce(function (a, b) {
-            return a + b;
-          });
+          const clearedTotal = this.cleared.reduce((a, b) => a + b);
           $("#field-cleared").text(clearedChain + " (" + clearedTotal + ")");
 
           this.sim.puyoDisplay.renderer.drawNuisanceTray(this.nuisance);
@@ -760,10 +751,10 @@ export class Simulation {
 
   dropPuyo() {
     // Makes the puyo fall in place and returns if any puyo changed position
-    var dropped = false;
+    let dropped = false;
 
-    for (var x = 0; x < this.sim.field.width; x++) {
-      for (var y = this.sim.field.totalHeight - 2; y >= 0; y--) {
+    for (let x = 0; x < this.sim.field.width; x++) {
+      for (let y = this.sim.field.totalHeight - 2; y >= 0; y--) {
         // No need to check the bottom row
         if (
           this.sim.field.map.puyo(x, y) !== PuyoType.None &&
@@ -773,7 +764,7 @@ export class Simulation {
           // There's an empty space below this puyo!
           dropped = true;
 
-          var y2 = y;
+          let y2 = y;
           while (
             y2 < this.sim.field.totalHeight - 1 &&
             this.sim.field.map.puyo(x, y2 + 1) === PuyoType.None
