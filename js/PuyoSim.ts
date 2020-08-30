@@ -34,7 +34,11 @@ export class PuyoSim {
     this.fieldDisplay.init();
 
     // Display the contents of the simulator
-    $("#simulator").html(Utils.stringFormat(contentHtml, "/assets"));
+    const simulator = document.getElementById("simulator");
+    if (!simulator) {
+      throw new Error("Could not find #simulator.");
+    }
+    simulator.innerHTML = Utils.stringFormat(contentHtml, "/assets");
 
     // Enable auto-copying to clipboard
     if (Clipboard.isSupported()) {
@@ -44,7 +48,7 @@ export class PuyoSim {
     }
 
     // Handle resizing for #simulator
-    $(window).on("resize", () => {
+    window.addEventListener("resize", () => {
       this.tabs.fieldWidthChanged();
     });
 
@@ -72,7 +76,7 @@ export class PuyoSim {
       // Set up the main easter egg function
       let key = 0;
 
-      $(document).on("keydown", (e) => {
+      document.addEventListener("keydown", e => {
         if (e.which === keys[key]) {
           key++;
           if (key === keys.length) {
