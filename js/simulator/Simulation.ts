@@ -14,8 +14,9 @@ import {
 } from "../constants";
 import { FieldMap } from "./FieldMap";
 import { PuyoSim } from "../PuyoSim";
+import EventTarget from '@ungap/event-target';
 
-export class Simulation {
+export class Simulation extends EventTarget {
   // Simulator is running
   running = false;
 
@@ -120,7 +121,9 @@ export class Simulation {
   // Score Mode (0 = Classic, 1 = Fever)
   scoreMode = 0;
 
-  constructor(readonly sim: PuyoSim) {}
+  constructor(readonly sim: PuyoSim) {
+    super();
+  }
 
   back() {
     // Stops the chain
