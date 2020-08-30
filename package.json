@@ -26,6 +26,7 @@
         "normalize.css": "8.0.1",
         "parcel-bundler": "^1.12.4",
         "parcel-plugin-asset-copier": "^1.1.0",
+        "preact": "^10.4.8",
         "typescript": "^4.0.2"
     },
     "devDependencies": {

@@ -1,8 +1,8 @@
 import "./common";
 import $ from "jquery";
 import Clipboard from "clipboard";
-import { default as contentHtml } from "./data/content.html";
-import { Utils } from "./Utils";
+import { h, render } from "preact";
+import { Simulator } from "./ui/Simulator";
 import { Field } from "./simulator/Field";
 import { Simulation } from "./simulator/Simulation";
 import { Tabs } from "./ui/Tabs";
@@ -34,11 +34,11 @@ export class PuyoSim {
     this.fieldDisplay.init();
 
     // Display the contents of the simulator
-    const simulator = document.getElementById("simulator");
-    if (!simulator) {
-      throw new Error("Could not find #simulator.");
+    const app = document.getElementById("app");
+    if (!app) {
+      throw new Error("Could not find #app.");
     }
-    simulator.innerHTML = Utils.stringFormat(contentHtml, "/assets");
+    render(<Simulator />, app);
 
     // Enable auto-copying to clipboard
     if (Clipboard.isSupported()) {
