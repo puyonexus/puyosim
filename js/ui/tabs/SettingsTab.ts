@@ -9,7 +9,7 @@ export class SettingsTab {
     // Initalizes this tab
     // Animation
     $("#animate-puyo") // Puyo animation
-      .on("click", ({currentTarget}) => {
+      .on("click", ({ currentTarget }) => {
         const checked = $(currentTarget).prop("checked");
 
         this.sim.puyoDisplay.animate.puyo = checked;
@@ -32,7 +32,7 @@ export class SettingsTab {
       .prop("checked", this.sim.puyoDisplay.animate.puyo);
 
     $("#animate-sun-puyo") // Sun Puyo animation
-      .on("click", ({currentTarget}) => {
+      .on("click", ({ currentTarget }) => {
         const checked = $(currentTarget).prop("checked");
 
         this.sim.puyoDisplay.animate.sunPuyo = checked;
@@ -51,7 +51,7 @@ export class SettingsTab {
       .prop("checked", this.sim.puyoDisplay.animate.sunPuyo);
 
     $("#animate-nuisance-tray") // Nuisance Tray animation
-      .on("click", ({currentTarget}) => {
+      .on("click", ({ currentTarget }) => {
         const checked = $(currentTarget).prop("checked");
 
         this.sim.puyoDisplay.animate.nuisanceTray = checked;
@@ -64,10 +64,13 @@ export class SettingsTab {
 
     // Field Style
     $("#field-style")
-      .on("change", ({currentTarget}) => {
+      .on("change", ({ currentTarget }) => {
         $(currentTarget).prop("disabled", true);
         this.sim.fieldDisplay.load(String($(currentTarget).val()));
-        localStorage.setItem("chainsim.fieldStyle", String($(currentTarget).val()));
+        localStorage.setItem(
+          "chainsim.fieldStyle",
+          String($(currentTarget).val())
+        );
       })
       .val(localStorage.getItem("chainsim.fieldStyle") || "standard"); // Default to Standard
 
@@ -80,17 +83,14 @@ export class SettingsTab {
       i++
     ) {
       $("#character-background .dropdown-menu").append(
-        "<h3>" +
-          content.Field.EyeCandy.CharacterBackgrounds[i].name +
-          "</h3>"
+        "<h3>" + content.Field.EyeCandy.CharacterBackgrounds[i].name + "</h3>"
       );
       const category = $("<ul>");
 
       // Loop through each of the powers in the category
       for (
         let j = 0;
-        j <
-        content.Field.EyeCandy.CharacterBackgrounds[i].backgrounds.length;
+        j < content.Field.EyeCandy.CharacterBackgrounds[i].backgrounds.length;
         j++
       ) {
         $("<li>")
@@ -109,49 +109,61 @@ export class SettingsTab {
       $("#character-background .dropdown-menu").append(category);
     }
 
-    $("#character-background .dropdown-menu a").on("click", ({ currentTarget }) => {
-      const category = parseInt($(currentTarget).parent().attr("data-category") || "", 10);
-      const value = parseInt($(currentTarget).parent().attr("data-value") || "", 10);
-      const id = parseInt($(currentTarget).parent().attr("data-id") || "", 10);
+    $("#character-background .dropdown-menu a").on(
+      "click",
+      ({ currentTarget }) => {
+        const category = parseInt(
+          $(currentTarget).parent().attr("data-category") || "",
+          10
+        );
+        const value = parseInt(
+          $(currentTarget).parent().attr("data-value") || "",
+          10
+        );
+        const id = parseInt(
+          $(currentTarget).parent().attr("data-id") || "",
+          10
+        );
 
-      $("#character-background .dropdown-menu li.selected").removeClass(
-        "selected"
-      );
-      $(currentTarget).parent().addClass("selected");
+        $("#character-background .dropdown-menu li.selected").removeClass(
+          "selected"
+        );
+        $(currentTarget).parent().addClass("selected");
 
-      if (this.sim.fieldDisplay.fieldContent === content.Field.EyeCandy) {
-        if (id === 0) {
-          $("#field-bg-2").css(
-            "background-image",
-            "url('/images/eyecandy/field_char_bg/" +
-              content.Field.EyeCandy.CharaBGs[
-                Math.floor(
-                  Math.random() * content.Field.EyeCandy.CharaBGs.length
-                )
-              ] +
-              "')"
-          );
-        } else {
-          $("#field-bg-2").css(
-            "background-image",
-            "url('/images/eyecandy/field_char_bg/" +
-              content.Field.EyeCandy.CharaBGs[id - 1] +
-              "')"
-          );
+        if (this.sim.fieldDisplay.fieldContent === content.Field.EyeCandy) {
+          if (id === 0) {
+            $("#field-bg-2").css(
+              "background-image",
+              "url('/images/eyecandy/field_char_bg/" +
+                content.Field.EyeCandy.CharaBGs[
+                  Math.floor(
+                    Math.random() * content.Field.EyeCandy.CharaBGs.length
+                  )
+                ] +
+                "')"
+            );
+          } else {
+            $("#field-bg-2").css(
+              "background-image",
+              "url('/images/eyecandy/field_char_bg/" +
+                content.Field.EyeCandy.CharaBGs[id - 1] +
+                "')"
+            );
+          }
         }
+
+        $("#character-background-game").text(
+          content.Field.EyeCandy.CharacterBackgrounds[category].name
+        );
+        $("#character-background-character").text(
+          content.Field.EyeCandy.CharacterBackgrounds[category].backgrounds[
+            value
+          ]
+        );
+
+        localStorage.setItem("chainsim.boardBackgroundId", String(id));
       }
-
-      $("#character-background-game").text(
-        content.Field.EyeCandy.CharacterBackgrounds[category].name
-      );
-      $("#character-background-character").text(
-        content.Field.EyeCandy.CharacterBackgrounds[category].backgrounds[
-          value
-        ]
-      );
-
-      localStorage.setItem("chainsim.boardBackgroundId", String(id));
-    });
+    );
     const boardBackgroundId = localStorage.getItem(
       "chainsim.boardBackgroundId"
     );
@@ -175,8 +187,7 @@ export class SettingsTab {
     }
 
     $("#character-background-game").text(
-      content.Field.EyeCandy.CharacterBackgrounds[boardBackgroundCategory]
-        .name
+      content.Field.EyeCandy.CharacterBackgrounds[boardBackgroundCategory].name
     );
     $("#character-background-character").text(
       content.Field.EyeCandy.CharacterBackgrounds[boardBackgroundCategory]
@@ -204,11 +215,13 @@ export class SettingsTab {
         .appendTo("#puyo-skins .dropdown-menu");
     });
 
-    $("#puyo-skins .dropdown-menu a").on("click", ({currentTarget}) => {
+    $("#puyo-skins .dropdown-menu a").on("click", ({ currentTarget }) => {
       $("#puyo-skins li.selected").removeClass("selected");
       $($(currentTarget).parent()).addClass("selected");
 
-      this.sim.puyoDisplay.setPuyoSkin($(currentTarget).parent().attr("data-value") || "");
+      this.sim.puyoDisplay.setPuyoSkin(
+        $(currentTarget).parent().attr("data-value") || ""
+      );
       localStorage.setItem(
         "chainsim.puyoSkin",
         $(currentTarget).parent().attr("data-value") || ""
@@ -217,8 +230,8 @@ export class SettingsTab {
       $("#puyo-skins .dropdown-toggle .puyo-skin").css(
         "background-position",
         "0px -" +
-        this.sim.puyoDisplay.getSkinIndex(this.sim.puyoDisplay.puyoSkin.id) *
-          this.sim.puyoDisplay.puyoSize +
+          this.sim.puyoDisplay.getSkinIndex(this.sim.puyoDisplay.puyoSkin.id) *
+            this.sim.puyoDisplay.puyoSize +
           "px"
       );
     });

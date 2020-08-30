@@ -61,7 +61,8 @@ export class FieldDisplay {
 
         $("#field").css({
           width: this.sim.field.width * this.sim.puyoDisplay.puyoSize + "px",
-          height: this.sim.field.totalHeight * this.sim.puyoDisplay.puyoSize + "px",
+          height:
+            this.sim.field.totalHeight * this.sim.puyoDisplay.puyoSize + "px",
         });
         $("#field-bg-2").css(
           "top",
@@ -153,7 +154,7 @@ export class FieldDisplay {
         }
 
         const width = $(currentTarget).width();
-        const height = $(currentTarget).height()
+        const height = $(currentTarget).height();
         const offset = $(currentTarget).offset();
         if (!width || !height || !offset) {
           return;
@@ -194,7 +195,7 @@ export class FieldDisplay {
           });
         }
       })
-      .on("mouseleave", ({currentTarget}) => {
+      .on("mouseleave", ({ currentTarget }) => {
         $(currentTarget).trigger("mouseup");
         $("#field-cursor").remove();
       })

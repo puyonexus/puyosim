@@ -87,7 +87,9 @@ export class PuyoAnimation {
         "px"
     );
 
-    this.timer = window.setTimeout(() => { this.animate() }, 200);
+    this.timer = window.setTimeout(() => {
+      this.animate();
+    }, 200);
   }
 
   start(n: number) {
@@ -97,7 +99,9 @@ export class PuyoAnimation {
     this.frame = 0;
     this.totalFrames = n;
 
-    this.timer = window.setTimeout(() => { this.animate() }, 200);
+    this.timer = window.setTimeout(() => {
+      this.animate();
+    }, 200);
   }
 
   stop() {

@@ -120,14 +120,12 @@ export class PuyoDisplay {
 
     const L = x > 0 && this.sim.field.map.puyo(x - 1, y) === p;
     const R =
-      x < this.sim.field.width - 1 &&
-      this.sim.field.map.puyo(x + 1, y) === p;
-      const U =
-      y > this.sim.field.hiddenRows &&
-      this.sim.field.map.puyo(x, y - 1) === p;
-      const D =
-        y < this.sim.field.totalHeight - 1 &&
-        this.sim.field.map.puyo(x, y + 1) === p;
+      x < this.sim.field.width - 1 && this.sim.field.map.puyo(x + 1, y) === p;
+    const U =
+      y > this.sim.field.hiddenRows && this.sim.field.map.puyo(x, y - 1) === p;
+    const D =
+      y < this.sim.field.totalHeight - 1 &&
+      this.sim.field.map.puyo(x, y + 1) === p;
 
     if (L) pos += 8;
     if (R) pos += 4;

@@ -22,10 +22,12 @@ export class Utils {
   }
 
   static escape(str: string) {
-    return str.replace(/&(?!\w+;)|[<>"']/g, s => escapeMap.get(s) ?? s);
+    return str.replace(/&(?!\w+;)|[<>"']/g, (s) => escapeMap.get(s) ?? s);
   }
 
-  static createDropDownListOptions(items: number[] | {[key: number]: string}) {
+  static createDropDownListOptions(
+    items: number[] | { [key: number]: string }
+  ) {
     let html = "";
 
     if (Array.isArray(items)) {
@@ -35,9 +37,7 @@ export class Utils {
     } else {
       // Assume it's an object contains keys & values
       $.each(items, (key, value) => {
-        html += $("<option>")
-          .val(key)
-          .text(value)[0].outerHTML;
+        html += $("<option>").val(key).text(value)[0].outerHTML;
       });
     }
 

@@ -1,7 +1,12 @@
 import $ from "jquery";
 import { PuyoSim } from "../../PuyoSim";
 import { default as chainsJson } from "../../data/chains.json";
-import { FieldDefaultWidth, FieldDefaultHeight, FieldDefaultHiddenRows, SimulationDefaultPuyoToClear } from "../../constants";
+import {
+  FieldDefaultWidth,
+  FieldDefaultHeight,
+  FieldDefaultHiddenRows,
+  SimulationDefaultPuyoToClear,
+} from "../../constants";
 
 export class ChainsTab {
   chains: typeof chainsJson = [];
@@ -31,12 +36,15 @@ export class ChainsTab {
       $("#preset-chains .dropdown-menu").append(category);
     }
 
-    $("#preset-chains .dropdown-menu a").on("click", ({currentTarget}) => {
+    $("#preset-chains .dropdown-menu a").on("click", ({ currentTarget }) => {
       const category = parseInt(
         String($(currentTarget).parent().attr("data-category")),
         10
       );
-      const value = parseInt(String($(currentTarget).parent().attr("data-value")), 10);
+      const value = parseInt(
+        String($(currentTarget).parent().attr("data-value")),
+        10
+      );
 
       $("#preset-chains .dropdown-menu li.selected").removeClass("selected");
       $(currentTarget).parent().addClass("selected");
@@ -49,44 +57,52 @@ export class ChainsTab {
       this.displaySubCategory(category, value);
     });
 
-    $(document).on("change", "#preset-chains-list select", ({currentTarget}) => {
-      if ($(currentTarget).prop("selectedIndex") === 0) {
-        return;
-      }
+    $(document).on(
+      "change",
+      "#preset-chains-list select",
+      ({ currentTarget }) => {
+        if ($(currentTarget).prop("selectedIndex") === 0) {
+          return;
+        }
 
-      const category = parseInt(
-        String(
-          $("#preset-chains .dropdown-menu .selected").attr("data-category")
-        ),
-        10
-      );
-      const subCategory = parseInt(
-        String(
-          $("#preset-chains .dropdown-menu .selected").attr("data-value")
-        ),
-        10
-      );
-      const type = parseInt(String($(currentTarget).attr("data-type")), 10);
-      const colors = parseInt(String($(currentTarget).attr("data-colors")), 10);
-      const length = parseInt(String($(currentTarget).val()), 10);
+        const category = parseInt(
+          String(
+            $("#preset-chains .dropdown-menu .selected").attr("data-category")
+          ),
+          10
+        );
+        const subCategory = parseInt(
+          String(
+            $("#preset-chains .dropdown-menu .selected").attr("data-value")
+          ),
+          10
+        );
+        const type = parseInt(String($(currentTarget).attr("data-type")), 10);
+        const colors = parseInt(
+          String($(currentTarget).attr("data-colors")),
+          10
+        );
+        const length = parseInt(String($(currentTarget).val()), 10);
 
-      this.sim.field.setChain(
-        this.chains[category].categories[subCategory].types[type].colors[colors]
-          .chains[length].chain, // Chain
+        this.sim.field.setChain(
+          this.chains[category].categories[subCategory].types[type].colors[
+            colors
+          ].chains[length].chain, // Chain
           this.chains[category].categories[subCategory].fieldWidth ||
-          FieldDefaultWidth, // Field width
+            FieldDefaultWidth, // Field width
           this.chains[category].categories[subCategory].fieldHeight ||
-          FieldDefaultHeight, // Field height
-        FieldDefaultHiddenRows // Hidden rows (It's always 1 with these chains)
-      );
+            FieldDefaultHeight, // Field height
+          FieldDefaultHiddenRows // Hidden rows (It's always 1 with these chains)
+        );
 
-      this.sim.simulation.puyoToClear =
-      this.chains[category].categories[subCategory].puyoToClear ||
-        SimulationDefaultPuyoToClear;
-      $("#puyo-to-clear").val(this.sim.simulation.puyoToClear);
+        this.sim.simulation.puyoToClear =
+          this.chains[category].categories[subCategory].puyoToClear ||
+          SimulationDefaultPuyoToClear;
+        $("#puyo-to-clear").val(this.sim.simulation.puyoToClear);
 
-      $(currentTarget).prop("selectedIndex", 0);
-    });
+        $(currentTarget).prop("selectedIndex", 0);
+      }
+    );
 
     $(
       "#preset-chains .dropdown-menu li[data-category='0'][data-value='1'] a"
@@ -117,7 +133,9 @@ export class ChainsTab {
         this.chains[category].categories[subCategory].types[i].colors.length;
         j++
       ) {
-        const select = $("<select>").attr("data-type", i).attr("data-colors", j);
+        const select = $("<select>")
+          .attr("data-type", i)
+          .attr("data-colors", j);
 
         // Add color amount as the first index
         $("<option>")

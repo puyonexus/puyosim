@@ -1,6 +1,10 @@
 import $ from "jquery";
 import { PuyoSim } from "../../PuyoSim";
-import { FieldDefaultWidth, FieldDefaultHeight, FieldDefaultHiddenRows } from "../../constants";
+import {
+  FieldDefaultWidth,
+  FieldDefaultHeight,
+  FieldDefaultHiddenRows,
+} from "../../constants";
 import { Utils } from "../../Utils";
 
 interface ISavedChain {
@@ -124,18 +128,22 @@ export class SavedChainsTab {
     }
 
     $("#saved-chains-list")
-      .on("click", "li .chain-name a", ({currentTarget}) => {
+      .on("click", "li .chain-name a", ({ currentTarget }) => {
         this.load(
           parseInt(
-            $(currentTarget).parents("#saved-chains-list li").attr("data-value") || "",
+            $(currentTarget)
+              .parents("#saved-chains-list li")
+              .attr("data-value") || "",
             10
           )
         );
       })
-      .on("click", "li .icon-delete", ({currentTarget}) => {
+      .on("click", "li .icon-delete", ({ currentTarget }) => {
         this.remove(
           parseInt(
-            $(currentTarget).parents("#saved-chains-list li").attr("data-value") || "",
+            $(currentTarget)
+              .parents("#saved-chains-list li")
+              .attr("data-value") || "",
             10
           )
         );

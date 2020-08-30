@@ -56,7 +56,10 @@ export class LinksTab {
         );
         $("#share-image").val(
           config.baseUrl +
-            Utils.stringFormat(config.shareImageUrl, String(window.chainData.id))
+            Utils.stringFormat(
+              config.shareImageUrl,
+              String(window.chainData.id)
+            )
         );
         $("#share-animated-image").val(
           config.baseUrl +

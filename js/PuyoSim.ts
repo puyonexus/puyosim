@@ -72,7 +72,7 @@ export class PuyoSim {
       // Set up the main easter egg function
       let key = 0;
 
-      $(document).on("keydown", e => {
+      $(document).on("keydown", (e) => {
         if (e.which === keys[key]) {
           key++;
           if (key === keys.length) {

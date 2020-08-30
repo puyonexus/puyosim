@@ -30,24 +30,27 @@ export class Tabs {
   display() {
     // Displays the tab content and initalizes all of the tabs
     // Set up the tabs for the options
-    $("#simulator-tabs-select > li a[data-target]").on("click", ({ currentTarget }) => {
-      const $this = $(currentTarget);
-      const $dataTarget = $this.attr("data-target") || "";
-      const $parent = $this.parent();
+    $("#simulator-tabs-select > li a[data-target]").on(
+      "click",
+      ({ currentTarget }) => {
+        const $this = $(currentTarget);
+        const $dataTarget = $this.attr("data-target") || "";
+        const $parent = $this.parent();
 
-      $("#simulator-tabs-select > li.tab-active").removeClass("tab-active");
-      $("#simulator-tabs .content-active").removeClass("content-active");
+        $("#simulator-tabs-select > li.tab-active").removeClass("tab-active");
+        $("#simulator-tabs .content-active").removeClass("content-active");
 
-      if (
-        !$("#simulator-tabs").hasClass("float") ||
-        !$parent.hasClass("tab-active")
-      ) {
-        $parent.addClass("tab-active");
-        $($dataTarget).addClass("content-active");
-        // Don't need to get the #
-        localStorage.setItem("chainsim.lastTab", $dataTarget.substr(1));
+        if (
+          !$("#simulator-tabs").hasClass("float") ||
+          !$parent.hasClass("tab-active")
+        ) {
+          $parent.addClass("tab-active");
+          $($dataTarget).addClass("content-active");
+          // Don't need to get the #
+          localStorage.setItem("chainsim.lastTab", $dataTarget.substr(1));
+        }
       }
-    });
+    );
     $(
       "#simulator-tabs-select > li a[data-target='#" +
         (localStorage.getItem("chainsim.lastTab") || "tab-share") +

@@ -44,7 +44,9 @@ export class SunPuyoAnimation {
         "px"
     );
 
-    this.timer = window.setTimeout(() => { this.animate(); }, 120);
+    this.timer = window.setTimeout(() => {
+      this.animate();
+    }, 120);
   }
 
   start() {
@@ -53,7 +55,9 @@ export class SunPuyoAnimation {
 
     this.frame = 0;
 
-    this.timer = window.setTimeout(() => { this.animate(); }, 120);
+    this.timer = window.setTimeout(() => {
+      this.animate();
+    }, 120);
   }
 
   stop() {

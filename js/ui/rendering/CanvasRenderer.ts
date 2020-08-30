@@ -1,6 +1,11 @@
 import $ from "jquery";
 import { PuyoSim } from "../../PuyoSim";
-import { FieldDefaultWidth, FieldDefaultHeight, FieldDefaultHiddenRows, PuyoType } from "../../constants";
+import {
+  FieldDefaultWidth,
+  FieldDefaultHeight,
+  FieldDefaultHiddenRows,
+  PuyoType,
+} from "../../constants";
 import { Puyo } from "../../simulator/Puyo";
 
 // CanvasRenderer (uses HTML5 Canvas to display the puyo on the field)
@@ -87,7 +92,9 @@ export class CanvasRenderer {
     ) as HTMLCanvasElement;
     const nuisanceTrayCtx = nuisanceTrayCanvas.getContext("2d");
     if (!nuisanceTrayCtx) {
-      throw new Error("Could not get 2D drawing context for nuisance tray canvas.");
+      throw new Error(
+        "Could not get 2D drawing context for nuisance tray canvas."
+      );
     }
     this.nuisanceTrayCtx = nuisanceTrayCtx;
 
@@ -107,7 +114,7 @@ export class CanvasRenderer {
 
   drawPuyo(x: number, y: number, p: Puyo) {
     // Draws the puyo at x, y
-    let pos: { x: number, y: number };
+    let pos: { x: number; y: number };
     if (this.ctx === undefined) return;
 
     this.ctx.clearRect(

@@ -203,7 +203,9 @@ export class Simulation {
         this.chain();
       } else {
         // Puyo dropped, delay chaining
-        this.timer = window.setTimeout(() => { this.chain(); }, this.speed);
+        this.timer = window.setTimeout(() => {
+          this.chain();
+        }, this.speed);
       }
     } else if (this.running && (this.paused || this.stepMode)) {
       this.sim.controlsDisplay.toggleSimulationButtons(
@@ -380,7 +382,7 @@ export class Simulation {
             // List of puyo to clear
             const list = [{ x, y }];
             let pos;
-             let checkX;
+            let checkX;
             let checkY;
 
             check[x][y] = true;
@@ -455,11 +457,7 @@ export class Simulation {
                     this.sim.field.map.set(pos.x, pos.y, PuyoType.ClearedRed);
                     break;
                   case PuyoType.Green:
-                    this.sim.field.map.set(
-                      pos.x,
-                      pos.y,
-                      PuyoType.ClearedGreen
-                    );
+                    this.sim.field.map.set(pos.x, pos.y, PuyoType.ClearedGreen);
                     break;
                   case PuyoType.Blue:
                     this.sim.field.map.set(pos.x, pos.y, PuyoType.ClearedBlue);
@@ -527,11 +525,7 @@ export class Simulation {
                     this.sim.field.map.puyo(checkX, checkY) === PuyoType.Sun
                   ) {
                     // Sun Puyo
-                    this.sim.field.map.set(
-                      checkX,
-                      checkY,
-                      PuyoType.ClearedSun
-                    );
+                    this.sim.field.map.set(checkX, checkY, PuyoType.ClearedSun);
                     sunPuyoCleared++;
                   } else if (
                     this.sim.field.map.puyo(checkX, checkY) === PuyoType.Hard
@@ -633,9 +627,7 @@ export class Simulation {
               clearBonus
           );
           $("#field-nuisance").text(this.nuisance);
-          const clearedChain = this.cleared
-            .map(n => n.toString())
-            .join(", ");
+          const clearedChain = this.cleared.map((n) => n.toString()).join(", ");
           const clearedTotal = this.cleared.reduce((a, b) => a + b);
           $("#field-cleared").text(clearedChain + " (" + clearedTotal + ")");
 
@@ -643,7 +635,9 @@ export class Simulation {
 
           if (!this.stepMode) {
             // Set the timer if we aren't in step mode
-            this.timer = window.setTimeout(() => { this.chain(); }, this.speed);
+            this.timer = window.setTimeout(() => {
+              this.chain();
+            }, this.speed);
           }
         }
       } else {
@@ -665,9 +659,7 @@ export class Simulation {
           $("#field-chains").text(this.chains);
           $("#field-score").text(this.score);
           $("#field-nuisance").text(this.nuisance);
-          const clearedChain = this.cleared
-            .map(n => n.toString())
-            .join(", ");
+          const clearedChain = this.cleared.map((n) => n.toString()).join(", ");
           const clearedTotal = this.cleared.reduce((a, b) => a + b);
           $("#field-cleared").text(clearedChain + " (" + clearedTotal + ")");
 
@@ -707,7 +699,9 @@ export class Simulation {
           this.chain();
         } else if (!this.stepMode) {
           // Set the timer if we aren't in step mode
-          this.timer = window.setTimeout(() => { this.chain(); }, this.speed);
+          this.timer = window.setTimeout(() => {
+            this.chain();
+          }, this.speed);
         }
       } else {
         // No puyo dropped, stop the chain
@@ -728,9 +722,7 @@ export class Simulation {
           $("#field-chains").text(this.chains);
           $("#field-score").text(this.score);
           $("#field-nuisance").text(this.nuisance);
-          const clearedChain = this.cleared
-            .map(n => n.toString())
-            .join(", ");
+          const clearedChain = this.cleared.map((n) => n.toString()).join(", ");
           const clearedTotal = this.cleared.reduce((a, b) => a + b);
           $("#field-cleared").text(clearedChain + " (" + clearedTotal + ")");
 

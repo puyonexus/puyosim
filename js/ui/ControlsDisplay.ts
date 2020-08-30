@@ -13,7 +13,7 @@ export class ControlsDisplay {
 
   display() {
     // Displays the controls
-    $("#puyo-insertion").on("change", ({currentTarget}) => {
+    $("#puyo-insertion").on("change", ({ currentTarget }) => {
       this.sim.fieldDisplay.insertPuyo = $(currentTarget).prop("checked");
     });
 
@@ -75,7 +75,7 @@ export class ControlsDisplay {
     $("#puyo-selection .puyo.puyo-sun").on("click", () => {
       this.sim.fieldDisplay.selectedPuyo = PuyoType.Sun;
     });
-    $("#puyo-selection .puyo").on("click", ({currentTarget}) => {
+    $("#puyo-selection .puyo").on("click", ({ currentTarget }) => {
       $("#puyo-selection .selected").removeClass("selected");
       $(currentTarget).parent().addClass("selected");
     });
@@ -116,8 +116,11 @@ export class ControlsDisplay {
       }
     );
     $("#simulation-speed")
-      .on("change", ({currentTarget}) => {
-        this.sim.simulation.speed = parseInt(String($(currentTarget).val()), 10);
+      .on("change", ({ currentTarget }) => {
+        this.sim.simulation.speed = parseInt(
+          String($(currentTarget).val()),
+          10
+        );
       })
       .val(SimulationDefaultSpeed);
 

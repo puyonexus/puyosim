@@ -11,7 +11,7 @@ export class SimulatorTab {
     // Initalizes this tab
     // Scoring
     $("input[type='radio'][name='score-mode']")
-      .on("change", ({currentTarget}) => {
+      .on("change", ({ currentTarget }) => {
         switch ($(currentTarget).filter(":checked").val()) {
           case "classic":
             this.sim.simulation.scoreMode = 0;
@@ -26,23 +26,29 @@ export class SimulatorTab {
 
     // Puyo to Clear
     $("#puyo-to-clear")
-      .on("change", ({currentTarget}) => {
-        this.sim.simulation.puyoToClear = parseInt(String($(currentTarget).val()), 10);
+      .on("change", ({ currentTarget }) => {
+        this.sim.simulation.puyoToClear = parseInt(
+          String($(currentTarget).val()),
+          10
+        );
       })
       .html(Utils.createDropDownListOptions(Utils.range(2, 6, 1)))
       .val(this.sim.simulation.puyoToClear); // Default to 4
 
     // Target Points
     $("#target-points")
-      .on("change", ({currentTarget}) => {
-        this.sim.simulation.targetPoints = parseInt(String($(currentTarget).val()), 10);
+      .on("change", ({ currentTarget }) => {
+        this.sim.simulation.targetPoints = parseInt(
+          String($(currentTarget).val()),
+          10
+        );
       })
       .html(Utils.createDropDownListOptions(Utils.range(10, 990, 10)))
       .val(this.sim.simulation.targetPoints); // Default to 70
 
     // Point Puyo bonus
     $("#point-puyo-bonus")
-      .on("change", ({currentTarget}) => {
+      .on("change", ({ currentTarget }) => {
         this.sim.simulation.pointPuyoBonus = parseInt(
           String($(currentTarget).val()),
           10
@@ -120,19 +126,22 @@ export class SimulatorTab {
       $("#attack-powers .dropdown-menu").append(category);
     }
 
-    $("#attack-powers .dropdown-menu a").on("click", ({currentTarget}) => {
+    $("#attack-powers .dropdown-menu a").on("click", ({ currentTarget }) => {
       const category = parseInt(
         String($(currentTarget).parent().attr("data-category")),
         10
       );
-      const value = parseInt(String($(currentTarget).parent().attr("data-value")), 10);
+      const value = parseInt(
+        String($(currentTarget).parent().attr("data-value")),
+        10
+      );
 
       $("#attack-powers .dropdown-menu li.selected").removeClass("selected");
       $(currentTarget).parent().addClass("selected");
 
       this.sim.simulation.chainPowers =
         attackPowers[category].powers[value].values;
-        this.sim.simulation.chainPowerInc =
+      this.sim.simulation.chainPowerInc =
         attackPowers[category].powers[value].increment || 0;
 
       $("#attack-powers-game").text(attackPowers[category].name);
