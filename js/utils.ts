@@ -21,20 +21,20 @@ export class Utils {
     });
   }
 
-  static escape(s: string) {
-    return s.replace(/&(?!\w+;)|[<>"']/g, (s) => escapeMap.get(s) ?? s);
+  static escape(str: string) {
+    return str.replace(/&(?!\w+;)|[<>"']/g, s => escapeMap.get(s) ?? s);
   }
 
-  static createDropDownListOptions(items: any[] | Object) {
+  static createDropDownListOptions(items: any[] | object) {
     let html = "";
 
     if (Array.isArray(items)) {
-      for (let i = 0; i < items.length; i++) {
-        html += $("<option>").val(items[i]).text(items[i])[0].outerHTML;
+      for (const item of items) {
+        html += $("<option>").val(item).text(item)[0].outerHTML;
       }
     } else {
       // Assume it's an object contains keys & values
-      $.each(items, function (key, value) {
+      $.each(items, (key, value) => {
         html += $("<option>")
           .val(key)
           .text(value as any)[0].outerHTML;
