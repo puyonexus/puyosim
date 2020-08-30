@@ -1,6 +1,11 @@
+import $ from "jquery";
 import { h, Component } from "preact";
+import { PuyoSim } from "../../PuyoSim";
+import { config } from "../../config";
+import { Utils } from "../../Utils";
 
 interface Props {
+  sim: PuyoSim|null;
   active: boolean;
 }
 
@@ -61,5 +66,94 @@ export class ShareTab extends Component<Props> {
         </div>
       </div>
     );
+  }
+  
+  componentDidMount() {
+    Promise.resolve().then(() => this.initLegacy());
+  }
+
+  initLegacy() {
+    const { sim } = this.props;
+    if (!sim) {
+      return;
+    }
+
+    $("#get-links").on("click", () => {
+      const data = {
+        title: $("#share-chain-title").val(),
+        chain: sim.field.mapToString(),
+        width: sim.field.width,
+        height: sim.field.height,
+        hiddenRows: sim.field.hiddenRows,
+        popLimit: sim.simulation.puyoToClear,
+      };
+
+      $.post(
+        "/api/save",
+        data,
+        (response) => {
+          if (response.success) {
+            $("#share-link").val(
+              config.baseUrl +
+                Utils.stringFormat(config.shareLinkUrl, response.data.id)
+            );
+            $("#share-image").val(
+              config.baseUrl +
+                Utils.stringFormat(config.shareImageUrl, response.data.id)
+            );
+            $("#share-animated-image").val(
+              config.baseUrl +
+                Utils.stringFormat(
+                  config.shareAnimatedImageUrl,
+                  response.data.id
+                )
+            );
+
+            // Hide elements that shouldn't be shown for shared chains, and show elements that should
+            $(".hide-on-shared-chain").hide();
+            $(".show-on-shared-chain").show();
+          }
+        },
+        "json"
+      );
+    });
+
+    if (window.chainData !== undefined) {
+      if (window.chainData.id !== undefined) {
+        $("#share-link").val(
+          config.baseUrl +
+            Utils.stringFormat(config.shareLinkUrl, String(window.chainData.id))
+        );
+        $("#share-image").val(
+          config.baseUrl +
+            Utils.stringFormat(
+              config.shareImageUrl,
+              String(window.chainData.id)
+            )
+        );
+        $("#share-animated-image").val(
+          config.baseUrl +
+            Utils.stringFormat(
+              config.shareAnimatedImageUrl,
+              String(window.chainData.id)
+            )
+        );
+      } else if (window.chainData.legacyQueryString !== undefined) {
+        $("#share-link").val(
+          config.baseUrl +
+            Utils.stringFormat(
+              config.shareLegacyLinkUrl,
+              window.chainData.legacyQueryString
+            )
+        );
+        $("#share-image").val(
+          config.baseUrl +
+            Utils.stringFormat(
+              config.shareLegacyImageUrl,
+              window.chainData.legacyQueryString
+            )
+        );
+      }
+    }
   }
 }

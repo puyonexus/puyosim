@@ -5,7 +5,6 @@ import { h, render } from "preact";
 import { Simulator } from "./ui/Simulator";
 import { Field } from "./simulator/Field";
 import { Simulation } from "./simulator/Simulation";
-import { Tabs } from "./ui/Tabs";
 import { FieldDisplay } from "./ui/FieldDisplay";
 import { PuyoDisplay } from "./ui/rendering/PuyoDisplay";
 import { ControlsDisplay } from "./ui/ControlsDisplay";
@@ -18,7 +17,6 @@ export class PuyoSim {
   fieldDisplay: FieldDisplay;
   puyoDisplay: PuyoDisplay;
   simulation: Simulation;
-  tabs: Tabs;
   clipboard?: Clipboard;
 
   constructor() {
@@ -27,7 +25,6 @@ export class PuyoSim {
     this.fieldDisplay = new FieldDisplay(this);
     this.puyoDisplay = new PuyoDisplay(this);
     this.simulation = new Simulation(this);
-    this.tabs = new Tabs(this);
   }
 
   init() {
@@ -63,9 +60,6 @@ export class PuyoSim {
 
     // Display the Puyo Display
     this.puyoDisplay.display();
-
-    // Display the tabs
-    this.tabs.display();
 
     // Easter eggs :D
     function easteregg(keys: number[], surprise: () => void) {
