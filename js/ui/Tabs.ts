@@ -6,11 +6,11 @@
 
 import $ from "jquery";
 import { PuyoSim } from "../PuyoSim";
-import { SavedChainsTab } from "./tabs/SavedChainsTab";
-import { ChainsTab } from "./tabs/ChainsTab";
-import { SimulatorTab } from "./tabs/SimulatorTab";
-import { LinksTab } from "./tabs/LinksTab";
-import { SettingsTab } from "./tabs/SettingsTab";
+import { SavedChainsTab } from "./tabs-legacy/SavedChainsTab";
+import { ChainsTab } from "./tabs-legacy/ChainsTab";
+import { SimulatorTab } from "./tabs-legacy/SimulatorTab";
+import { LinksTab } from "./tabs-legacy/LinksTab";
+import { SettingsTab } from "./tabs-legacy/SettingsTab";
 
 export class Tabs {
   savedChains: SavedChainsTab;
