@@ -6,6 +6,7 @@ declare global {
 
 import $ from "jquery";
 window.jQuery = $;
+// tslint:disable-next-line: no-var-requires Until bootstrap is updated?
 require("bootstrap/js/dropdown.js");
 
 function pnNavbarToggleOnClick(event: Event) {
@@ -45,20 +46,11 @@ function pnNavbarCollapseOnTransitionEnd(event: Event) {
 }
 
 function init() {
-  const pnNavbarToggles = document.getElementsByClassName("pn-navbar-toggle");
-  const pnNavbarCollapses = document.getElementsByClassName(
-    "pn-navbar-collapse"
-  );
-
-  for (let i = 0; i < pnNavbarToggles.length; i++) {
-    pnNavbarToggles[i].addEventListener("click", pnNavbarToggleOnClick);
+  for (const elem of document.getElementsByClassName("pn-navbar-toggle")) {
+    elem.addEventListener("click", pnNavbarToggleOnClick);
   }
-
-  for (let i = 0; i < pnNavbarCollapses.length; i++) {
-    pnNavbarCollapses[i].addEventListener(
-      "ontransitionend",
-      pnNavbarCollapseOnTransitionEnd
-    );
+  for (const elem of document.getElementsByClassName("pn-navbar-collapse")) {
+    elem.addEventListener("ontransitionend", pnNavbarCollapseOnTransitionEnd);
   }
 }
 

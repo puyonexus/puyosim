@@ -3,6 +3,8 @@
         "strict": true,
         "resolveJsonModule": true,
         "esModuleInterop": true,
-        "noEmit": true
+        "noEmit": true,
+        "target": "ES2015",
+        "moduleResolution": "node"
     }
 }
