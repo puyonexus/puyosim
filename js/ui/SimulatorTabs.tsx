@@ -36,11 +36,13 @@ const tabs: { [id in Tab]: TabComponentType } = {
   [Tab.Settings]: SettingsTab,
 };
 
-interface SimulatorTabsState {
+interface State {
   activeTab: Tab;
+  float: boolean;
+  toggle: boolean;
 }
 
-export class SimulatorTabs extends Component<{}, SimulatorTabsState> {
+export class SimulatorTabs extends Component<{}, State> {
   private static getLastTab(): Tab | null {
     const tab = localStorage.getItem("chainsim.lastTab");
     if (!tab) {
@@ -60,7 +62,34 @@ export class SimulatorTabs extends Component<{}, SimulatorTabsState> {
     super(props);
     this.state = {
       activeTab: SimulatorTabs.getLastTab() ?? Tab.Share,
+      float: false,
+      toggle: false,
     };
+  }
+
+  onResize = () => {
+    if (this.base instanceof HTMLElement) {
+      const float = this.base.clientWidth < 400;
+      this.setState(prevState => {
+        if (prevState.float !== float) {
+          return {
+            float,
+            toggle: false,
+          };
+        }
+        return null;
+      });
+    }
+  };
+
+  componentDidMount() {
+    // TODO: Maybe consider resize observer.
+    window.addEventListener("resize", this.onResize);
+    Promise.resolve().then(() => this.onResize());
+  }
+
+  componentWillUnmount() {
+    window.removeEventListener("resize", this.onResize);
   }
 
   setTab(activeTab: Tab) {
@@ -68,29 +97,48 @@ export class SimulatorTabs extends Component<{}, SimulatorTabsState> {
     SimulatorTabs.setLastTab(activeTab);
   }
 
+  toggle() {
+    this.setState({ toggle: !this.state.toggle });
+  }
+
+  getTabClassName(): string | undefined {
+    if (!this.state.float) {
+      return undefined;
+    }
+    let className = "float";
+    if (this.state.toggle) {
+      className += " toggled";
+    }
+    return className;
+  }
+
   render() {
+    const { activeTab } = this.state;
+
     return (
-      <div id="simulator-tabs" data-min-width="400">
-        <div className="simulator-tabs-toggle">
+      <div id="simulator-tabs" className={this.getTabClassName()}>
+        <div className="simulator-tabs-toggle" onClick={() => this.toggle()}>
           <a>
             <i className="fa fa-bars" aria-hidden="true"></i>
           </a>
         </div>
         <div className="tab-container">
           <ul id="simulator-tabs-select">
-            {Object.keys(tabs).map(id => (
-              <li className={id === this.state.activeTab ? "tab-active" : undefined}>
-                <a data-target={id} onClick={() => this.setTab(id as Tab)}>{tabNames[id as Tab]}</a>
+            {Object.keys(tabs).map((id) => (
+              <li className={id === activeTab ? "tab-active" : undefined}>
+                <a data-target={id} onClick={() => this.setTab(id as Tab)}>
+                  {tabNames[id as Tab]}
+                </a>
               </li>
             ))}
-            <li className="simulator-tabs-toggle">
+            <li className="simulator-tabs-toggle" onClick={() => this.toggle()}>
               <a>
                 <i className="fa fa-times" aria-hidden="true"></i>
               </a>
             </li>
           </ul>
           {Object.entries(tabs).map(([id, TabComponent]) => (
-            <TabComponent active={id === this.state.activeTab} />
+            <TabComponent active={id === activeTab} />
           ))}
         </div>
       </div>

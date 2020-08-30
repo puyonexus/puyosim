@@ -72,7 +72,8 @@ export class FieldDisplay {
           "height",
           this.sim.field.hiddenRows * this.sim.puyoDisplay.puyoSize + "px"
         );
-        this.sim.tabs.fieldWidthChanged();
+        // Refresh the layout.
+        window.dispatchEvent(new Event('resize'));
 
         $("#simulator-field, #nuisance-tray").fadeIn(200);
         $("#field-style").prop("disabled", false);
@@ -101,7 +102,6 @@ export class FieldDisplay {
       "height",
       this.sim.field.hiddenRows * this.sim.puyoDisplay.puyoSize + "px"
     );
-    this.sim.tabs.fieldWidthChanged();
 
     // Set up the field cursor
 

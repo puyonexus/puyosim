@@ -48,11 +48,6 @@ export class PuyoSim {
       $(".clipboard-button").hide();
     }
 
-    // Handle resizing for #simulator
-    window.addEventListener("resize", () => {
-      this.tabs.fieldWidthChanged();
-    });
-
     // Show/hide elements depending on if we are viewing a shared chain
     if (window.chainData) {
       $(".show-on-shared-chain").show();

@@ -101,7 +101,8 @@ export class Field {
           "height",
           this.sim.field.hiddenRows * this.sim.puyoDisplay.puyoSize + "px"
         );
-        this.sim.tabs.fieldWidthChanged();
+        // Refresh the layout.
+        window.dispatchEvent(new Event('resize'));
         this.sim.puyoDisplay.renderer.init();
       }
 
