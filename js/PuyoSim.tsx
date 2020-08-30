@@ -7,12 +7,10 @@ import { Field } from "./simulator/Field";
 import { Simulation } from "./simulator/Simulation";
 import { FieldDisplay } from "./ui/FieldDisplay";
 import { PuyoDisplay } from "./ui/rendering/PuyoDisplay";
-import { ControlsDisplay } from "./ui/ControlsDisplay";
 
 // An instance of PuyoSim.
 export class PuyoSim {
   field: Field;
-  controlsDisplay: ControlsDisplay;
   fieldDisplay: FieldDisplay;
   puyoDisplay: PuyoDisplay;
   simulation: Simulation;
@@ -20,7 +18,6 @@ export class PuyoSim {
 
   constructor() {
     this.field = new Field(this);
-    this.controlsDisplay = new ControlsDisplay(this);
     this.fieldDisplay = new FieldDisplay(this);
     this.puyoDisplay = new PuyoDisplay(this);
     this.simulation = new Simulation(this);
@@ -53,9 +50,6 @@ export class PuyoSim {
 
     // Display the Field
     this.fieldDisplay.display();
-
-    // Display the Controls Display
-    this.controlsDisplay.display();
 
     // Display the Puyo Display
     this.puyoDisplay.display();

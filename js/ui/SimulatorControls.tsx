@@ -1,5 +1,7 @@
+import $ from "jquery";
 import { h, Component } from "preact";
 import { PuyoSim } from "../PuyoSim";
+import { PuyoType, SimulationDefaultSpeed } from "../constants";
 
 interface Props {
   sim: PuyoSim;
@@ -38,6 +40,7 @@ export class SimulatorControls extends Component<Props, State> {
 
   componentDidMount() {
     this.props.sim.simulation.addEventListener("statechange", this.updateButtonState);
+    Promise.resolve().then(() => this.initLegacy());
   }
 
   componentWillUnmount() {
@@ -154,5 +157,121 @@ export class SimulatorControls extends Component<Props, State> {
         </div>
       </div>
     );
+  }
+
+  initLegacy() {
+    const { sim } = this.props;
+
+    $("#field-erase-all").on("click", () => {
+      sim.field.setChain(
+        "",
+        sim.field.width,
+        sim.field.height,
+        sim.field.hiddenRows
+      );
+    });
+
+    if (sim.field.chainInURL) {
+      // Make the "Set from URL" button function if a chain can be set from the URL
+      $("#field-set-from-url").on("click", () => {
+        sim.field.setChainFromURL();
+      });
+    } else {
+      // Otherwise hide it, because it is useless (it would essentially be the same as the "Erase All" button)
+      $("#field-set-from-url").hide();
+    }
+
+    $("#puyo-selection .puyo.puyo-none").on("click", () => {
+      sim.fieldDisplay.selectedPuyo = PuyoType.None;
+    });
+    $("#puyo-selection .puyo.puyo-delete").on("click", () => {
+      sim.fieldDisplay.selectedPuyo = PuyoType.Delete;
+    });
+    $("#puyo-selection .puyo.puyo-red").on("click", () => {
+      sim.fieldDisplay.selectedPuyo = PuyoType.Red;
+    });
+    $("#puyo-selection .puyo.puyo-green").on("click", () => {
+      sim.fieldDisplay.selectedPuyo = PuyoType.Green;
+    });
+    $("#puyo-selection .puyo.puyo-blue").on("click", () => {
+      sim.fieldDisplay.selectedPuyo = PuyoType.Blue;
+    });
+    $("#puyo-selection .puyo.puyo-yellow").on("click", () => {
+      sim.fieldDisplay.selectedPuyo = PuyoType.Yellow;
+    });
+    $("#puyo-selection .puyo.puyo-purple").on("click", () => {
+      sim.fieldDisplay.selectedPuyo = PuyoType.Purple;
+    });
+    $("#puyo-selection .puyo.puyo-nuisance").on("click", () => {
+      sim.fieldDisplay.selectedPuyo = PuyoType.Nuisance;
+    });
+    $("#puyo-selection .puyo.puyo-point").on("click", () => {
+      sim.fieldDisplay.selectedPuyo = PuyoType.Point;
+    });
+    $("#puyo-selection .puyo.puyo-hard").on("click", () => {
+      sim.fieldDisplay.selectedPuyo = PuyoType.Hard;
+    });
+    $("#puyo-selection .puyo.puyo-iron").on("click", () => {
+      sim.fieldDisplay.selectedPuyo = PuyoType.Iron;
+    });
+    $("#puyo-selection .puyo.puyo-block").on("click", () => {
+      sim.fieldDisplay.selectedPuyo = PuyoType.Block;
+    });
+    $("#puyo-selection .puyo.puyo-sun").on("click", () => {
+      sim.fieldDisplay.selectedPuyo = PuyoType.Sun;
+    });
+    $("#puyo-selection .puyo").on("click", ({ currentTarget }) => {
+      $("#puyo-selection .selected").removeClass("selected");
+      $(currentTarget).parent().addClass("selected");
+    });
+    $("#puyo-selection .puyo.puyo-none").parent().addClass("selected");
+
+    $("#simulation-back").on("click", () => {
+      sim.simulation.back();
+    });
+    $("#simulation-start").on("click", () => {
+      sim.simulation.start();
+    });
+    $("#simulation-pause").on("click", () => {
+      sim.simulation.pause();
+    });
+    $("#simulation-step").on("click", () => {
+      sim.simulation.step();
+    });
+    $("#simulation-skip").on("click", () => {
+      sim.simulation.skip();
+    });
+
+    $.each(
+      [
+        "1 (Slowest)",
+        "2",
+        "3",
+        "4",
+        "5 (Normal)",
+        "6",
+        "7",
+        "8",
+        "9 (Fastest)",
+      ],
+      (index, value) => {
+        $("#simulation-speed").append(
+          '<option value="' + (9 - index) * 100 + '">' + value + "</option>"
+        );
+      }
+    );
+    $("#simulation-speed")
+      .on("change", ({ currentTarget }) => {
+        sim.simulation.speed = parseInt(
+          String($(currentTarget).val()),
+          10
+        );
+      })
+      .val(SimulationDefaultSpeed);
+
+    $("#field-score").text("0");
+    $("#field-chains").text("0");
+    $("#field-nuisance").text("0");
+    $("#field-cleared").text("0");
   }
 }
