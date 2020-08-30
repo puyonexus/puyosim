@@ -1,7 +1,52 @@
 import { h, Component } from "preact";
+import { PuyoSim } from "../PuyoSim";
 
-export class SimulatorControls extends Component {
+interface Props {
+  sim: PuyoSim;
+}
+
+interface State {
+  back: boolean;
+  start: boolean;
+  pause: boolean;
+  step: boolean;
+  skip: boolean;
+}
+
+export class SimulatorControls extends Component<Props, State> {
+  constructor(props?: Props) {
+    super(props);
+    this.state = {
+      back: false,
+      start: true,
+      pause: false,
+      step: true,
+      skip: true,
+    };
+  }
+
+  updateButtonState = () => {
+    const {running, paused, stepMode, finished} = this.props.sim.simulation;
+    this.setState({
+      back: running,
+      start: !running || paused || stepMode && !finished,
+      pause: running && !paused && !stepMode && !finished,
+      step: !running || paused || stepMode && !finished,
+      skip: !running || paused || stepMode && !finished,
+    });
+  }
+
+  componentDidMount() {
+    this.props.sim.simulation.addEventListener("statechange", this.updateButtonState);
+  }
+
+  componentWillUnmount() {
+    this.props.sim.simulation.removeEventListener("statechange", this.updateButtonState);
+  }
+
   render() {
+    const {back, start, pause, step, skip} = this.state;
+
     return (
       <div id="simulator-controls">
         <div id="controls-puyo-selection">
@@ -69,11 +114,11 @@ export class SimulatorControls extends Component {
         </div>
         <div id="controls-simulation">
           <div className="button-group">
-            <button id="simulation-back">Back</button>
-            <button id="simulation-start">Start</button>
-            <button id="simulation-pause">Pause</button>
-            <button id="simulation-step">Step</button>
-            <button id="simulation-skip">Skip</button>
+            <button id="simulation-back" disabled={!back}>Back</button>
+            <button id="simulation-start" disabled={!start}>Start</button>
+            <button id="simulation-pause" disabled={!pause}>Pause</button>
+            <button id="simulation-step" disabled={!step}>Step</button>
+            <button id="simulation-skip" disabled={!skip}>Skip</button>
           </div>
           <div className="box-inner-footer">
             Speed:

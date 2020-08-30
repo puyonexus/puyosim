@@ -14,7 +14,7 @@ export class Simulator extends Component<Props> {
     return (
       <div id="simulator">
         <SimulatorField />
-        <SimulatorControls />
+        <SimulatorControls sim={sim} />
         <SimulatorTabs sim={sim} />
       </div>
     );

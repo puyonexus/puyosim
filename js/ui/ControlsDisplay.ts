@@ -124,27 +124,9 @@ export class ControlsDisplay {
       })
       .val(SimulationDefaultSpeed);
 
-    this.updateSimulationButtons();
-
     $("#field-score").text("0");
     $("#field-chains").text("0");
     $("#field-nuisance").text("0");
     $("#field-cleared").text("0");
-  }
-
-  updateSimulationButtons() {
-    const {running, paused, stepMode, finished} = this.sim.simulation;
-    const back = running;
-    const start = !running || paused || stepMode && !finished;
-    const pause = running && !paused && !stepMode && !finished;
-    const step = !running || paused || stepMode && !finished;
-    const skip = !running || paused || stepMode && !finished;
-
-    // Controls the display of the simulator control buttons
-    $("#simulation-back").prop("disabled", !back);
-    $("#simulation-start").prop("disabled", !start);
-    $("#simulation-pause").prop("disabled", !pause);
-    $("#simulation-step").prop("disabled", !step);
-    $("#simulation-skip").prop("disabled", !skip);
   }
 }

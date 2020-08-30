@@ -154,8 +154,7 @@ export class Simulation extends EventTarget {
 
     this.sim.puyoDisplay.renderer.drawNuisanceTray(this.nuisance);
 
-    // Display the "editor" chain on the puyo display and set the simulation buttons
-    this.sim.controlsDisplay.updateSimulationButtons();
+    this.dispatchEvent(new Event("statechange"));
     $(
       "#tab-simulator input, #tab-simulator select, #tab-simulator button"
     ).prop("disabled", false); // Disable simulator options
@@ -190,8 +189,7 @@ export class Simulation extends EventTarget {
       );
       this.sim.field.map = this.sim.field.mapSimulation;
 
-      // Toggle simulation buttons
-      this.sim.controlsDisplay.updateSimulationButtons();
+      this.dispatchEvent(new Event("statechange"));
 
       // Check to see if the puyo can fall and go from there
       this.action = 0;
@@ -209,8 +207,7 @@ export class Simulation extends EventTarget {
       this.paused = false;
       this.stepMode = false;
 
-      // Toggle simulation buttons
-      this.sim.controlsDisplay.updateSimulationButtons();
+      this.dispatchEvent(new Event("statechange"));
 
       this.chain();
     }
@@ -226,8 +223,7 @@ export class Simulation extends EventTarget {
 
       this.paused = true;
 
-      // Toggle simulation buttons
-      this.sim.controlsDisplay.updateSimulationButtons();
+      this.dispatchEvent(new Event("statechange"));
     }
   }
 
@@ -250,8 +246,7 @@ export class Simulation extends EventTarget {
       );
       this.sim.field.map = this.sim.field.mapSimulation;
 
-      // Toggle simulation buttons
-      this.sim.controlsDisplay.updateSimulationButtons();
+      this.dispatchEvent(new Event("statechange"));
 
       // Check to see if the puyo can fall and go from there
       this.action = 0;
@@ -263,8 +258,7 @@ export class Simulation extends EventTarget {
       this.paused = false;
       this.stepMode = true;
 
-      // Toggle simulation buttons
-      this.sim.controlsDisplay.updateSimulationButtons();
+      this.dispatchEvent(new Event("statechange"));
 
       this.chain();
     }
@@ -289,8 +283,7 @@ export class Simulation extends EventTarget {
       );
       this.sim.field.map = this.sim.field.mapSimulation;
 
-      // Toggle simulation buttons
-      this.sim.controlsDisplay.updateSimulationButtons();
+      this.dispatchEvent(new Event("statechange"));
 
       // Drop the puyo and start chaining
       this.action = 0;
@@ -304,8 +297,7 @@ export class Simulation extends EventTarget {
 
       this.chain();
 
-      // Toggle simulation buttons
-      this.sim.controlsDisplay.updateSimulationButtons();
+      this.dispatchEvent(new Event("statechange"));
     }
   }
 
@@ -638,9 +630,8 @@ export class Simulation extends EventTarget {
 
           this.sim.puyoDisplay.renderer.drawNuisanceTray(this.nuisance);
         } else {
-          // Just toggle the buttons
           this.finished = true;
-          this.sim.controlsDisplay.updateSimulationButtons();
+          this.dispatchEvent(new Event("statechange"));
         }
       }
     } else if (this.action === 1) {
@@ -696,9 +687,8 @@ export class Simulation extends EventTarget {
 
           this.sim.puyoDisplay.renderer.drawNuisanceTray(this.nuisance);
         } else {
-          // Just toggle the buttons
           this.finished = true;
-          this.sim.controlsDisplay.updateSimulationButtons();
+          this.dispatchEvent(new Event("statechange"));
         }
       }
     }
