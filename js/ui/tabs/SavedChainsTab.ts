@@ -129,7 +129,7 @@ export class SavedChainsTab {
       .on("click", "li .chain-name a", function () {
         self.load(
           parseInt(
-            $(this).parents("#saved-chains-list li").attr("data-value")!,
+            $(this).parents("#saved-chains-list li").attr("data-value") || "",
             10
           )
         );
@@ -137,7 +137,7 @@ export class SavedChainsTab {
       .on("click", "li .icon-delete", function () {
         self.remove(
           parseInt(
-            $(this).parents("#saved-chains-list li").attr("data-value")!,
+            $(this).parents("#saved-chains-list li").attr("data-value") || "",
             10
           )
         );

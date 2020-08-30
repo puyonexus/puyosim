@@ -82,7 +82,7 @@ export class FieldDisplay {
   display() {
     // Displays the field
     $("#simulator").removeClass("field-basic field-standard field-eyecandy");
-    $("#simulator").addClass(this.fieldContent!.CSSClass);
+    $("#simulator").addClass(this.fieldContent.CSSClass);
 
     if (this.fieldContent.CSSClass === "field-eyecandy") {
       this.fieldContent.Script.call(this);

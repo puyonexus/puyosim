@@ -113,9 +113,9 @@ export class SettingsTab {
 
     $("#character-background .dropdown-menu a").click(function () {
       // TODO: remove usages of this
-      const category = parseInt($(this).parent().attr("data-category")!, 10);
-      const value = parseInt($(this).parent().attr("data-value")!, 10);
-      const id = parseInt($(this).parent().attr("data-id")!, 10);
+      const category = parseInt($(this).parent().attr("data-category") || "", 10);
+      const value = parseInt($(this).parent().attr("data-value") || "", 10);
+      const id = parseInt($(this).parent().attr("data-id") || "", 10);
 
       $("#character-background .dropdown-menu li.selected").removeClass(
         "selected"
@@ -165,14 +165,14 @@ export class SettingsTab {
         parseInt(
           $(
             `#character-background .dropdown-menu li[data-id='${boardBackgroundId}']`
-          ).attr("data-category")!,
+          ).attr("data-category") || "",
           10
         ) || 0;
       boardBackgroundValue =
         parseInt(
           $(
             `#character-background .dropdown-menu li[data-id='${boardBackgroundId}']`
-          ).attr("data-value")!,
+          ).attr("data-value") || "",
           10
         ) || 0;
     }
@@ -211,10 +211,10 @@ export class SettingsTab {
       $("#puyo-skins li.selected").removeClass("selected");
       $($(this).parent()).addClass("selected");
 
-      self.sim.puyoDisplay.setPuyoSkin($(this).parent().attr("data-value")!);
+      self.sim.puyoDisplay.setPuyoSkin($(this).parent().attr("data-value") || "");
       localStorage.setItem(
         "chainsim.puyoSkin",
-        $(this).parent().attr("data-value")!
+        $(this).parent().attr("data-value") || ""
       );
 
       $("#puyo-skins .dropdown-toggle .puyo-skin").css(

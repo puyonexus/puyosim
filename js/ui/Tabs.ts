@@ -32,7 +32,7 @@ export class Tabs {
     // Set up the tabs for the options
     $("#simulator-tabs-select > li a[data-target]").click(function () {
       const $this = $(this);
-      const $dataTarget = $this.attr("data-target")!;
+      const $dataTarget = $this.attr("data-target") || "";
       const $parent = $this.parent();
 
       $("#simulator-tabs-select > li.tab-active").removeClass("tab-active");
@@ -73,7 +73,7 @@ export class Tabs {
   fieldWidthChanged() {
     // Called when the field width changes
     const $simulatorTabs = $("#simulator-tabs");
-    const $simulatorTabsWidth = $simulatorTabs.outerWidth(true)!;
+    const $simulatorTabsWidth = $simulatorTabs.outerWidth(true) || 0;
     const $simulatorTabsMinWidth = $simulatorTabs.data("min-width");
 
     if (

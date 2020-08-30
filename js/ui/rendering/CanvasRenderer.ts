@@ -57,7 +57,11 @@ export class CanvasRenderer {
     const fieldCanvas: HTMLCanvasElement = document.getElementById(
       "field-canvas"
     ) as HTMLCanvasElement;
-    this.ctx = fieldCanvas.getContext("2d")!;
+    const ctx = fieldCanvas.getContext("2d");
+    if (!ctx) {
+      throw new Error("Could not get 2D drawing context for field canvas.");
+    }
+    this.ctx = ctx;
 
     // Now draw everything
     for (let y = 0; y < this.sim.field.totalHeight; y++) {
@@ -81,7 +85,11 @@ export class CanvasRenderer {
     const nuisanceTrayCanvas: HTMLCanvasElement = document.getElementById(
       "nuisance-tray-canvas"
     ) as HTMLCanvasElement;
-    this.nuisanceTrayCtx = nuisanceTrayCanvas.getContext("2d")!;
+    const nuisanceTrayCtx = nuisanceTrayCanvas.getContext("2d");
+    if (!nuisanceTrayCtx) {
+      throw new Error("Could not get 2D drawing context for nuisance tray canvas.");
+    }
+    this.nuisanceTrayCtx = nuisanceTrayCtx;
 
     this.drawNuisanceTray(this.sim.simulation.nuisance, false);
   }
