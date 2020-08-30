@@ -7,18 +7,20 @@ import { default as attackPowersJson } from "../../data/attackPowers.json";
 export class SimulatorTab {
   constructor(readonly sim: PuyoSim) {}
 
+  // Initalizes this tab
   init() {
-    // Initalizes this tab
     // Scoring
     $("input[type='radio'][name='score-mode']")
       .on("change", ({ currentTarget }) => {
         switch ($(currentTarget).filter(":checked").val()) {
           case "classic":
+            // 0 = Classic scoring
             this.sim.simulation.scoreMode = 0;
-            break; // 0 = Classic scoring
+            break;
           case "fever":
+            // 1 = Fever scoring
             this.sim.simulation.scoreMode = 1;
-            break; // 1 = Fever scoring
+            break;
         }
       })
       .filter("[value='classic']")
