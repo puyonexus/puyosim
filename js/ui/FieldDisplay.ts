@@ -10,14 +10,8 @@ import { content, IFieldType } from "../data/content";
 import { PuyoSim } from "../PuyoSim";
 
 export class FieldDisplay {
-  // A reference to the content of the field
-  fieldContent: IFieldType = content.Field.Standard;
-
-  // Current Puyo that is selected
-  selectedPuyo = PuyoType.None;
-
   // Indicates if we are going to insert Puyo (the insert box is checked)
-  insertPuyo = false;
+  private insertPuyo = false;
 
   constructor(readonly sim: PuyoSim) {}
 
@@ -35,13 +29,13 @@ export class FieldDisplay {
     // Set the field content reference
     switch (style) {
       case "standard":
-        this.fieldContent = content.Field.Standard;
+        this.sim.fieldContent = content.Field.Standard;
         break;
       case "eyecandy":
-        this.fieldContent = content.Field.EyeCandy;
+        this.sim.fieldContent = content.Field.EyeCandy;
         break;
       default:
-        this.fieldContent = content.Field.Basic;
+        this.sim.fieldContent = content.Field.Basic;
         break;
     }
 
@@ -53,10 +47,10 @@ export class FieldDisplay {
         $("#simulator").removeClass(
           "field-basic field-standard field-eyecandy"
         );
-        $("#simulator").addClass(this.fieldContent.CSSClass);
+        $("#simulator").addClass(this.sim.fieldContent.CSSClass);
 
-        if (this.fieldContent.CSSClass === "field-eyecandy") {
-          this.fieldContent.Script.call(this);
+        if (this.sim.fieldContent.CSSClass === "field-eyecandy") {
+          this.sim.fieldContent.Script.call(this);
         }
 
         $("#field").css({
@@ -84,10 +78,10 @@ export class FieldDisplay {
   display() {
     // Displays the field
     $("#simulator").removeClass("field-basic field-standard field-eyecandy");
-    $("#simulator").addClass(this.fieldContent.CSSClass);
+    $("#simulator").addClass(this.sim.fieldContent.CSSClass);
 
-    if (this.fieldContent.CSSClass === "field-eyecandy") {
-      this.fieldContent.Script.call(this);
+    if (this.sim.fieldContent.CSSClass === "field-eyecandy") {
+      this.sim.fieldContent.Script.call(this);
     }
 
     $("#field").css({
@@ -220,7 +214,7 @@ export class FieldDisplay {
 
         if (leftMouseDown) {
           // Left click, place puyo
-          if (this.selectedPuyo === PuyoType.Delete) {
+          if (this.sim.selectedPuyo === PuyoType.Delete) {
             // Delete this puyo and shift the ones on top down one row
             for (y = fieldY; y > 0; y--) {
               this.sim.field.map.set(
@@ -242,7 +236,7 @@ export class FieldDisplay {
               }
             }
 
-            this.sim.field.map.set(fieldX, fieldY, this.selectedPuyo);
+            this.sim.field.map.set(fieldX, fieldY, this.sim.selectedPuyo);
           }
         } else if (rightMouseDown) {
           // Right click, delete puyo

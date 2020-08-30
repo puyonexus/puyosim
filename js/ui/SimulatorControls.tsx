@@ -182,43 +182,43 @@ export class SimulatorControls extends Component<Props, State> {
     }
 
     $("#puyo-selection .puyo.puyo-none").on("click", () => {
-      sim.fieldDisplay.selectedPuyo = PuyoType.None;
+      sim.selectedPuyo = PuyoType.None;
     });
     $("#puyo-selection .puyo.puyo-delete").on("click", () => {
-      sim.fieldDisplay.selectedPuyo = PuyoType.Delete;
+      sim.selectedPuyo = PuyoType.Delete;
     });
     $("#puyo-selection .puyo.puyo-red").on("click", () => {
-      sim.fieldDisplay.selectedPuyo = PuyoType.Red;
+      sim.selectedPuyo = PuyoType.Red;
     });
     $("#puyo-selection .puyo.puyo-green").on("click", () => {
-      sim.fieldDisplay.selectedPuyo = PuyoType.Green;
+      sim.selectedPuyo = PuyoType.Green;
     });
     $("#puyo-selection .puyo.puyo-blue").on("click", () => {
-      sim.fieldDisplay.selectedPuyo = PuyoType.Blue;
+      sim.selectedPuyo = PuyoType.Blue;
     });
     $("#puyo-selection .puyo.puyo-yellow").on("click", () => {
-      sim.fieldDisplay.selectedPuyo = PuyoType.Yellow;
+      sim.selectedPuyo = PuyoType.Yellow;
     });
     $("#puyo-selection .puyo.puyo-purple").on("click", () => {
-      sim.fieldDisplay.selectedPuyo = PuyoType.Purple;
+      sim.selectedPuyo = PuyoType.Purple;
     });
     $("#puyo-selection .puyo.puyo-nuisance").on("click", () => {
-      sim.fieldDisplay.selectedPuyo = PuyoType.Nuisance;
+      sim.selectedPuyo = PuyoType.Nuisance;
     });
     $("#puyo-selection .puyo.puyo-point").on("click", () => {
-      sim.fieldDisplay.selectedPuyo = PuyoType.Point;
+      sim.selectedPuyo = PuyoType.Point;
     });
     $("#puyo-selection .puyo.puyo-hard").on("click", () => {
-      sim.fieldDisplay.selectedPuyo = PuyoType.Hard;
+      sim.selectedPuyo = PuyoType.Hard;
     });
     $("#puyo-selection .puyo.puyo-iron").on("click", () => {
-      sim.fieldDisplay.selectedPuyo = PuyoType.Iron;
+      sim.selectedPuyo = PuyoType.Iron;
     });
     $("#puyo-selection .puyo.puyo-block").on("click", () => {
-      sim.fieldDisplay.selectedPuyo = PuyoType.Block;
+      sim.selectedPuyo = PuyoType.Block;
     });
     $("#puyo-selection .puyo.puyo-sun").on("click", () => {
-      sim.fieldDisplay.selectedPuyo = PuyoType.Sun;
+      sim.selectedPuyo = PuyoType.Sun;
     });
     $("#puyo-selection .puyo").on("click", ({ currentTarget }) => {
       $("#puyo-selection .selected").removeClass("selected");

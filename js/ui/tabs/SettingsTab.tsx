@@ -215,7 +215,7 @@ export class SettingsTab extends Component<Props> {
         );
         $(currentTarget).parent().addClass("selected");
 
-        if (sim.fieldDisplay.fieldContent === content.Field.EyeCandy) {
+        if (sim.fieldContent === content.Field.EyeCandy) {
           if (id === 0) {
             $("#field-bg-2").css(
               "background-image",

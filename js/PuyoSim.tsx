@@ -7,6 +7,8 @@ import { Field } from "./simulator/Field";
 import { Simulation } from "./simulator/Simulation";
 import { FieldDisplay } from "./ui/FieldDisplay";
 import { PuyoDisplay } from "./ui/rendering/PuyoDisplay";
+import { IFieldType, content } from "./data/content";
+import { PuyoType } from "./constants";
 
 // An instance of PuyoSim.
 export class PuyoSim {
@@ -15,6 +17,14 @@ export class PuyoSim {
   puyoDisplay: PuyoDisplay;
   simulation: Simulation;
   clipboard?: Clipboard;
+
+  // Temporary hoisted state.
+  
+  // A reference to the content of the field
+  fieldContent: IFieldType = content.Field.Standard;
+
+  // Current Puyo that is selected
+  selectedPuyo = PuyoType.None;
 
   constructor() {
     this.field = new Field(this);
