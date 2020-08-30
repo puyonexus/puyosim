@@ -162,6 +162,11 @@ export class SimulatorControls extends Component<Props, State> {
   initLegacy() {
     const { sim } = this.props;
 
+    $("#puyo-insertion").on("change", ({ currentTarget }) => {
+      sim.insertPuyo = $(currentTarget).prop("checked");
+    });
+
+
     $("#field-erase-all").on("click", () => {
       sim.field.setChain(
         "",

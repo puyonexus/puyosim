@@ -13,7 +13,7 @@ export class Simulator extends Component<Props> {
     const { sim } = this.props;
     return (
       <div id="simulator">
-        <SimulatorField />
+        <SimulatorField sim={sim} />
         <SimulatorControls sim={sim} />
         <SimulatorTabs sim={sim} />
       </div>
