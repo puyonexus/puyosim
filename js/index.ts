@@ -5,7 +5,7 @@
 
 import "./common";
 import $ from "jquery";
-import { PuyoSim } from "./puyosim";
+import { PuyoSim } from "./PuyoSim";
 
 /*
  * Entrypoint

@@ -2,7 +2,7 @@ import "./common";
 import $ from "jquery";
 import Clipboard from "clipboard";
 import { default as contentHtml } from "./data/content.html";
-import { Utils } from "./utils";
+import { Utils } from "./Utils";
 import { Field } from "./simulator/Field";
 import { Simulation } from "./simulator/Simulation";
 import { Tabs } from "./ui/Tabs";

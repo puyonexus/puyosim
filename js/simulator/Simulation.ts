@@ -13,7 +13,7 @@ import {
   SimulationDefaultSpeed,
 } from "../constants";
 import { FieldMap } from "./FieldMap";
-import { PuyoSim } from "../puyosim";
+import { PuyoSim } from "../PuyoSim";
 
 export class Simulation {
   // Simulator is running

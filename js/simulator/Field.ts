@@ -13,7 +13,7 @@ import {
   PuyoType,
   SimulationDefaultPuyoToClear,
 } from "../constants";
-import { PuyoSim } from "../puyosim";
+import { PuyoSim } from "../PuyoSim";
 
 declare global {
   interface Window {
