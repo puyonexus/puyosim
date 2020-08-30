@@ -52,17 +52,17 @@ export class LinksTab {
       if (window.chainData.id !== undefined) {
         $("#share-link").val(
           config.baseUrl +
-            Utils.stringFormat(config.shareLinkUrl, window.chainData.id)
+            Utils.stringFormat(config.shareLinkUrl, String(window.chainData.id))
         );
         $("#share-image").val(
           config.baseUrl +
-            Utils.stringFormat(config.shareImageUrl, window.chainData.id)
+            Utils.stringFormat(config.shareImageUrl, String(window.chainData.id))
         );
         $("#share-animated-image").val(
           config.baseUrl +
             Utils.stringFormat(
               config.shareAnimatedImageUrl,
-              window.chainData.id
+              String(window.chainData.id)
             )
         );
       } else if (window.chainData.legacyQueryString !== undefined) {

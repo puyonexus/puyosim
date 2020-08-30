@@ -15,7 +15,7 @@ const escapeMap = new Map([
 ]);
 
 export class Utils {
-  static stringFormat(format: string, ...args: any) {
+  static stringFormat(format: string, ...args: string[]) {
     return format.replace(/{(\d+)}/g, (match, num) => {
       return typeof args[num] !== "undefined" ? args[num] : match;
     });
@@ -25,7 +25,7 @@ export class Utils {
     return str.replace(/&(?!\w+;)|[<>"']/g, s => escapeMap.get(s) ?? s);
   }
 
-  static createDropDownListOptions(items: any[] | object) {
+  static createDropDownListOptions(items: number[] | {[key: number]: string}) {
     let html = "";
 
     if (Array.isArray(items)) {
@@ -37,7 +37,7 @@ export class Utils {
       $.each(items, (key, value) => {
         html += $("<option>")
           .val(key)
-          .text(value as any)[0].outerHTML;
+          .text(value)[0].outerHTML;
       });
     }
 
