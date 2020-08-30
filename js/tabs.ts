@@ -34,10 +34,8 @@ class SavedChainsTab {
 
   constructor(readonly sim: PuyoSim) {}
 
+  // Initalizes this tab
   init() {
-    // Initalizes this tab
-    var self = this;
-
     // Use the name of the shared chain if we are viewing one
     if (
       window.chainData !== undefined &&
@@ -47,9 +45,9 @@ class SavedChainsTab {
     }
 
     // Save chain
-    $("#save-chain-save").click(function () {
+    $("#save-chain-save").click(() => {
       if ($("#save-chain-name").val() !== "") {
-        self.add(String($("#save-chain-name").val()));
+        this.add(String($("#save-chain-name").val()));
         $("#save-chain-name").val("");
       }
     });
@@ -59,7 +57,7 @@ class SavedChainsTab {
     // width  = width of chain
     // height = height of chain
     // chain  = the actual chain itself
-    var data = localStorage.getItem("chainsim.savedChains") || "";
+    const data = localStorage.getItem("chainsim.savedChains") || "";
     if (data !== "") {
       try {
         this.chains = JSON.parse(data);
@@ -73,16 +71,16 @@ class SavedChainsTab {
 
   load(index: number) {
     // Load a chain
-    var chain = this.chains[index].chain;
+    let chain = this.chains[index].chain;
 
     // If this chain is saved in a legacy format, convert it to base36
     if ((this.chains[index].format || "legacy") === "legacy") {
-      var oldChars = "0475681BCA32";
-      var oldChain = chain;
+      const oldChars = "0475681BCA32";
+      const oldChain = chain;
       chain = "";
 
-      for (var i = 0; i < oldChain.length; i++) {
-        var charIndex = oldChars.indexOf(oldChain[i]);
+      for (let i = 0; i < oldChain.length; i++) {
+        const charIndex = oldChars.indexOf(oldChain[i]);
         chain += charIndex !== -1 ? charIndex.toString(36) : "0";
       }
     }
@@ -103,7 +101,7 @@ class SavedChainsTab {
     }
 
     this.chains.push({
-      name: name,
+      name,
       width: this.sim.field.width,
       height: this.sim.field.height,
       hiddenRows: this.sim.field.hiddenRows,
@@ -130,7 +128,7 @@ class SavedChainsTab {
 
   display() {
     // Display the chains that are saved
-    var self = this;
+    const self = this;
 
     $("#saved-chains-list").empty(); // Delete any entries that might be displayed
 

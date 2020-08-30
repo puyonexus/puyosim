@@ -50,11 +50,11 @@ function init() {
     "pn-navbar-collapse"
   );
 
-  for (var i = 0; i < pnNavbarToggles.length; i++) {
+  for (let i = 0; i < pnNavbarToggles.length; i++) {
     pnNavbarToggles[i].addEventListener("click", pnNavbarToggleOnClick);
   }
 
-  for (var i = 0; i < pnNavbarCollapses.length; i++) {
+  for (let i = 0; i < pnNavbarCollapses.length; i++) {
     pnNavbarCollapses[i].addEventListener(
       "ontransitionend",
       pnNavbarCollapseOnTransitionEnd

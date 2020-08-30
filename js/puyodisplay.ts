@@ -43,9 +43,9 @@ class PuyoAnimation {
       this.frame = 0;
     }
 
-    for (var y = 0; y < this.sim.field.totalHeight; y++) {
-      for (var x = 0; x < this.sim.field.width; x++) {
-        var p = this.sim.field.map.get(x, y);
+    for (let y = 0; y < this.sim.field.totalHeight; y++) {
+      for (let x = 0; x < this.sim.field.width; x++) {
+        const p = this.sim.field.map.get(x, y);
         if (p.hasAnimation()) {
           // Only redraw puyo that can have animation
           this.sim.puyoDisplay.renderer.drawPuyo(x, y, p);
@@ -106,10 +106,7 @@ class PuyoAnimation {
         "px"
     );
 
-    var self = this;
-    this.timer = window.setTimeout(function () {
-      self.animate();
-    }, 200);
+    this.timer = window.setTimeout(() => { this.animate() }, 200);
   }
 
   start(n: number) {
@@ -119,10 +116,7 @@ class PuyoAnimation {
     this.frame = 0;
     this.totalFrames = n;
 
-    var self = this;
-    this.timer = window.setTimeout(function () {
-      self.animate();
-    }, 200);
+    this.timer = window.setTimeout(() => { this.animate() }, 200);
   }
 
   stop() {
@@ -131,9 +125,9 @@ class PuyoAnimation {
     this.frame = 0;
     clearTimeout(this.timer);
 
-    for (var y = 0; y < this.sim.field.totalHeight; y++) {
-      for (var x = 0; x < this.sim.field.width; x++) {
-        var p = this.sim.field.map.get(x, y);
+    for (let y = 0; y < this.sim.field.totalHeight; y++) {
+      for (let x = 0; x < this.sim.field.width; x++) {
+        const p = this.sim.field.map.get(x, y);
         if (p.hasAnimation()) {
           // Only redraw puyo that can have animation
           this.sim.puyoDisplay.renderer.drawPuyo(x, y, p);

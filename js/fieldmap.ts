@@ -13,18 +13,17 @@ export class FieldMap {
     this.width = w;
     this.height = h; /* This is the total height (height + hidden rows) */
 
-    var x, y;
     if (m !== undefined) {
-      for (x = 0; x < this.width; x++) {
+      for (let x = 0; x < this.width; x++) {
         this.map[x] = [];
-        for (y = 0; y < this.height; y++) {
+        for (let y = 0; y < this.height; y++) {
           this.map[x][y] = new Puyo(m.puyo(x, y));
         }
       }
     } else {
-      for (x = 0; x < this.width; x++) {
+      for (let x = 0; x < this.width; x++) {
         this.map[x] = [];
-        for (y = 0; y < this.height; y++) {
+        for (let y = 0; y < this.height; y++) {
           this.map[x][y] = new Puyo(PuyoType.None);
         }
       }

@@ -18,6 +18,7 @@ export class PuyoSim {
   puyoDisplay: PuyoDisplay;
   simulation: Simulation;
   tabs: Tabs;
+  clipboard?: Clipboard;
 
   constructor() {
     this.field = new Field(this);
@@ -37,7 +38,7 @@ export class PuyoSim {
 
     // Enable auto-copying to clipboard
     if (Clipboard.isSupported()) {
-      new Clipboard(".clipboard-button");
+      this.clipboard = new Clipboard(".clipboard-button");
     } else {
       $(".clipboard-button").hide();
     }
@@ -69,9 +70,9 @@ export class PuyoSim {
     // Easter eggs :D
     function easteregg(keys: number[], surprise: () => void) {
       // Set up the main easter egg function
-      var key = 0;
+      let key = 0;
 
-      $(document).keydown(function (e) {
+      $(document).keydown(e => {
         if (e.which === keys[key]) {
           key++;
           if (key === keys.length) {

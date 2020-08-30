@@ -16,8 +16,8 @@ const escapeMap = new Map([
 
 export class Utils {
   static stringFormat(format: string, ...args: any) {
-    return format.replace(/{(\d+)}/g, function (match, number) {
-      return typeof args[number] != "undefined" ? args[number] : match;
+    return format.replace(/{(\d+)}/g, (match, num) => {
+      return typeof args[num] !== "undefined" ? args[num] : match;
     });
   }
 
@@ -29,7 +29,7 @@ export class Utils {
     let html = "";
 
     if (Array.isArray(items)) {
-      for (var i = 0; i < items.length; i++) {
+      for (let i = 0; i < items.length; i++) {
         html += $("<option>").val(items[i]).text(items[i])[0].outerHTML;
       }
     } else {
@@ -49,9 +49,9 @@ export class Utils {
       step = 1;
     }
 
-    var array = [];
-    var totalSteps = Math.floor((end - start) / step);
-    for (var i = 0; i <= totalSteps; i++) {
+    const array = [];
+    const totalSteps = Math.floor((end - start) / step);
+    for (let i = 0; i <= totalSteps; i++) {
       array.push(start + i * step);
     }
 

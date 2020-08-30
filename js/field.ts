@@ -56,7 +56,6 @@ export class Field {
   mapSimulation?: FieldMap;
 
   constructor(readonly sim: PuyoSim) {
-    // Initalize
     this.mapEditor = new FieldMap(this.sim, this.width, this.totalHeight);
     this.map = this.mapEditor;
 
@@ -66,9 +65,9 @@ export class Field {
     }
   }
 
+  // Sets the chain with the specified width and height
   setChain(chain: string, w: number, h: number, hr?: number) {
-    // Sets the chain with the specified width and height
-    var pos;
+    let pos: number;
     w = w || FieldDefaultWidth;
     h = h || FieldDefaultHeight;
     hr = hr || FieldDefaultHiddenRows;
@@ -112,8 +111,8 @@ export class Field {
     }
 
     pos = chain.length - 1;
-    for (var y = this.totalHeight - 1; y >= 0; y--) {
-      for (var x = this.width - 1; x >= 0; x--) {
+    for (let y = this.totalHeight - 1; y >= 0; y--) {
+      for (let x = this.width - 1; x >= 0; x--) {
         if (pos < 0) {
           this.map.set(x, y, PuyoType.None);
         } else {
@@ -161,8 +160,8 @@ export class Field {
     }
   }
 
+  // Attempts to set the chain from the URL
   setChainFromURL() {
-    // Attempts to set the chain from the URL
     if (!window.chainData) {
       return;
     }
@@ -182,12 +181,14 @@ export class Field {
     this.chainInURL = true;
   }
 
+  // Converts mapEditor to a string that can be shared
   mapToString() {
-    // Converts mapEditor to a string that can be shared
-    var addZeros = false, // Add zeros to the front
-      chainString = ""; // The chain string
-    for (var y = 0; y < this.totalHeight; y++) {
-      for (var x = 0; x < this.width; x++) {
+    // Add zeros to the front
+    let addZeros = false;
+    // The chain string
+    let chainString = "";
+    for (let y = 0; y < this.totalHeight; y++) {
+      for (let x = 0; x < this.width; x++) {
         if (this.mapEditor.puyo(x, y) === PuyoType.None && !addZeros) {
           continue; // Don't need to add zeros to the front of the string
         }

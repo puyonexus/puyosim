@@ -166,7 +166,7 @@ const eyeCandy: IEyeCandyFieldType = {
     "ppt/zed.png",
   ],
 
-  Script: function () {
+  Script: () => {
     $("#field-bg-1").css(
       "background-image",
       "url('/images/eyecandy/field_stage_bg/" +
@@ -178,7 +178,7 @@ const eyeCandy: IEyeCandyFieldType = {
       "')"
     );
 
-    var boardBackgroundId =
+    const boardBackgroundId =
       parseInt(
         localStorage.getItem("chainsim.boardBackgroundId") || "",
         10
