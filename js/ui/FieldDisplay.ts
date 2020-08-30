@@ -103,7 +103,6 @@ export class FieldDisplay {
     this.sim.tabs.fieldWidthChanged();
 
     // Set up the field cursor
-    const self = this;
 
     // A mouse button is pressed
     let mouseDown = false;
@@ -123,50 +122,47 @@ export class FieldDisplay {
     let y;
 
     $("#field")
-      .on("mouseenter", function (e) {
-        if (self.sim.simulation.running) {
+      .on("mouseenter", ({ currentTarget, pageX, pageY }) => {
+        if (this.sim.simulation.running) {
           // Don't allow placing puyo when the simulator is running
           return;
         }
 
-        // TODO: Remove usage of 'this'.
-        const offset = $(this).offset();
+        const offset = $(currentTarget).offset();
         if (!offset) {
           return;
         }
 
-        offsetX = e.pageX - offset.left;
-        offsetY = e.pageY - offset.top;
-        fieldX = Math.floor(offsetX / self.sim.puyoDisplay.puyoSize);
-        fieldY = Math.floor(offsetY / self.sim.puyoDisplay.puyoSize);
+        offsetX = pageX - offset.left;
+        offsetY = pageY - offset.top;
+        fieldX = Math.floor(offsetX / this.sim.puyoDisplay.puyoSize);
+        fieldY = Math.floor(offsetY / this.sim.puyoDisplay.puyoSize);
 
         $("<div>")
           .attr("id", "field-cursor")
           .css({
-            top: fieldY * self.sim.puyoDisplay.puyoSize + "px",
-            left: fieldX * self.sim.puyoDisplay.puyoSize + "px",
+            top: fieldY * this.sim.puyoDisplay.puyoSize + "px",
+            left: fieldX * this.sim.puyoDisplay.puyoSize + "px",
           })
-          // TODO: Remove usage of 'this'.
-          .appendTo(this);
+          .appendTo(currentTarget);
       })
-      .on("mousemove", function (e) {
-        if (self.sim.simulation.running) {
+      .on("mousemove", ({ currentTarget, pageX, pageY }) => {
+        if (this.sim.simulation.running) {
           // Don't allow placing puyo when the simulator is running
           return;
         }
 
-        // TODO: Remove usages of 'this'.
-        const width = $(this).width();
-        const height = $(this).height()
-        const offset = $(this).offset();
+        const width = $(currentTarget).width();
+        const height = $(currentTarget).height()
+        const offset = $(currentTarget).offset();
         if (!width || !height || !offset) {
           return;
         }
 
         let newFieldX: number;
         let newFieldY: number;
-        offsetX = e.pageX - offset.left;
-        offsetY = e.pageY - offset.top;
+        offsetX = pageX - offset.left;
+        offsetY = pageY - offset.top;
 
         if (
           offsetX < 0 ||
@@ -175,13 +171,12 @@ export class FieldDisplay {
           offsetY >= height
         ) {
           // Check for out of bounds before continuing
-          // TODO: Remove usage of 'this'.
-          $(this).trigger("mouseleave");
+          $(currentTarget).trigger("mouseleave");
           return;
         }
 
-        newFieldX = Math.floor(offsetX / self.sim.puyoDisplay.puyoSize);
-        newFieldY = Math.floor(offsetY / self.sim.puyoDisplay.puyoSize);
+        newFieldX = Math.floor(offsetX / this.sim.puyoDisplay.puyoSize);
+        newFieldY = Math.floor(offsetY / this.sim.puyoDisplay.puyoSize);
 
         if (newFieldX !== fieldX || newFieldY !== fieldY) {
           // Are we hovering over another puyo now?
@@ -190,25 +185,23 @@ export class FieldDisplay {
 
           if (mouseDown) {
             // Place puyo
-            // TODO: Remove usage of 'this'.
-            $(this).trigger("mousedown");
+            $(currentTarget).trigger("mousedown");
           }
 
           $("#field-cursor").css({
-            top: fieldY * self.sim.puyoDisplay.puyoSize + "px",
-            left: fieldX * self.sim.puyoDisplay.puyoSize + "px",
+            top: fieldY * this.sim.puyoDisplay.puyoSize + "px",
+            left: fieldX * this.sim.puyoDisplay.puyoSize + "px",
           });
         }
       })
-      .on("mouseleave", function () {
-        // TODO: Remove usage of 'this'.
-        $(this).trigger("mouseup");
+      .on("mouseleave", ({currentTarget}) => {
+        $(currentTarget).trigger("mouseup");
         $("#field-cursor").remove();
       })
       .on("mousedown", (e) => {
         e.preventDefault();
 
-        if (self.sim.simulation.running) {
+        if (this.sim.simulation.running) {
           // Don't allow placing puyo when the simulator is running
           return;
         }
@@ -226,33 +219,33 @@ export class FieldDisplay {
 
         if (leftMouseDown) {
           // Left click, place puyo
-          if (self.selectedPuyo === PuyoType.Delete) {
+          if (this.selectedPuyo === PuyoType.Delete) {
             // Delete this puyo and shift the ones on top down one row
             for (y = fieldY; y > 0; y--) {
-              self.sim.field.map.set(
+              this.sim.field.map.set(
                 fieldX,
                 y,
-                self.sim.field.map.puyo(fieldX, y - 1)
+                this.sim.field.map.puyo(fieldX, y - 1)
               );
             }
-            self.sim.field.map.set(fieldX, 0, PuyoType.None);
+            this.sim.field.map.set(fieldX, 0, PuyoType.None);
           } else {
-            if (self.insertPuyo) {
+            if (this.insertPuyo) {
               // Insert puyo
               for (y = 0; y < fieldY; y++) {
-                self.sim.field.map.set(
+                this.sim.field.map.set(
                   fieldX,
                   y,
-                  self.sim.field.map.puyo(fieldX, y + 1)
+                  this.sim.field.map.puyo(fieldX, y + 1)
                 );
               }
             }
 
-            self.sim.field.map.set(fieldX, fieldY, self.selectedPuyo);
+            this.sim.field.map.set(fieldX, fieldY, this.selectedPuyo);
           }
         } else if (rightMouseDown) {
           // Right click, delete puyo
-          self.sim.field.map.set(fieldX, fieldY, PuyoType.None);
+          this.sim.field.map.set(fieldX, fieldY, PuyoType.None);
         }
       })
       .on("mouseup", () => {

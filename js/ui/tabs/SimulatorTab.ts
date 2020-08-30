@@ -8,19 +8,16 @@ export class SimulatorTab {
   constructor(readonly sim: PuyoSim) {}
 
   init() {
-    const self = this;
-
     // Initalizes this tab
     // Scoring
     $("input[type='radio'][name='score-mode']")
-      .on("change", function () {
-        // TODO: remove usage of this
-        switch ($(this).filter(":checked").val()) {
+      .on("change", ({currentTarget}) => {
+        switch ($(currentTarget).filter(":checked").val()) {
           case "classic":
-            self.sim.simulation.scoreMode = 0;
+            this.sim.simulation.scoreMode = 0;
             break; // 0 = Classic scoring
           case "fever":
-            self.sim.simulation.scoreMode = 1;
+            this.sim.simulation.scoreMode = 1;
             break; // 1 = Fever scoring
         }
       })
@@ -29,28 +26,25 @@ export class SimulatorTab {
 
     // Puyo to Clear
     $("#puyo-to-clear")
-      .on("change", function () {
-        // TODO: remove usage of this
-        self.sim.simulation.puyoToClear = parseInt(String($(this).val()), 10);
+      .on("change", ({currentTarget}) => {
+        this.sim.simulation.puyoToClear = parseInt(String($(currentTarget).val()), 10);
       })
       .html(Utils.createDropDownListOptions(Utils.range(2, 6, 1)))
       .val(this.sim.simulation.puyoToClear); // Default to 4
 
     // Target Points
     $("#target-points")
-      .on("change", function () {
-        // TODO: remove usage of this
-        self.sim.simulation.targetPoints = parseInt(String($(this).val()), 10);
+      .on("change", ({currentTarget}) => {
+        this.sim.simulation.targetPoints = parseInt(String($(currentTarget).val()), 10);
       })
       .html(Utils.createDropDownListOptions(Utils.range(10, 990, 10)))
       .val(this.sim.simulation.targetPoints); // Default to 70
 
     // Point Puyo bonus
     $("#point-puyo-bonus")
-      .on("change", function () {
-        self.sim.simulation.pointPuyoBonus = parseInt(
-          // TODO: remove usage of this
-          String($(this).val()),
+      .on("change", ({currentTarget}) => {
+        this.sim.simulation.pointPuyoBonus = parseInt(
+          String($(currentTarget).val()),
           10
         );
       })
@@ -126,22 +120,19 @@ export class SimulatorTab {
       $("#attack-powers .dropdown-menu").append(category);
     }
 
-    $("#attack-powers .dropdown-menu a").on("click", function () {
+    $("#attack-powers .dropdown-menu a").on("click", ({currentTarget}) => {
       const category = parseInt(
-        // TODO: remove usage of this
-        String($(this).parent().attr("data-category")),
+        String($(currentTarget).parent().attr("data-category")),
         10
       );
-      // TODO: remove usage of this
-      const value = parseInt(String($(this).parent().attr("data-value")), 10);
+      const value = parseInt(String($(currentTarget).parent().attr("data-value")), 10);
 
       $("#attack-powers .dropdown-menu li.selected").removeClass("selected");
-      // TODO: remove usage of this
-      $(this).parent().addClass("selected");
+      $(currentTarget).parent().addClass("selected");
 
-      self.sim.simulation.chainPowers =
+      this.sim.simulation.chainPowers =
         attackPowers[category].powers[value].values;
-      self.sim.simulation.chainPowerInc =
+        this.sim.simulation.chainPowerInc =
         attackPowers[category].powers[value].increment || 0;
 
       $("#attack-powers-game").text(attackPowers[category].name);

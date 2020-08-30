@@ -141,7 +141,6 @@ export class PuyoDisplay {
     // Returns the position of the image for background-image (p = puyo object)
     let posX = 0;
     let posY = 0;
-    const self = this;
 
     switch (p) {
       case PuyoType.None:

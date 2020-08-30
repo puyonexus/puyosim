@@ -110,10 +110,8 @@ export class SavedChainsTab {
     localStorage.setItem("chainsim.savedChains", JSON.stringify(this.chains));
   }
 
+  // Display the chains that are saved
   display() {
-    // Display the chains that are saved
-    const self = this;
-
     $("#saved-chains-list").empty(); // Delete any entries that might be displayed
 
     if (this.chains.length === 0) {
@@ -126,18 +124,18 @@ export class SavedChainsTab {
     }
 
     $("#saved-chains-list")
-      .on("click", "li .chain-name a", function () {
-        self.load(
+      .on("click", "li .chain-name a", ({currentTarget}) => {
+        this.load(
           parseInt(
-            $(this).parents("#saved-chains-list li").attr("data-value") || "",
+            $(currentTarget).parents("#saved-chains-list li").attr("data-value") || "",
             10
           )
         );
       })
-      .on("click", "li .icon-delete", function () {
-        self.remove(
+      .on("click", "li .icon-delete", ({currentTarget}) => {
+        this.remove(
           parseInt(
-            $(this).parents("#saved-chains-list li").attr("data-value") || "",
+            $(currentTarget).parents("#saved-chains-list li").attr("data-value") || "",
             10
           )
         );

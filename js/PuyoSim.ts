@@ -89,6 +89,7 @@ export class PuyoSim {
     // It's simply the Konami code, silly!
     // Code: Up, Up, Down, Down, Left, Right, B, A, Enter
     easteregg([38, 38, 40, 40, 37, 39, 37, 39, 66, 65, 13], () => {
+      // Set to the 108 chain from Puyo~n
       this.field.setChain(
         "421212224324123312131211442442211213431123321132142423" +
           "424324123341244343221344222431343211341112142312433213" +
@@ -99,7 +100,7 @@ export class PuyoSim {
           "123412341234134123412341231421341234123412312341234123" +
           "412341123412341234123412341234123412341234123412341234",
         16,
-        26 // Set to the 108 chain from Puyo~n
+        26
       );
       this.simulation.puyoToClear = 4;
       $("#puyo-to-clear").val(this.simulation.puyoToClear);

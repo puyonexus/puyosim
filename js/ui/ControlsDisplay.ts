@@ -12,12 +12,9 @@ export class ControlsDisplay {
   constructor(readonly sim: PuyoSim) {}
 
   display() {
-    const self = this;
-
     // Displays the controls
-    $("#puyo-insertion").on("change", function () {
-      // TODO: Remove usage of this.
-      self.sim.fieldDisplay.insertPuyo = $(this).prop("checked");
+    $("#puyo-insertion").on("change", ({currentTarget}) => {
+      this.sim.fieldDisplay.insertPuyo = $(currentTarget).prop("checked");
     });
 
     $("#field-erase-all").on("click", () => {
@@ -78,10 +75,9 @@ export class ControlsDisplay {
     $("#puyo-selection .puyo.puyo-sun").on("click", () => {
       this.sim.fieldDisplay.selectedPuyo = PuyoType.Sun;
     });
-    $("#puyo-selection .puyo").on("click", function () {
+    $("#puyo-selection .puyo").on("click", ({currentTarget}) => {
       $("#puyo-selection .selected").removeClass("selected");
-      // TODO: Remove usage of this.
-      $(this).parent().addClass("selected");
+      $(currentTarget).parent().addClass("selected");
     });
     $("#puyo-selection .puyo.puyo-none").parent().addClass("selected");
 
@@ -120,9 +116,8 @@ export class ControlsDisplay {
       }
     );
     $("#simulation-speed")
-      .on("change", function () {
-        // TODO: Remove usage of this.
-        self.sim.simulation.speed = parseInt(String($(this).val()), 10);
+      .on("change", ({currentTarget}) => {
+        this.sim.simulation.speed = parseInt(String($(currentTarget).val()), 10);
       })
       .val(SimulationDefaultSpeed);
 

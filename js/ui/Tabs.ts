@@ -30,8 +30,8 @@ export class Tabs {
   display() {
     // Displays the tab content and initalizes all of the tabs
     // Set up the tabs for the options
-    $("#simulator-tabs-select > li a[data-target]").on("click", function () {
-      const $this = $(this);
+    $("#simulator-tabs-select > li a[data-target]").on("click", ({ currentTarget }) => {
+      const $this = $(currentTarget);
       const $dataTarget = $this.attr("data-target") || "";
       const $parent = $this.parent();
 
@@ -44,7 +44,8 @@ export class Tabs {
       ) {
         $parent.addClass("tab-active");
         $($dataTarget).addClass("content-active");
-        localStorage.setItem("chainsim.lastTab", $dataTarget.substr(1)); // Don't need to get the #
+        // Don't need to get the #
+        localStorage.setItem("chainsim.lastTab", $dataTarget.substr(1));
       }
     });
     $(

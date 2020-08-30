@@ -8,10 +8,8 @@ export class ChainsTab {
 
   constructor(readonly sim: PuyoSim) {}
 
+  // Initalizes this tab
   init() {
-    // Initalizes this tab
-    const self = this;
-
     this.chains = chainsJson;
 
     // Categories
@@ -33,26 +31,26 @@ export class ChainsTab {
       $("#preset-chains .dropdown-menu").append(category);
     }
 
-    $("#preset-chains .dropdown-menu a").on("click", function () {
+    $("#preset-chains .dropdown-menu a").on("click", ({currentTarget}) => {
       const category = parseInt(
-        String($(this).parent().attr("data-category")),
+        String($(currentTarget).parent().attr("data-category")),
         10
       );
-      const value = parseInt(String($(this).parent().attr("data-value")), 10);
+      const value = parseInt(String($(currentTarget).parent().attr("data-value")), 10);
 
       $("#preset-chains .dropdown-menu li.selected").removeClass("selected");
-      $(this).parent().addClass("selected");
+      $(currentTarget).parent().addClass("selected");
 
-      $("#preset-chains-series").text(self.chains[category].name);
+      $("#preset-chains-series").text(this.chains[category].name);
       $("#preset-chains-group").text(
-        self.chains[category].categories[value].name
+        this.chains[category].categories[value].name
       );
 
-      self.displaySubCategory(category, value);
+      this.displaySubCategory(category, value);
     });
 
-    $(document).on("change", "#preset-chains-list select", function () {
-      if ($(this).prop("selectedIndex") === 0) {
+    $(document).on("change", "#preset-chains-list select", ({currentTarget}) => {
+      if ($(currentTarget).prop("selectedIndex") === 0) {
         return;
       }
 
@@ -68,26 +66,26 @@ export class ChainsTab {
         ),
         10
       );
-      const type = parseInt(String($(this).attr("data-type")), 10);
-      const colors = parseInt(String($(this).attr("data-colors")), 10);
-      const length = parseInt(String($(this).val()), 10);
+      const type = parseInt(String($(currentTarget).attr("data-type")), 10);
+      const colors = parseInt(String($(currentTarget).attr("data-colors")), 10);
+      const length = parseInt(String($(currentTarget).val()), 10);
 
-      self.sim.field.setChain(
-        self.chains[category].categories[subCategory].types[type].colors[colors]
+      this.sim.field.setChain(
+        this.chains[category].categories[subCategory].types[type].colors[colors]
           .chains[length].chain, // Chain
-        self.chains[category].categories[subCategory].fieldWidth ||
+          this.chains[category].categories[subCategory].fieldWidth ||
           FieldDefaultWidth, // Field width
-        self.chains[category].categories[subCategory].fieldHeight ||
+          this.chains[category].categories[subCategory].fieldHeight ||
           FieldDefaultHeight, // Field height
         FieldDefaultHiddenRows // Hidden rows (It's always 1 with these chains)
       );
 
-      self.sim.simulation.puyoToClear =
-        self.chains[category].categories[subCategory].puyoToClear ||
+      this.sim.simulation.puyoToClear =
+      this.chains[category].categories[subCategory].puyoToClear ||
         SimulationDefaultPuyoToClear;
-      $("#puyo-to-clear").val(self.sim.simulation.puyoToClear);
+      $("#puyo-to-clear").val(this.sim.simulation.puyoToClear);
 
-      $(this).prop("selectedIndex", 0);
+      $(currentTarget).prop("selectedIndex", 0);
     });
 
     $(

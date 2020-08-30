@@ -6,57 +6,55 @@ export class SettingsTab {
   constructor(readonly sim: PuyoSim) {}
 
   init() {
-    const self = this;
-
     // Initalizes this tab
     // Animation
     $("#animate-puyo") // Puyo animation
-      .on("click", function () {
-        const checked = $(this).prop("checked");
+      .on("click", ({currentTarget}) => {
+        const checked = $(currentTarget).prop("checked");
 
-        self.sim.puyoDisplay.animate.puyo = checked;
+        this.sim.puyoDisplay.animate.puyo = checked;
         localStorage.setItem("chainsim.animate.puyo", checked ? "yes" : "no");
 
         // See if we need to enable or disable the animation
         if (
           checked &&
-          !self.sim.puyoDisplay.puyoAnimation.running &&
-          self.sim.puyoDisplay.puyoSkin.frames !== undefined &&
-          self.sim.puyoDisplay.puyoSkin.frames > 0
+          !this.sim.puyoDisplay.puyoAnimation.running &&
+          this.sim.puyoDisplay.puyoSkin.frames !== undefined &&
+          this.sim.puyoDisplay.puyoSkin.frames > 0
         ) {
-          self.sim.puyoDisplay.puyoAnimation.start(
-            self.sim.puyoDisplay.puyoSkin.frames
+          this.sim.puyoDisplay.puyoAnimation.start(
+            this.sim.puyoDisplay.puyoSkin.frames
           );
-        } else if (!checked && self.sim.puyoDisplay.puyoAnimation.running) {
-          self.sim.puyoDisplay.puyoAnimation.stop();
+        } else if (!checked && this.sim.puyoDisplay.puyoAnimation.running) {
+          this.sim.puyoDisplay.puyoAnimation.stop();
         }
       })
-      .prop("checked", self.sim.puyoDisplay.animate.puyo);
+      .prop("checked", this.sim.puyoDisplay.animate.puyo);
 
     $("#animate-sun-puyo") // Sun Puyo animation
-      .on("click", function () {
-        const checked = $(this).prop("checked");
+      .on("click", ({currentTarget}) => {
+        const checked = $(currentTarget).prop("checked");
 
-        self.sim.puyoDisplay.animate.sunPuyo = checked;
+        this.sim.puyoDisplay.animate.sunPuyo = checked;
         localStorage.setItem(
           "chainsim.animate.sunPuyo",
           checked ? "yes" : "no"
         );
 
         // See if we need to enable or disable the animation
-        if (checked && !self.sim.puyoDisplay.sunPuyoAnimation.running) {
-          self.sim.puyoDisplay.sunPuyoAnimation.start();
-        } else if (!checked && self.sim.puyoDisplay.sunPuyoAnimation.running) {
-          self.sim.puyoDisplay.sunPuyoAnimation.stop();
+        if (checked && !this.sim.puyoDisplay.sunPuyoAnimation.running) {
+          this.sim.puyoDisplay.sunPuyoAnimation.start();
+        } else if (!checked && this.sim.puyoDisplay.sunPuyoAnimation.running) {
+          this.sim.puyoDisplay.sunPuyoAnimation.stop();
         }
       })
       .prop("checked", this.sim.puyoDisplay.animate.sunPuyo);
 
     $("#animate-nuisance-tray") // Nuisance Tray animation
-      .on("click", function () {
-        const checked = $(this).prop("checked");
+      .on("click", ({currentTarget}) => {
+        const checked = $(currentTarget).prop("checked");
 
-        self.sim.puyoDisplay.animate.nuisanceTray = checked;
+        this.sim.puyoDisplay.animate.nuisanceTray = checked;
         localStorage.setItem(
           "chainsim.animate.nuisanceTray",
           checked ? "yes" : "no"
@@ -66,10 +64,10 @@ export class SettingsTab {
 
     // Field Style
     $("#field-style")
-      .on("change", function () {
-        $(this).prop("disabled", true);
-        self.sim.fieldDisplay.load(String($(this).val()));
-        localStorage.setItem("chainsim.fieldStyle", String($(this).val()));
+      .on("change", ({currentTarget}) => {
+        $(currentTarget).prop("disabled", true);
+        this.sim.fieldDisplay.load(String($(currentTarget).val()));
+        localStorage.setItem("chainsim.fieldStyle", String($(currentTarget).val()));
       })
       .val(localStorage.getItem("chainsim.fieldStyle") || "standard"); // Default to Standard
 
@@ -111,18 +109,17 @@ export class SettingsTab {
       $("#character-background .dropdown-menu").append(category);
     }
 
-    $("#character-background .dropdown-menu a").on("click", function () {
-      // TODO: remove usages of this
-      const category = parseInt($(this).parent().attr("data-category") || "", 10);
-      const value = parseInt($(this).parent().attr("data-value") || "", 10);
-      const id = parseInt($(this).parent().attr("data-id") || "", 10);
+    $("#character-background .dropdown-menu a").on("click", ({ currentTarget }) => {
+      const category = parseInt($(currentTarget).parent().attr("data-category") || "", 10);
+      const value = parseInt($(currentTarget).parent().attr("data-value") || "", 10);
+      const id = parseInt($(currentTarget).parent().attr("data-id") || "", 10);
 
       $("#character-background .dropdown-menu li.selected").removeClass(
         "selected"
       );
-      $(this).parent().addClass("selected");
+      $(currentTarget).parent().addClass("selected");
 
-      if (self.sim.fieldDisplay.fieldContent === content.Field.EyeCandy) {
+      if (this.sim.fieldDisplay.fieldContent === content.Field.EyeCandy) {
         if (id === 0) {
           $("#field-bg-2").css(
             "background-image",
@@ -207,21 +204,21 @@ export class SettingsTab {
         .appendTo("#puyo-skins .dropdown-menu");
     });
 
-    $("#puyo-skins .dropdown-menu a").on("click", function () {
+    $("#puyo-skins .dropdown-menu a").on("click", ({currentTarget}) => {
       $("#puyo-skins li.selected").removeClass("selected");
-      $($(this).parent()).addClass("selected");
+      $($(currentTarget).parent()).addClass("selected");
 
-      self.sim.puyoDisplay.setPuyoSkin($(this).parent().attr("data-value") || "");
+      this.sim.puyoDisplay.setPuyoSkin($(currentTarget).parent().attr("data-value") || "");
       localStorage.setItem(
         "chainsim.puyoSkin",
-        $(this).parent().attr("data-value") || ""
+        $(currentTarget).parent().attr("data-value") || ""
       );
 
       $("#puyo-skins .dropdown-toggle .puyo-skin").css(
         "background-position",
         "0px -" +
-          self.sim.puyoDisplay.getSkinIndex(self.sim.puyoDisplay.puyoSkin.id) *
-            self.sim.puyoDisplay.puyoSize +
+        this.sim.puyoDisplay.getSkinIndex(this.sim.puyoDisplay.puyoSkin.id) *
+          this.sim.puyoDisplay.puyoSize +
           "px"
       );
     });
