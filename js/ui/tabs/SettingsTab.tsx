@@ -1,9 +1,13 @@
 import { h, Component } from "preact";
 
-export class SettingsTab extends Component {
+interface Props {
+  active: boolean;
+}
+
+export class SettingsTab extends Component<Props> {
   render() {
     return (
-      <div id="tab-settings" className="tab-content">
+      <div id="tab-settings" className={this.props.active ? "tab-content content-active" : "tab-content"}>
         <dl>
           <dt>Animation</dt>
           <dd>

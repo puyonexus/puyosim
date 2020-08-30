@@ -9,6 +9,7 @@ import { Tabs } from "./ui/Tabs";
 import { FieldDisplay } from "./ui/FieldDisplay";
 import { PuyoDisplay } from "./ui/rendering/PuyoDisplay";
 import { ControlsDisplay } from "./ui/ControlsDisplay";
+import { Sim } from "./ui/SimulatorContext";
 
 // An instance of PuyoSim.
 export class PuyoSim {
@@ -38,7 +39,7 @@ export class PuyoSim {
     if (!app) {
       throw new Error("Could not find #app.");
     }
-    render(<Simulator />, app);
+    render(<Sim.Provider value={this}><Simulator /></Sim.Provider>, app);
 
     // Enable auto-copying to clipboard
     if (Clipboard.isSupported()) {

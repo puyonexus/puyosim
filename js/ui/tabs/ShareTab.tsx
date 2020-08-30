@@ -1,9 +1,13 @@
 import { h, Component } from "preact";
 
-export class ShareTab extends Component {
+interface Props {
+  active: boolean;
+}
+
+export class ShareTab extends Component<Props> {
   render() {
     return (
-      <div id="tab-share" className="tab-content">
+      <div id="tab-share" className={this.props.active ? "tab-content content-active" : "tab-content"}>
         <div className="box-inner-header">
           <div className="input-group">
             <input

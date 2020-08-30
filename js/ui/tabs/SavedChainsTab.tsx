@@ -1,9 +1,13 @@
 import { h, Component } from "preact";
 
-export class SavedChainsTab extends Component {
+interface Props {
+  active: boolean;
+}
+
+export class SavedChainsTab extends Component<Props> {
   render() {
     return (
-      <div id="tab-saved-chains" className="tab-content">
+      <div id="tab-saved-chains" className={this.props.active ? "tab-content content-active" : "tab-content"}>
         <div className="box-inner-header">
           <div className="input-group">
             <input

@@ -1,9 +1,13 @@
 import { h, Component } from "preact";
 
-export class ChainsTab extends Component {
+interface Props {
+  active: boolean;
+}
+
+export class ChainsTab extends Component<Props> {
   render() {
     return (
-      <div id="tab-preset-chains" className="tab-content">
+      <div id="tab-preset-chains" className={this.props.active ? "tab-content content-active" : "tab-content"}>
         <div id="preset-chains-outer">
           <div className="box-inner-header">
             <div id="preset-chains" className="dropdown">

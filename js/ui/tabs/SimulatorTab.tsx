@@ -1,9 +1,13 @@
 import { h, Component } from "preact";
 
-export class SimulatorTab extends Component {
+interface Props {
+  active: boolean;
+}
+
+export class SimulatorTab extends Component<Props> {
   render() {
     return (
-      <div id="tab-simulator" className="tab-content">
+      <div id="tab-simulator" className={this.props.active ? "tab-content content-active" : "tab-content"}>
         <dl>
           <dt>Scoring</dt>
           <dd>
