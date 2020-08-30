@@ -28,6 +28,9 @@ export class Simulation {
   // Simulator is in skip mode (skips right to the end of the chain)
   skipMode = false;
 
+  // Simulator is at end of chain.
+  finished = false;
+
   // Current action
   action = -1;
 
@@ -131,6 +134,7 @@ export class Simulation {
     this.paused = false;
     this.stepMode = false;
     this.skipMode = false;
+    this.finished = false;
     this.action = -1;
 
     this.chains = 0;
@@ -174,19 +178,13 @@ export class Simulation {
   start() {
     // Starts the chain
     if (!this.running) {
-      this.sim.controlsDisplay.toggleSimulationButtons(
-        true,
-        false,
-        true,
-        false,
-        false
-      ); // Toggle simulation buttons
       $(
         "#tab-simulator input, #tab-simulator select, #tab-simulator button"
       ).prop("disabled", true); // Disable simulator options
 
       // Set all variables
       this.running = true;
+      this.finished = false;
       this.sim.field.mapSimulation = new FieldMap(
         this.sim,
         this.sim.field.width,
@@ -194,6 +192,15 @@ export class Simulation {
         this.sim.field.mapEditor
       );
       this.sim.field.map = this.sim.field.mapSimulation;
+
+      // Toggle simulation buttons
+      this.sim.controlsDisplay.toggleSimulationButtons(
+        true,
+        false,
+        true,
+        false,
+        false
+      );
 
       // Check to see if the puyo can fall and go from there
       this.action = 0;
@@ -208,16 +215,17 @@ export class Simulation {
         }, this.speed);
       }
     } else if (this.running && (this.paused || this.stepMode)) {
+      this.paused = false;
+      this.stepMode = false;
+
+      // Toggle simulation buttons
       this.sim.controlsDisplay.toggleSimulationButtons(
         true,
         false,
         true,
         false,
         false
-      ); // Toggle simulation buttons
-
-      this.paused = false;
-      this.stepMode = false;
+      );
 
       this.chain();
     }
@@ -233,32 +241,27 @@ export class Simulation {
 
       this.paused = true;
 
+      // Toggle simulation buttons
       this.sim.controlsDisplay.toggleSimulationButtons(
         true,
         true,
         false,
         true,
         true
-      ); // Toggle simulation buttons
+      );
     }
   }
 
   step() {
     // Advances a step in the chain
     if (!this.running) {
-      this.sim.controlsDisplay.toggleSimulationButtons(
-        true,
-        true,
-        false,
-        true,
-        true
-      ); // Toggle simulation buttons
       $(
         "#tab-simulator input, #tab-simulator select, #tab-simulator button"
       ).prop("disabled", true); // Disable simulator options
 
       // Set all variables
       this.running = true;
+      this.finished = false;
       this.stepMode = true;
       this.sim.field.mapSimulation = new FieldMap(
         this.sim,
@@ -267,6 +270,15 @@ export class Simulation {
         this.sim.field.mapEditor
       );
       this.sim.field.map = this.sim.field.mapSimulation;
+
+      // Toggle simulation buttons
+      this.sim.controlsDisplay.toggleSimulationButtons(
+        true,
+        true,
+        false,
+        true,
+        true
+      );
 
       // Check to see if the puyo can fall and go from there
       this.action = 0;
@@ -275,16 +287,17 @@ export class Simulation {
         this.chain();
       }
     } else if (this.running && !this.skipMode && this.action !== -1) {
+      this.paused = false;
+      this.stepMode = true;
+      
+      // Toggle simulation buttons
       this.sim.controlsDisplay.toggleSimulationButtons(
         true,
         true,
         false,
         true,
         true
-      ); // Toggle simulation buttons
-
-      this.paused = false;
-      this.stepMode = true;
+      );
 
       this.chain();
     }
@@ -293,19 +306,13 @@ export class Simulation {
   skip() {
     // Skips right to the end of the chain
     if (!this.running) {
-      this.sim.controlsDisplay.toggleSimulationButtons(
-        true,
-        false,
-        false,
-        false,
-        false
-      ); // Toggle simulation buttons
       $(
         "#tab-simulator input, #tab-simulator select, #tab-simulator button"
       ).prop("disabled", true); // Disable simulator options
 
       // Set all variables
       this.running = true;
+      this.finished = true;
       this.skipMode = true;
       this.sim.field.mapSimulation = new FieldMap(
         this.sim,
@@ -315,24 +322,35 @@ export class Simulation {
       );
       this.sim.field.map = this.sim.field.mapSimulation;
 
-      // Drop the puyo and start chaining
-      this.action = 0;
-      this.dropPuyo();
-      this.chain();
-    } else if (this.running && !this.skipMode && this.action !== -1) {
+      // Toggle simulation buttons
       this.sim.controlsDisplay.toggleSimulationButtons(
         true,
         false,
         false,
         false,
         false
-      ); // Toggle simulation buttons
+      );
 
+      // Drop the puyo and start chaining
+      this.action = 0;
+      this.dropPuyo();
+      this.chain();
+    } else if (this.running && !this.skipMode && this.action !== -1) {
       this.paused = false;
       this.stepMode = false;
       this.skipMode = true;
+      this.finished = false;
 
       this.chain();
+
+      // Toggle simulation buttons
+      this.sim.controlsDisplay.toggleSimulationButtons(
+        true,
+        false,
+        false,
+        false,
+        false
+      );
     }
   }
 
@@ -666,6 +684,7 @@ export class Simulation {
           this.sim.puyoDisplay.renderer.drawNuisanceTray(this.nuisance);
         } else {
           // Just toggle the buttons
+          this.finished = true;
           this.sim.controlsDisplay.toggleSimulationButtons(
             true,
             false,
@@ -729,6 +748,7 @@ export class Simulation {
           this.sim.puyoDisplay.renderer.drawNuisanceTray(this.nuisance);
         } else {
           // Just toggle the buttons
+          this.finished = true;
           this.sim.controlsDisplay.toggleSimulationButtons(
             true,
             false,
