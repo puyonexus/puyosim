@@ -6,7 +6,7 @@ import { SimulationDefaultTargetPoints } from "../../constants";
 import { default as attackPowersJson } from "../../data/attackPowers.json";
 
 interface Props {
-  sim: PuyoSim|null;
+  sim: PuyoSim;
   active: boolean;
 }
 
@@ -84,16 +84,13 @@ export class SimulatorTab extends Component<Props> {
       </div>
     );
   }
-  
+
   componentDidMount() {
     Promise.resolve().then(() => this.initLegacy());
   }
 
   initLegacy() {
     const { sim } = this.props;
-    if (!sim) {
-      return;
-    }
 
     // Scoring
     $("input[type='radio'][name='score-mode']")

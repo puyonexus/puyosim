@@ -5,7 +5,7 @@ import { config } from "../../config";
 import { Utils } from "../../Utils";
 
 interface Props {
-  sim: PuyoSim|null;
+  sim: PuyoSim;
   active: boolean;
 }
 
@@ -74,9 +74,6 @@ export class ShareTab extends Component<Props> {
 
   initLegacy() {
     const { sim } = this.props;
-    if (!sim) {
-      return;
-    }
 
     $("#get-links").on("click", () => {
       const data = {

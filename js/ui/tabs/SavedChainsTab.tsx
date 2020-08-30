@@ -14,7 +14,7 @@ interface ISavedChain {
 }
 
 interface Props {
-  sim: PuyoSim|null;
+  sim: PuyoSim;
   active: boolean;
 }
 
@@ -89,9 +89,6 @@ export class SavedChainsTab extends Component<Props> {
 
   load(index: number) {
     const { sim } = this.props;
-    if (!sim) {
-      return;
-    }
 
     // Load a chain
     let chain = this.chains[index].chain;
@@ -118,9 +115,6 @@ export class SavedChainsTab extends Component<Props> {
 
   add(name: string) {
     const { sim } = this.props;
-    if (!sim) {
-      return;
-    }
 
     // Add a chain to the chains list
     if (name === "") {

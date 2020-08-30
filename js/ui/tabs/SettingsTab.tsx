@@ -4,7 +4,7 @@ import { PuyoSim } from "../../PuyoSim";
 import { content } from "../../data/content";
 
 interface Props {
-  sim: PuyoSim|null;
+  sim: PuyoSim;
   active: boolean;
 }
 
@@ -90,9 +90,6 @@ export class SettingsTab extends Component<Props> {
 
   initLegacy() {
     const { sim } = this.props;
-    if (!sim) {
-      return;
-    }
 
     // Initalizes this tab
     // Animation

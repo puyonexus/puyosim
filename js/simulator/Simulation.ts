@@ -259,7 +259,7 @@ export class Simulation {
     } else if (this.running && !this.skipMode && this.action !== -1) {
       this.paused = false;
       this.stepMode = true;
-      
+
       // Toggle simulation buttons
       this.sim.controlsDisplay.updateSimulationButtons();
 

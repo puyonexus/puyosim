@@ -2,14 +2,20 @@ import { h, Component } from "preact";
 import { SimulatorControls } from "./SimulatorControls";
 import { SimulatorTabs } from "./SimulatorTabs";
 import { SimulatorField } from "./SimulatorField";
+import { PuyoSim } from "../PuyoSim";
 
-export class Simulator extends Component {
+interface Props {
+  sim: PuyoSim;
+}
+
+export class Simulator extends Component<Props> {
   render() {
+    const { sim } = this.props;
     return (
       <div id="simulator">
         <SimulatorField />
         <SimulatorControls />
-        <SimulatorTabs />
+        <SimulatorTabs sim={sim} />
       </div>
     );
   }

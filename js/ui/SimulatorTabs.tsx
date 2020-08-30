@@ -4,7 +4,7 @@ import { SavedChainsTab } from "./tabs/SavedChainsTab";
 import { ChainsTab } from "./tabs/ChainsTab";
 import { SimulatorTab } from "./tabs/SimulatorTab";
 import { SettingsTab } from "./tabs/SettingsTab";
-import { Sim } from "./SimulatorContext";
+import { PuyoSim } from "../PuyoSim";
 
 enum Tab {
   Share = "tab-share",
@@ -37,13 +37,17 @@ const tabs: { [id in Tab]: TabComponentType } = {
   [Tab.Settings]: SettingsTab,
 };
 
+interface Props {
+  sim: PuyoSim;
+}
+
 interface State {
   activeTab: Tab;
   float: boolean;
   toggle: boolean;
 }
 
-export class SimulatorTabs extends Component<{}, State> {
+export class SimulatorTabs extends Component<Props, State> {
   private static getLastTab(): Tab | null {
     const tab = localStorage.getItem("chainsim.lastTab");
     if (!tab) {
@@ -59,7 +63,7 @@ export class SimulatorTabs extends Component<{}, State> {
     localStorage.setItem("chainsim.lastTab", tab);
   }
 
-  constructor(props?: {}) {
+  constructor(props?: Props) {
     super(props);
     this.state = {
       activeTab: SimulatorTabs.getLastTab() ?? Tab.Share,
@@ -115,38 +119,35 @@ export class SimulatorTabs extends Component<{}, State> {
 
   render() {
     const { activeTab } = this.state;
+    const { sim } = this.props;
 
     return (
-      <Sim.Consumer>
-        {(sim) =>
-          <div id="simulator-tabs" className={this.getTabClassName()}>
-            <div className="simulator-tabs-toggle" onClick={() => this.toggle()}>
+      <div id="simulator-tabs" className={this.getTabClassName()}>
+        <div className="simulator-tabs-toggle" onClick={() => this.toggle()}>
+          <a>
+            <i className="fa fa-bars" aria-hidden="true"></i>
+          </a>
+        </div>
+        <div className="tab-container">
+          <ul id="simulator-tabs-select">
+            {Object.keys(tabs).map((id) => (
+              <li className={id === activeTab ? "tab-active" : undefined}>
+                <a data-target={id} onClick={() => this.setTab(id as Tab)}>
+                  {tabNames[id as Tab]}
+                </a>
+              </li>
+            ))}
+            <li className="simulator-tabs-toggle" onClick={() => this.toggle()}>
               <a>
-                <i className="fa fa-bars" aria-hidden="true"></i>
+                <i className="fa fa-times" aria-hidden="true"></i>
               </a>
-            </div>
-            <div className="tab-container">
-              <ul id="simulator-tabs-select">
-                {Object.keys(tabs).map((id) => (
-                  <li className={id === activeTab ? "tab-active" : undefined}>
-                    <a data-target={id} onClick={() => this.setTab(id as Tab)}>
-                      {tabNames[id as Tab]}
-                    </a>
-                  </li>
-                ))}
-                <li className="simulator-tabs-toggle" onClick={() => this.toggle()}>
-                  <a>
-                    <i className="fa fa-times" aria-hidden="true"></i>
-                  </a>
-                </li>
-              </ul>
-              {Object.entries(tabs).map(([id, TabComponent]) => (
-                <TabComponent sim={sim} active={id === activeTab} />
-              ))}
-            </div>
-          </div>
-        }
-      </Sim.Consumer>
+            </li>
+          </ul>
+          {Object.entries(tabs).map(([id, TabComponent]) => (
+            <TabComponent sim={sim} active={id === activeTab} />
+          ))}
+        </div>
+      </div>
     );
   }
 }

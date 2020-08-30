@@ -10,7 +10,7 @@ import {
 } from "../../constants";
 
 interface Props {
-  sim: PuyoSim|null;
+  sim: PuyoSim;
   active: boolean;
 }
 
@@ -49,9 +49,6 @@ export class ChainsTab extends Component<Props> {
 
   initLegacy() {
     const { sim } = this.props;
-    if (!sim) {
-      return;
-    }
 
     // Categories
     for (let i = 0; i < chainsJson.length; i++) {
