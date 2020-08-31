@@ -1,6 +1,5 @@
 import { PuyoType } from "../constants";
 import { Puyo } from "./Puyo";
-import { PuyoSim } from "../PuyoSim";
 
 export class FieldMap {
   map: Puyo[][];
@@ -8,7 +7,7 @@ export class FieldMap {
   height: number;
 
   // Creates a puyo map, either a new one or from an existing one
-  constructor(readonly sim: PuyoSim, w: number, h: number, m?: FieldMap) {
+  constructor(w: number, h: number, m?: FieldMap) {
     this.map = [];
     this.width = w;
     this.height = h; /* This is the total height (height + hidden rows) */
@@ -43,29 +42,5 @@ export class FieldMap {
   // Sets the puyo at position (x,y)
   set(x: number, y: number, p: PuyoType) {
     this.map[x][y].setPuyo(p);
-
-    // TODO: This should be done elsewhere, almost certainly...
-
-    if (!this.sim.puyoDisplay.renderer) {
-      return;
-    }
-
-    this.sim.puyoDisplay.renderer.drawPuyo(x, y, this.map[x][y]);
-
-    if (!this.sim.puyoDisplay.puyoAnimation.running) {
-      // Redraw all puyo around us
-      if (y > 0) {
-        this.sim.puyoDisplay.renderer.drawPuyo(x, y - 1, this.map[x][y - 1]);
-      }
-      if (x > 0) {
-        this.sim.puyoDisplay.renderer.drawPuyo(x - 1, y, this.map[x - 1][y]);
-      }
-      if (y < this.height - 1) {
-        this.sim.puyoDisplay.renderer.drawPuyo(x, y + 1, this.map[x][y + 1]);
-      }
-      if (x < this.width - 1) {
-        this.sim.puyoDisplay.renderer.drawPuyo(x + 1, y, this.map[x + 1][y]);
-      }
-    }
   }
 }

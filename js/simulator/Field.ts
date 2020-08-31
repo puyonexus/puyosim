@@ -57,7 +57,7 @@ export class Field extends EventTarget {
 
   constructor(readonly sim: PuyoSim) {
     super();
-    this.mapEditor = new FieldMap(this.sim, this.width, this.totalHeight);
+    this.mapEditor = new FieldMap(this.width, this.totalHeight);
     this.map = this.mapEditor;
 
     if (window.chainData) {
@@ -67,7 +67,7 @@ export class Field extends EventTarget {
   }
 
   resetMap() {
-    this.mapEditor = new FieldMap(this.sim, this.width, this.totalHeight);
+    this.mapEditor = new FieldMap(this.width, this.totalHeight);
     this.map = this.mapEditor;
   }
 
@@ -83,7 +83,6 @@ export class Field extends EventTarget {
 
   enterSimulation() {
     this.mapSimulation = new FieldMap(
-      this.sim,
       this.width,
       this.totalHeight,
       this.mapEditor
@@ -101,6 +100,28 @@ export class Field extends EventTarget {
 
   set(x: number, y: number, p: PuyoType) {
     this.map.set(x, y, p);
+
+    if (!this.sim.puyoDisplay.renderer) {
+      return;
+    }
+
+    this.sim.puyoDisplay.renderer.drawPuyo(x, y, this.map.map[x][y]);
+
+    if (!this.sim.puyoDisplay.puyoAnimation.running) {
+      // Redraw all puyo around us
+      if (y > 0) {
+        this.sim.puyoDisplay.renderer.drawPuyo(x, y - 1, this.map.map[x][y - 1]);
+      }
+      if (x > 0) {
+        this.sim.puyoDisplay.renderer.drawPuyo(x - 1, y, this.map.map[x - 1][y]);
+      }
+      if (y < this.height - 1) {
+        this.sim.puyoDisplay.renderer.drawPuyo(x, y + 1, this.map.map[x][y + 1]);
+      }
+      if (x < this.width - 1) {
+        this.sim.puyoDisplay.renderer.drawPuyo(x + 1, y, this.map.map[x + 1][y]);
+      }
+    }
   }
 
   // Sets the chain with the specified width and height
