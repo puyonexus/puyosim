@@ -35,13 +35,6 @@ export class PuyoSim {
       $(".clipboard-button").hide();
     }
 
-    // Show/hide elements depending on if we are viewing a shared chain
-    if (window.chainData) {
-      $(".show-on-shared-chain").show();
-    } else {
-      $(".hide-on-shared-chain").show();
-    }
-
     // Display the Puyo Display
     this.puyoDisplay.display();
 

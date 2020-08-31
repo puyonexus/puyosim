@@ -590,7 +590,7 @@ button[disabled]:active {
 #simulator-tabs-select li a:hover {
 	color: #333;
 }
-#simulator-tabs-select li.tab-active a[data-target] {
+#simulator-tabs-select li.tab-active a {
 	padding-bottom: 7px;
 	border-bottom: 3px solid #2196f3;
 }

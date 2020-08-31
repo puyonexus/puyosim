@@ -74,6 +74,13 @@ export class ShareTab extends Component<Props> {
   initLegacy() {
     const { sim } = this.props;
 
+    // Show/hide elements depending on if we are viewing a shared chain
+    if (window.chainData) {
+      $(".show-on-shared-chain").show();
+    } else {
+      $(".hide-on-shared-chain").show();
+    }
+
     $("#get-links").on("click", () => {
       const data = {
         title: $("#share-chain-title").val(),
