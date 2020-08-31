@@ -5,6 +5,10 @@ import { PuyoType, SimulationDefaultSpeed } from "../constants";
 
 interface Props {
   sim: PuyoSim;
+  insertPuyo: boolean;
+  setInsertPuyo: (insertPuyo: boolean) => void;
+  selectedPuyo: PuyoType;
+  setSelectedPuyo: (selectedPuyo: PuyoType) => void;
 }
 
 interface State {
@@ -47,7 +51,17 @@ export class SimulatorControls extends Component<Props, State> {
     this.props.sim.simulation.removeEventListener("statechange", this.updateButtonState);
   }
 
+  clearBoard() {
+    this.props.sim.field.setChain(
+      "",
+      this.props.sim.field.width,
+      this.props.sim.field.height,
+      this.props.sim.field.hiddenRows
+    );
+  }
+
   render() {
+    const {sim, insertPuyo, setInsertPuyo, selectedPuyo, setSelectedPuyo} = this.props;
     const {back, start, pause, step, skip} = this.state;
 
     return (
@@ -55,73 +69,77 @@ export class SimulatorControls extends Component<Props, State> {
         <div id="controls-puyo-selection">
           <div className="box-inner-header">
             <label className="checkbox">
-              <input type="checkbox" id="puyo-insertion" />
+              <input
+                type="checkbox"
+                id="puyo-insertion"
+                checked={insertPuyo}
+                onChange={e => setInsertPuyo((e.target as HTMLInputElement)?.checked)} />
               Insert
             </label>
           </div>
           <div id="puyo-selection" className="center">
             <ul>
-              <li>
-                <a className="puyo puyo-none"></a>
+              <li className={selectedPuyo === PuyoType.None ? "selected" : undefined}>
+                <a className="puyo puyo-none" onClick={() => setSelectedPuyo(PuyoType.None)}></a>
               </li>
-              <li>
-                <a className="puyo puyo-delete"></a>
-              </li>
-            </ul>
-            <ul>
-              <li>
-                <a className="puyo puyo-red"></a>
-              </li>
-              <li>
-                <a className="puyo puyo-green"></a>
-              </li>
-              <li>
-                <a className="puyo puyo-blue"></a>
-              </li>
-              <li>
-                <a className="puyo puyo-yellow"></a>
-              </li>
-              <li>
-                <a className="puyo puyo-purple"></a>
+              <li className={selectedPuyo === PuyoType.Delete ? "selected" : undefined}>
+                <a className="puyo puyo-delete" onClick={() => setSelectedPuyo(PuyoType.Delete)}></a>
               </li>
             </ul>
             <ul>
-              <li>
-                <a className="puyo puyo-nuisance"></a>
+              <li className={selectedPuyo === PuyoType.Red ? "selected" : undefined}>
+                <a className="puyo puyo-red" onClick={() => setSelectedPuyo(PuyoType.Red)}></a>
               </li>
-              <li>
-                <a className="puyo puyo-point"></a>
+              <li className={selectedPuyo === PuyoType.Green ? "selected" : undefined}>
+                <a className="puyo puyo-green" onClick={() => setSelectedPuyo(PuyoType.Green)}></a>
               </li>
-              <li>
-                <a className="puyo puyo-sun"></a>
+              <li className={selectedPuyo === PuyoType.Blue ? "selected" : undefined}>
+                <a className="puyo puyo-blue" onClick={() => setSelectedPuyo(PuyoType.Blue)}></a>
               </li>
-              <li>
-                <a className="puyo puyo-hard"></a>
+              <li className={selectedPuyo === PuyoType.Yellow ? "selected" : undefined}>
+                <a className="puyo puyo-yellow" onClick={() => setSelectedPuyo(PuyoType.Yellow)}></a>
               </li>
-              <li>
-                <a className="puyo puyo-iron"></a>
+              <li className={selectedPuyo === PuyoType.Purple ? "selected" : undefined}>
+                <a className="puyo puyo-purple" onClick={() => setSelectedPuyo(PuyoType.Purple)}></a>
               </li>
-              <li>
-                <a className="puyo puyo-block"></a>
+            </ul>
+            <ul>
+              <li className={selectedPuyo === PuyoType.Nuisance ? "selected" : undefined}>
+                <a className="puyo puyo-nuisance" onClick={() => setSelectedPuyo(PuyoType.Nuisance)}></a>
+              </li>
+              <li className={selectedPuyo === PuyoType.Point ? "selected" : undefined}>
+                <a className="puyo puyo-point" onClick={() => setSelectedPuyo(PuyoType.Point)}></a>
+              </li>
+              <li className={selectedPuyo === PuyoType.Sun ? "selected" : undefined}>
+                <a className="puyo puyo-sun" onClick={() => setSelectedPuyo(PuyoType.Sun)}></a>
+              </li>
+              <li className={selectedPuyo === PuyoType.Hard ? "selected" : undefined}>
+                <a className="puyo puyo-hard" onClick={() => setSelectedPuyo(PuyoType.Hard)}></a>
+              </li>
+              <li className={selectedPuyo === PuyoType.Iron ? "selected" : undefined}>
+                <a className="puyo puyo-iron" onClick={() => setSelectedPuyo(PuyoType.Iron)}></a>
+              </li>
+              <li className={selectedPuyo === PuyoType.Block ? "selected" : undefined}>
+                <a className="puyo puyo-block" onClick={() => setSelectedPuyo(PuyoType.Block)}></a>
               </li>
             </ul>
           </div>
           <div className="box-inner-footer">
-            <button id="field-erase-all">
+            <button id="field-erase-all" onClick={() => this.clearBoard()}>
               <img src="/images/puyo_eraseall.png" alt="Erase All" />
             </button>
-            <button id="field-set-from-url">
+            {sim.field.chainInURL ? <button id="field-set-from-url" onClick={() => sim.field.setChainFromURL()}>
               <img src="/images/import_from_url.png" alt="Import from URL" />
-            </button>
+            </button> : undefined}
           </div>
         </div>
         <div id="controls-simulation">
           <div className="button-group">
-            <button id="simulation-back" disabled={!back}>Back</button>
-            <button id="simulation-start" disabled={!start}>Start</button>
-            <button id="simulation-pause" disabled={!pause}>Pause</button>
-            <button id="simulation-step" disabled={!step}>Step</button>
-            <button id="simulation-skip" disabled={!skip}>Skip</button>
+            <button id="simulation-back" disabled={!back} onClick={() => sim.simulation.back()}>Back</button>
+            <button id="simulation-start" disabled={!start} onClick={() => sim.simulation.start()}>Start</button>
+            <button id="simulation-pause" disabled={!pause} onClick={() => sim.simulation.pause()}>Pause</button>
+            <button id="simulation-step" disabled={!step} onClick={() => sim.simulation.step()}>Step</button>
+            <button id="simulation-skip" disabled={!skip} onClick={() => sim.simulation.skip()}>Skip</button>
           </div>
           <div className="box-inner-footer">
             Speed:
@@ -161,91 +179,6 @@ export class SimulatorControls extends Component<Props, State> {
 
   initLegacy() {
     const { sim } = this.props;
-
-    $("#puyo-insertion").on("change", ({ currentTarget }) => {
-      sim.insertPuyo = $(currentTarget).prop("checked");
-    });
-
-
-    $("#field-erase-all").on("click", () => {
-      sim.field.setChain(
-        "",
-        sim.field.width,
-        sim.field.height,
-        sim.field.hiddenRows
-      );
-    });
-
-    if (sim.field.chainInURL) {
-      // Make the "Set from URL" button function if a chain can be set from the URL
-      $("#field-set-from-url").on("click", () => {
-        sim.field.setChainFromURL();
-      });
-    } else {
-      // Otherwise hide it, because it is useless (it would essentially be the same as the "Erase All" button)
-      $("#field-set-from-url").hide();
-    }
-
-    $("#puyo-selection .puyo.puyo-none").on("click", () => {
-      sim.selectedPuyo = PuyoType.None;
-    });
-    $("#puyo-selection .puyo.puyo-delete").on("click", () => {
-      sim.selectedPuyo = PuyoType.Delete;
-    });
-    $("#puyo-selection .puyo.puyo-red").on("click", () => {
-      sim.selectedPuyo = PuyoType.Red;
-    });
-    $("#puyo-selection .puyo.puyo-green").on("click", () => {
-      sim.selectedPuyo = PuyoType.Green;
-    });
-    $("#puyo-selection .puyo.puyo-blue").on("click", () => {
-      sim.selectedPuyo = PuyoType.Blue;
-    });
-    $("#puyo-selection .puyo.puyo-yellow").on("click", () => {
-      sim.selectedPuyo = PuyoType.Yellow;
-    });
-    $("#puyo-selection .puyo.puyo-purple").on("click", () => {
-      sim.selectedPuyo = PuyoType.Purple;
-    });
-    $("#puyo-selection .puyo.puyo-nuisance").on("click", () => {
-      sim.selectedPuyo = PuyoType.Nuisance;
-    });
-    $("#puyo-selection .puyo.puyo-point").on("click", () => {
-      sim.selectedPuyo = PuyoType.Point;
-    });
-    $("#puyo-selection .puyo.puyo-hard").on("click", () => {
-      sim.selectedPuyo = PuyoType.Hard;
-    });
-    $("#puyo-selection .puyo.puyo-iron").on("click", () => {
-      sim.selectedPuyo = PuyoType.Iron;
-    });
-    $("#puyo-selection .puyo.puyo-block").on("click", () => {
-      sim.selectedPuyo = PuyoType.Block;
-    });
-    $("#puyo-selection .puyo.puyo-sun").on("click", () => {
-      sim.selectedPuyo = PuyoType.Sun;
-    });
-    $("#puyo-selection .puyo").on("click", ({ currentTarget }) => {
-      $("#puyo-selection .selected").removeClass("selected");
-      $(currentTarget).parent().addClass("selected");
-    });
-    $("#puyo-selection .puyo.puyo-none").parent().addClass("selected");
-
-    $("#simulation-back").on("click", () => {
-      sim.simulation.back();
-    });
-    $("#simulation-start").on("click", () => {
-      sim.simulation.start();
-    });
-    $("#simulation-pause").on("click", () => {
-      sim.simulation.pause();
-    });
-    $("#simulation-step").on("click", () => {
-      sim.simulation.step();
-    });
-    $("#simulation-skip").on("click", () => {
-      sim.simulation.skip();
-    });
 
     $.each(
       [

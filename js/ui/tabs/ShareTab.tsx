@@ -6,13 +6,12 @@ import { Utils } from "../../Utils";
 
 interface Props {
   sim: PuyoSim;
-  active: boolean;
 }
 
 export class ShareTab extends Component<Props> {
   render() {
     return (
-      <div id="tab-share" className={this.props.active ? "tab-content content-active" : "tab-content"}>
+      <div id="tab-share" className="tab-content content-active">
         <div className="box-inner-header">
           <div className="input-group">
             <input

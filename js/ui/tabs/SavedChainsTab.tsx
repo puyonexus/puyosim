@@ -15,13 +15,12 @@ interface ISavedChain {
 
 interface Props {
   sim: PuyoSim;
-  active: boolean;
 }
 
 export class SavedChainsTab extends Component<Props> {
   render() {
     return (
-      <div id="tab-saved-chains" className={this.props.active ? "tab-content content-active" : "tab-content"}>
+      <div id="tab-saved-chains" className="tab-content content-active">
         <div className="box-inner-header">
           <div className="input-group">
             <input

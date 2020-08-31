@@ -5,41 +5,22 @@ import { h, render } from "preact";
 import { Simulator } from "./ui/Simulator";
 import { Field } from "./simulator/Field";
 import { Simulation } from "./simulator/Simulation";
-import { FieldDisplay } from "./ui/FieldDisplay";
 import { PuyoDisplay } from "./ui/rendering/PuyoDisplay";
-import { IFieldType, content } from "./data/content";
-import { PuyoType } from "./constants";
 
 // An instance of PuyoSim.
 export class PuyoSim {
   field: Field;
-  fieldDisplay: FieldDisplay;
   puyoDisplay: PuyoDisplay;
   simulation: Simulation;
   clipboard?: Clipboard;
 
-  // Temporary hoisted state.
-
-  // Indicates if we are going to insert Puyo (the insert box is checked)
-  insertPuyo = false;
-
-  // A reference to the content of the field
-  fieldContent: IFieldType = content.Field.Standard;
-
-  // Current Puyo that is selected
-  selectedPuyo = PuyoType.None;
-
   constructor() {
     this.field = new Field(this);
-    this.fieldDisplay = new FieldDisplay(this);
     this.puyoDisplay = new PuyoDisplay(this);
     this.simulation = new Simulation(this);
   }
 
   init() {
-    // Initalize the Field Display
-    this.fieldDisplay.init();
-
     // Display the contents of the simulator
     const app = document.getElementById("app");
     if (!app) {

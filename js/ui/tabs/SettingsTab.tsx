@@ -5,13 +5,14 @@ import { content } from "../../data/content";
 
 interface Props {
   sim: PuyoSim;
-  active: boolean;
+  style: string;
+  setStyle: (style: string) => void;
 }
 
 export class SettingsTab extends Component<Props> {
   render() {
     return (
-      <div id="tab-settings" className={this.props.active ? "tab-content content-active" : "tab-content"}>
+      <div id="tab-settings" className="tab-content content-active">
         <dl>
           <dt>Animation</dt>
           <dd>
@@ -34,9 +35,7 @@ export class SettingsTab extends Component<Props> {
           <dd>
             <select id="field-style">
               <option value="basic">Basic</option>
-              <option value="standard" selected>
-                Standard
-              </option>
+              <option value="standard">Standard</option>
               <option value="eyecandy">Eye Candy</option>
             </select>
           </dd>
@@ -151,7 +150,7 @@ export class SettingsTab extends Component<Props> {
     $("#field-style")
       .on("change", ({ currentTarget }) => {
         $(currentTarget).prop("disabled", true);
-        sim.fieldDisplay.load(String($(currentTarget).val()));
+        this.props.setStyle(String($(currentTarget).val()));
         localStorage.setItem(
           "chainsim.fieldStyle",
           String($(currentTarget).val())
@@ -215,7 +214,7 @@ export class SettingsTab extends Component<Props> {
         );
         $(currentTarget).parent().addClass("selected");
 
-        if (sim.fieldContent === content.Field.EyeCandy) {
+        if (this.props.style === "eyecandy") {
           if (id === 0) {
             $("#field-bg-2").css(
               "background-image",

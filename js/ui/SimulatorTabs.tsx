@@ -1,12 +1,6 @@
 import { h, Component } from "preact";
-import { ShareTab } from "./tabs/ShareTab";
-import { SavedChainsTab } from "./tabs/SavedChainsTab";
-import { ChainsTab } from "./tabs/ChainsTab";
-import { SimulatorTab } from "./tabs/SimulatorTab";
-import { SettingsTab } from "./tabs/SettingsTab";
-import { PuyoSim } from "../PuyoSim";
 
-enum Tab {
+export enum TabID {
   Share = "tab-share",
   SavedChains = "tab-saved-chains",
   Chains = "tab-preset-chains",
@@ -14,59 +8,23 @@ enum Tab {
   Settings = "tab-settings",
 }
 
-const tabNames: { [id in Tab]: string } = {
-  [Tab.Share]: "Share",
-  [Tab.SavedChains]: "Saved Chains",
-  [Tab.Chains]: "Chains",
-  [Tab.Simulator]: "Simulator",
-  [Tab.Settings]: "Settings",
-};
-
-type TabComponentType =
-  | typeof ShareTab
-  | typeof SavedChainsTab
-  | typeof ChainsTab
-  | typeof SimulatorTab
-  | typeof SettingsTab;
-
-const tabs: { [id in Tab]: TabComponentType } = {
-  [Tab.Share]: ShareTab,
-  [Tab.SavedChains]: SavedChainsTab,
-  [Tab.Chains]: ChainsTab,
-  [Tab.Simulator]: SimulatorTab,
-  [Tab.Settings]: SettingsTab,
-};
+export type Tab = [TabID, string, h.JSX.Element];
 
 interface Props {
-  sim: PuyoSim;
+  tabs: Tab[];
+  currentTab: TabID;
+  setCurrentTab: (currentTab: TabID) => void;
 }
 
 interface State {
-  activeTab: Tab;
   float: boolean;
   toggle: boolean;
 }
 
 export class SimulatorTabs extends Component<Props, State> {
-  private static getLastTab(): Tab | null {
-    const tab = localStorage.getItem("chainsim.lastTab");
-    if (!tab) {
-      return null;
-    }
-    if (Object.keys(tabs).indexOf(tab) === -1) {
-      return null;
-    }
-    return tab as Tab;
-  }
-
-  private static setLastTab(tab: Tab) {
-    localStorage.setItem("chainsim.lastTab", tab);
-  }
-
   constructor(props?: Props) {
     super(props);
     this.state = {
-      activeTab: SimulatorTabs.getLastTab() ?? Tab.Share,
       float: false,
       toggle: false,
     };
@@ -97,11 +55,6 @@ export class SimulatorTabs extends Component<Props, State> {
     window.removeEventListener("resize", this.onResize);
   }
 
-  setTab(activeTab: Tab) {
-    this.setState({ activeTab });
-    SimulatorTabs.setLastTab(activeTab);
-  }
-
   toggle() {
     this.setState({ toggle: !this.state.toggle });
   }
@@ -118,8 +71,7 @@ export class SimulatorTabs extends Component<Props, State> {
   }
 
   render() {
-    const { activeTab } = this.state;
-    const { sim } = this.props;
+    const { tabs, currentTab, setCurrentTab } = this.props;
 
     return (
       <div id="simulator-tabs" className={this.getTabClassName()}>
@@ -130,22 +82,18 @@ export class SimulatorTabs extends Component<Props, State> {
         </div>
         <div className="tab-container">
           <ul id="simulator-tabs-select">
-            {Object.keys(tabs).map((id) => (
-              <li className={id === activeTab ? "tab-active" : undefined}>
-                <a data-target={id} onClick={() => this.setTab(id as Tab)}>
-                  {tabNames[id as Tab]}
-                </a>
+            {tabs.map(([id, name]) =>
+              <li className={currentTab === id ? "tab-active" : undefined}>
+                <a onClick={() => setCurrentTab(id)}>{name}</a>
               </li>
-            ))}
+            )}
             <li className="simulator-tabs-toggle" onClick={() => this.toggle()}>
               <a>
                 <i className="fa fa-times" aria-hidden="true"></i>
               </a>
             </li>
           </ul>
-          {Object.entries(tabs).map(([id, TabComponent]) => (
-            <TabComponent sim={sim} active={id === activeTab} />
-          ))}
+          {tabs.filter(([id]) => id === currentTab).map(([,,component]) => component)}
         </div>
       </div>
     );

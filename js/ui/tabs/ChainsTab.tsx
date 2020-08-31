@@ -11,13 +11,12 @@ import {
 
 interface Props {
   sim: PuyoSim;
-  active: boolean;
 }
 
 export class ChainsTab extends Component<Props> {
   render() {
     return (
-      <div id="tab-preset-chains" className={this.props.active ? "tab-content content-active" : "tab-content"}>
+      <div id="tab-preset-chains" className="tab-content content-active">
         <div id="preset-chains-outer">
           <div className="box-inner-header">
             <div id="preset-chains" className="dropdown">

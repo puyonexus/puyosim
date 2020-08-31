@@ -7,13 +7,12 @@ import { default as attackPowersJson } from "../../data/attackPowers.json";
 
 interface Props {
   sim: PuyoSim;
-  active: boolean;
 }
 
 export class SimulatorTab extends Component<Props> {
   render() {
     return (
-      <div id="tab-simulator" className={this.props.active ? "tab-content content-active" : "tab-content"}>
+      <div id="tab-simulator" className="tab-content content-active">
         <dl>
           <dt>Scoring</dt>
           <dd>

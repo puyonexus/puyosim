@@ -2,9 +2,13 @@ import $ from "jquery";
 import { h, Component } from "preact";
 import { PuyoSim } from "../PuyoSim";
 import { PuyoType } from "../constants";
+import { IFieldType } from "../data/content";
 
 interface Props {
   sim: PuyoSim;
+  insertPuyo: boolean;
+  fieldContent: IFieldType;
+  selectedPuyo: PuyoType;
 }
 
 export class SimulatorField extends Component<Props> {
@@ -25,15 +29,25 @@ export class SimulatorField extends Component<Props> {
     Promise.resolve().then(() => this.initLegacy());
   }
 
+  componentDidUpdate(prevProps: Props) {
+    if (this.props.fieldContent !== prevProps.fieldContent) {
+      this.load(this.props.fieldContent);
+    }
+  }
+
   initLegacy() {
-    const { sim } = this.props;
+    const { sim, fieldContent } = this.props;
+
+    // Initalize
+    sim.puyoDisplay.init();
+    this.load(fieldContent, true);
 
     // Displays the field
     $("#simulator").removeClass("field-basic field-standard field-eyecandy");
-    $("#simulator").addClass(sim.fieldContent.CSSClass);
+    $("#simulator").addClass(this.props.fieldContent.CSSClass);
 
-    if (sim.fieldContent.CSSClass === "field-eyecandy") {
-      sim.fieldContent.Script.call(this);
+    if (this.props.fieldContent.CSSClass === "field-eyecandy") {
+      this.props.fieldContent.Script.call(this);
     }
 
     $("#field").css({
@@ -65,8 +79,6 @@ export class SimulatorField extends Component<Props> {
     let fieldX = 0;
     // Y position in the field
     let fieldY = 0;
-    // Loop variable
-    let y;
 
     $("#field")
       .on("mouseenter", ({ currentTarget, pageX, pageY }) => {
@@ -166,9 +178,9 @@ export class SimulatorField extends Component<Props> {
 
         if (leftMouseDown) {
           // Left click, place puyo
-          if (sim.selectedPuyo === PuyoType.Delete) {
+          if (this.props.selectedPuyo === PuyoType.Delete) {
             // Delete this puyo and shift the ones on top down one row
-            for (y = fieldY; y > 0; y--) {
+            for (let y = fieldY; y > 0; y--) {
               sim.field.map.set(
                 fieldX,
                 y,
@@ -177,9 +189,9 @@ export class SimulatorField extends Component<Props> {
             }
             sim.field.map.set(fieldX, 0, PuyoType.None);
           } else {
-            if (sim.insertPuyo) {
+            if (this.props.insertPuyo) {
               // Insert puyo
-              for (y = 0; y < fieldY; y++) {
+              for (let y = 0; y < fieldY; y++) {
                 sim.field.map.set(
                   fieldX,
                   y,
@@ -188,7 +200,7 @@ export class SimulatorField extends Component<Props> {
               }
             }
 
-            sim.field.map.set(fieldX, fieldY, sim.selectedPuyo);
+            sim.field.map.set(fieldX, fieldY, this.props.selectedPuyo);
           }
         } else if (rightMouseDown) {
           // Right click, delete puyo
@@ -207,5 +219,43 @@ export class SimulatorField extends Component<Props> {
         }
       })
       .on("contextmenu", () => false);
+  }
+
+  load(fieldContent: IFieldType, init?: boolean) {
+    const { sim } = this.props;
+
+    if (!init) {
+      // Only fade out & fade in if we are switching styles
+      $("#simulator-field, #nuisance-tray").fadeOut(200, () => {
+        // Fade out the simulator and display the new one
+        $("#field-bg-1, #field-bg-2, #field-bg-3").removeAttr("style");
+        $("#simulator").removeClass(
+          "field-basic field-standard field-eyecandy"
+        );
+        $("#simulator").addClass(fieldContent.CSSClass);
+
+        if (fieldContent.CSSClass === "field-eyecandy") {
+          fieldContent.Script.call(this);
+        }
+
+        $("#field").css({
+          width: sim.field.width * sim.puyoDisplay.puyoSize + "px",
+          height: sim.field.totalHeight * sim.puyoDisplay.puyoSize + "px",
+        });
+        $("#field-bg-2").css(
+          "top",
+          sim.field.hiddenRows * sim.puyoDisplay.puyoSize + "px"
+        );
+        $("#field-bg-3").css(
+          "height",
+          sim.field.hiddenRows * sim.puyoDisplay.puyoSize + "px"
+        );
+        // Refresh the layout.
+        window.dispatchEvent(new Event('resize'));
+
+        $("#simulator-field, #nuisance-tray").fadeIn(200);
+        $("#field-style").prop("disabled", false);
+      });
+    }
   }
 }
