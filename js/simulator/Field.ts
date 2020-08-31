@@ -14,6 +14,7 @@ import {
   SimulationDefaultPuyoToClear,
 } from "../constants";
 import { PuyoSim } from "../PuyoSim";
+import EventTarget from "@ungap/event-target";
 
 declare global {
   interface Window {
@@ -30,7 +31,7 @@ declare global {
   }
 }
 
-export class Field {
+export class Field extends EventTarget {
   // Field Width (Default = 6)
   width = FieldDefaultWidth;
 
@@ -46,16 +47,16 @@ export class Field {
   // A chain is in the URL and can be successfully set
   chainInURL = false;
 
-  // Map that contains the puyo
-  map: FieldMap;
+  private map: FieldMap;
 
   // The map used during the "editing" portion of the simulator
-  mapEditor: FieldMap;
+  private mapEditor: FieldMap;
 
   // The map used during the simulation
-  mapSimulation?: FieldMap;
+  private mapSimulation?: FieldMap;
 
   constructor(readonly sim: PuyoSim) {
+    super();
     this.mapEditor = new FieldMap(this.sim, this.width, this.totalHeight);
     this.map = this.mapEditor;
 
@@ -63,6 +64,43 @@ export class Field {
       // We have a chain in the URL. Attempt to use it.
       this.setChainFromURL();
     }
+  }
+
+  resetMap() {
+    this.mapEditor = new FieldMap(this.sim, this.width, this.totalHeight);
+    this.map = this.mapEditor;
+  }
+
+  returnToEditor() {
+    this.map = this.mapEditor;
+    // TODO: make reactive
+    for (let y = 0; y < this.totalHeight; y++) {
+      for (let x = 0; x < this.width; x++) {
+        this.sim.puyoDisplay.renderer.drawPuyo(x, y, this.map.get(x, y));
+      }
+    }
+  }
+
+  enterSimulation() {
+    this.mapSimulation = new FieldMap(
+      this.sim,
+      this.width,
+      this.totalHeight,
+      this.mapEditor
+    );
+    this.map = this.mapSimulation;
+  }
+
+  puyo(x: number, y: number) {
+    return this.map.puyo(x, y);
+  }
+
+  get(x: number, y: number) {
+    return this.map.get(x, y);
+  }
+
+  set(x: number, y: number, p: PuyoType) {
+    this.map.set(x, y, p);
   }
 
   // Sets the chain with the specified width and height
@@ -83,8 +121,7 @@ export class Field {
       this.hiddenRows = hr;
       this.totalHeight = h + hr;
 
-      this.mapEditor = new FieldMap(this.sim, this.width, this.totalHeight);
-      this.map = this.mapEditor;
+      this.resetMap();
 
       if (this.sim.puyoDisplay.renderer) {
         // If we have a render, draw up the new field

@@ -118,14 +118,14 @@ export class PuyoDisplay {
     if (y < this.sim.field.hiddenRows) return 0;
     if (p === PuyoType.Nuisance || p === PuyoType.Point) return 0;
 
-    const L = x > 0 && this.sim.field.map.puyo(x - 1, y) === p;
+    const L = x > 0 && this.sim.field.puyo(x - 1, y) === p;
     const R =
-      x < this.sim.field.width - 1 && this.sim.field.map.puyo(x + 1, y) === p;
+      x < this.sim.field.width - 1 && this.sim.field.puyo(x + 1, y) === p;
     const U =
-      y > this.sim.field.hiddenRows && this.sim.field.map.puyo(x, y - 1) === p;
+      y > this.sim.field.hiddenRows && this.sim.field.puyo(x, y - 1) === p;
     const D =
       y < this.sim.field.totalHeight - 1 &&
-      this.sim.field.map.puyo(x, y + 1) === p;
+      this.sim.field.puyo(x, y + 1) === p;
 
     if (L) pos += 8;
     if (R) pos += 4;

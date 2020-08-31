@@ -71,7 +71,7 @@ export class CanvasRenderer {
     // Now draw everything
     for (let y = 0; y < this.sim.field.totalHeight; y++) {
       for (let x = 0; x < this.sim.field.width; x++) {
-        this.drawPuyo(x, y, this.sim.field.map.get(x, y));
+        this.drawPuyo(x, y, this.sim.field.get(x, y));
       }
     }
 
@@ -192,7 +192,7 @@ export class CanvasRenderer {
         // Can we draw the puyo?
         for (let y = 0; y < this.sim.field.totalHeight; y++) {
           for (let x = 0; x < this.sim.field.width; x++) {
-            this.drawPuyo(x, y, this.sim.field.map.get(x, y));
+            this.drawPuyo(x, y, this.sim.field.get(x, y));
           }
         }
       }

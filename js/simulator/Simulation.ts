@@ -156,16 +156,7 @@ export class Simulation extends EventTarget {
 
     this.dispatchEvent(new Event("statechange"));
 
-    this.sim.field.map = this.sim.field.mapEditor;
-    for (let y = 0; y < this.sim.field.totalHeight; y++) {
-      for (let x = 0; x < this.sim.field.width; x++) {
-        this.sim.puyoDisplay.renderer.drawPuyo(
-          x,
-          y,
-          this.sim.field.map.get(x, y)
-        );
-      }
-    }
+    this.sim.field.returnToEditor();
   }
 
   start() {
@@ -174,13 +165,7 @@ export class Simulation extends EventTarget {
       // Set all variables
       this.running = true;
       this.finished = false;
-      this.sim.field.mapSimulation = new FieldMap(
-        this.sim,
-        this.sim.field.width,
-        this.sim.field.totalHeight,
-        this.sim.field.mapEditor
-      );
-      this.sim.field.map = this.sim.field.mapSimulation;
+      this.sim.field.enterSimulation();
 
       this.dispatchEvent(new Event("statechange"));
 
@@ -227,13 +212,7 @@ export class Simulation extends EventTarget {
       this.running = true;
       this.finished = false;
       this.stepMode = true;
-      this.sim.field.mapSimulation = new FieldMap(
-        this.sim,
-        this.sim.field.width,
-        this.sim.field.totalHeight,
-        this.sim.field.mapEditor
-      );
-      this.sim.field.map = this.sim.field.mapSimulation;
+      this.sim.field.enterSimulation();
 
       this.dispatchEvent(new Event("statechange"));
 
@@ -260,13 +239,7 @@ export class Simulation extends EventTarget {
       this.running = true;
       this.finished = true;
       this.skipMode = true;
-      this.sim.field.mapSimulation = new FieldMap(
-        this.sim,
-        this.sim.field.width,
-        this.sim.field.totalHeight,
-        this.sim.field.mapEditor
-      );
-      this.sim.field.map = this.sim.field.mapSimulation;
+      this.sim.field.enterSimulation();
 
       this.dispatchEvent(new Event("statechange"));
 
@@ -322,13 +295,13 @@ export class Simulation extends EventTarget {
         // Don't check the hidden row
         for (x = 0; x < this.sim.field.width; x++) {
           // Is a colored puyo
-          if (!check[x][y] && this.sim.field.map.get(x, y).isColored()) {
+          if (!check[x][y] && this.sim.field.get(x, y).isColored()) {
             // Amount of puyo cleared
             let cleared = 1;
             // Amount of puyo checked
             let checked = 1;
             // Puyo currently being checked
-            const puyo = this.sim.field.map.puyo(x, y);
+            const puyo = this.sim.field.puyo(x, y);
             // List of puyo to clear
             const list = [{ x, y }];
             let pos;
@@ -364,7 +337,7 @@ export class Simulation extends EventTarget {
                 checkY = pos.y + this.positions[i].y; // Shortcuts
                 if (
                   !check[checkX][checkY] &&
-                  this.sim.field.map.puyo(checkX, checkY) === puyo
+                  this.sim.field.puyo(checkX, checkY) === puyo
                 ) {
                   cleared++;
                   check[checkX][checkY] = true;
@@ -402,25 +375,25 @@ export class Simulation extends EventTarget {
               for (i = 0; i < cleared; i++) {
                 // Set the cleared sprite for the cleared puyo
                 pos = list[i];
-                switch (this.sim.field.map.puyo(pos.x, pos.y)) {
+                switch (this.sim.field.puyo(pos.x, pos.y)) {
                   case PuyoType.Red:
-                    this.sim.field.map.set(pos.x, pos.y, PuyoType.ClearedRed);
+                    this.sim.field.set(pos.x, pos.y, PuyoType.ClearedRed);
                     break;
                   case PuyoType.Green:
-                    this.sim.field.map.set(pos.x, pos.y, PuyoType.ClearedGreen);
+                    this.sim.field.set(pos.x, pos.y, PuyoType.ClearedGreen);
                     break;
                   case PuyoType.Blue:
-                    this.sim.field.map.set(pos.x, pos.y, PuyoType.ClearedBlue);
+                    this.sim.field.set(pos.x, pos.y, PuyoType.ClearedBlue);
                     break;
                   case PuyoType.Yellow:
-                    this.sim.field.map.set(
+                    this.sim.field.set(
                       pos.x,
                       pos.y,
                       PuyoType.ClearedYellow
                     );
                     break;
                   case PuyoType.Purple:
-                    this.sim.field.map.set(
+                    this.sim.field.set(
                       pos.x,
                       pos.y,
                       PuyoType.ClearedPurple
@@ -452,36 +425,36 @@ export class Simulation extends EventTarget {
                   checkX = pos.x + this.positions[j].x; // Shortcuts
                   checkY = pos.y + this.positions[j].y; // Shortcuts
                   if (
-                    this.sim.field.map.puyo(checkX, checkY) ===
+                    this.sim.field.puyo(checkX, checkY) ===
                     PuyoType.Nuisance
                   ) {
                     // Nuisance Puyo
-                    this.sim.field.map.set(
+                    this.sim.field.set(
                       checkX,
                       checkY,
                       PuyoType.ClearedNuisance
                     );
                   } else if (
-                    this.sim.field.map.puyo(checkX, checkY) === PuyoType.Point
+                    this.sim.field.puyo(checkX, checkY) === PuyoType.Point
                   ) {
                     // Point Puyo
-                    this.sim.field.map.set(
+                    this.sim.field.set(
                       checkX,
                       checkY,
                       PuyoType.ClearedPoint
                     );
                     pointPuyoCleared++;
                   } else if (
-                    this.sim.field.map.puyo(checkX, checkY) === PuyoType.Sun
+                    this.sim.field.puyo(checkX, checkY) === PuyoType.Sun
                   ) {
                     // Sun Puyo
-                    this.sim.field.map.set(checkX, checkY, PuyoType.ClearedSun);
+                    this.sim.field.set(checkX, checkY, PuyoType.ClearedSun);
                     sunPuyoCleared++;
                   } else if (
-                    this.sim.field.map.puyo(checkX, checkY) === PuyoType.Hard
+                    this.sim.field.puyo(checkX, checkY) === PuyoType.Hard
                   ) {
                     // Hard Puyo
-                    this.sim.field.map.set(checkX, checkY, PuyoType.Nuisance);
+                    this.sim.field.set(checkX, checkY, PuyoType.Nuisance);
                   }
                 }
               }
@@ -601,7 +574,7 @@ export class Simulation extends EventTarget {
               this.sim.puyoDisplay.renderer.drawPuyo(
                 x,
                 y,
-                this.sim.field.map.get(x, y)
+                this.sim.field.get(x, y)
               );
             }
           }
@@ -627,8 +600,8 @@ export class Simulation extends EventTarget {
       for (y = this.sim.field.hiddenRows; y < this.sim.field.totalHeight; y++) {
         // Can start at 1 since you can't clear puyo in the hidden row
         for (x = 0; x < this.sim.field.width; x++) {
-          if (this.sim.field.map.get(x, y).isCleared()) {
-            this.sim.field.map.set(x, y, PuyoType.None);
+          if (this.sim.field.get(x, y).isCleared()) {
+            this.sim.field.set(x, y, PuyoType.None);
           }
         }
       }
@@ -658,7 +631,7 @@ export class Simulation extends EventTarget {
               this.sim.puyoDisplay.renderer.drawPuyo(
                 x,
                 y,
-                this.sim.field.map.get(x, y)
+                this.sim.field.get(x, y)
               );
             }
           }
@@ -687,9 +660,9 @@ export class Simulation extends EventTarget {
       for (let y = this.sim.field.totalHeight - 2; y >= 0; y--) {
         // No need to check the bottom row
         if (
-          this.sim.field.map.puyo(x, y) !== PuyoType.None &&
-          this.sim.field.map.puyo(x, y) !== PuyoType.Block &&
-          this.sim.field.map.puyo(x, y + 1) === PuyoType.None
+          this.sim.field.puyo(x, y) !== PuyoType.None &&
+          this.sim.field.puyo(x, y) !== PuyoType.Block &&
+          this.sim.field.puyo(x, y + 1) === PuyoType.None
         ) {
           // There's an empty space below this puyo!
           dropped = true;
@@ -697,13 +670,13 @@ export class Simulation extends EventTarget {
           let y2 = y;
           while (
             y2 < this.sim.field.totalHeight - 1 &&
-            this.sim.field.map.puyo(x, y2 + 1) === PuyoType.None
+            this.sim.field.puyo(x, y2 + 1) === PuyoType.None
           ) {
             y2++;
           }
 
-          this.sim.field.map.set(x, y2, this.sim.field.map.puyo(x, y));
-          this.sim.field.map.set(x, y, PuyoType.None);
+          this.sim.field.set(x, y2, this.sim.field.puyo(x, y));
+          this.sim.field.set(x, y, PuyoType.None);
         }
       }
     }

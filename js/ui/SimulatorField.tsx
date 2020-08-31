@@ -181,30 +181,30 @@ export class SimulatorField extends Component<Props> {
           if (this.props.selectedPuyo === PuyoType.Delete) {
             // Delete this puyo and shift the ones on top down one row
             for (let y = fieldY; y > 0; y--) {
-              sim.field.map.set(
+              sim.field.set(
                 fieldX,
                 y,
-                sim.field.map.puyo(fieldX, y - 1)
+                sim.field.puyo(fieldX, y - 1)
               );
             }
-            sim.field.map.set(fieldX, 0, PuyoType.None);
+            sim.field.set(fieldX, 0, PuyoType.None);
           } else {
             if (this.props.insertPuyo) {
               // Insert puyo
               for (let y = 0; y < fieldY; y++) {
-                sim.field.map.set(
+                sim.field.set(
                   fieldX,
                   y,
-                  sim.field.map.puyo(fieldX, y + 1)
+                  sim.field.puyo(fieldX, y + 1)
                 );
               }
             }
 
-            sim.field.map.set(fieldX, fieldY, this.props.selectedPuyo);
+            sim.field.set(fieldX, fieldY, this.props.selectedPuyo);
           }
         } else if (rightMouseDown) {
           // Right click, delete puyo
-          sim.field.map.set(fieldX, fieldY, PuyoType.None);
+          sim.field.set(fieldX, fieldY, PuyoType.None);
         }
       })
       .on("mouseup", () => {

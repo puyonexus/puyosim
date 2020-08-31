@@ -26,7 +26,7 @@ export class PuyoAnimation {
 
     for (let y = 0; y < this.sim.field.totalHeight; y++) {
       for (let x = 0; x < this.sim.field.width; x++) {
-        const p = this.sim.field.map.get(x, y);
+        const p = this.sim.field.get(x, y);
         if (p.hasAnimation()) {
           // Only redraw puyo that can have animation
           this.sim.puyoDisplay.renderer.drawPuyo(x, y, p);
@@ -112,7 +112,7 @@ export class PuyoAnimation {
 
     for (let y = 0; y < this.sim.field.totalHeight; y++) {
       for (let x = 0; x < this.sim.field.width; x++) {
-        const p = this.sim.field.map.get(x, y);
+        const p = this.sim.field.get(x, y);
         if (p.hasAnimation()) {
           // Only redraw puyo that can have animation
           this.sim.puyoDisplay.renderer.drawPuyo(x, y, p);
