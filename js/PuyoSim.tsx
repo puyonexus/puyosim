@@ -19,10 +19,10 @@ export class PuyoSim {
   clipboard?: Clipboard;
 
   // Temporary hoisted state.
-  
+
   // Indicates if we are going to insert Puyo (the insert box is checked)
   insertPuyo = false;
-  
+
   // A reference to the content of the field
   fieldContent: IFieldType = content.Field.Standard;
 

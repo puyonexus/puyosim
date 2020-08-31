@@ -5,7 +5,7 @@
  */
 
 import $ from "jquery";
-import { content, IFieldType } from "../data/content";
+import { content } from "../data/content";
 import { PuyoSim } from "../PuyoSim";
 
 export class FieldDisplay {
