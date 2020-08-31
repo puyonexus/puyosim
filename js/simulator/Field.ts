@@ -73,6 +73,7 @@ export class Field extends EventTarget {
 
   returnToEditor() {
     this.map = this.mapEditor;
+
     // TODO: make reactive
     for (let y = 0; y < this.totalHeight; y++) {
       for (let x = 0; x < this.width; x++) {
@@ -101,10 +102,7 @@ export class Field extends EventTarget {
   set(x: number, y: number, p: PuyoType) {
     this.map.set(x, y, p);
 
-    if (!this.sim.puyoDisplay.renderer) {
-      return;
-    }
-
+    // TODO: make reactive
     this.sim.puyoDisplay.renderer.drawPuyo(x, y, this.map.map[x][y]);
 
     if (!this.sim.puyoDisplay.puyoAnimation.running) {
@@ -144,25 +142,23 @@ export class Field extends EventTarget {
 
       this.resetMap();
 
-      if (this.sim.puyoDisplay.renderer) {
-        // If we have a render, draw up the new field
-        this.sim.puyoDisplay.renderer.uninit();
-        $("#field").css({
-          width: this.width * this.sim.puyoDisplay.puyoSize + "px",
-          height: this.totalHeight * this.sim.puyoDisplay.puyoSize + "px",
-        });
-        $("#field-bg-2").css(
-          "top",
-          this.sim.field.hiddenRows * this.sim.puyoDisplay.puyoSize + "px"
-        );
-        $("#field-bg-3").css(
-          "height",
-          this.sim.field.hiddenRows * this.sim.puyoDisplay.puyoSize + "px"
-        );
-        // Refresh the layout.
-        window.dispatchEvent(new Event('resize'));
-        this.sim.puyoDisplay.renderer.init();
-      }
+      // TODO: make reactive
+      this.sim.puyoDisplay.renderer.uninit();
+      $("#field").css({
+        width: this.width * this.sim.puyoDisplay.puyoSize + "px",
+        height: this.totalHeight * this.sim.puyoDisplay.puyoSize + "px",
+      });
+      $("#field-bg-2").css(
+        "top",
+        this.sim.field.hiddenRows * this.sim.puyoDisplay.puyoSize + "px"
+      );
+      $("#field-bg-3").css(
+        "height",
+        this.sim.field.hiddenRows * this.sim.puyoDisplay.puyoSize + "px"
+      );
+      // Refresh the layout.
+      window.dispatchEvent(new Event('resize'));
+      this.sim.puyoDisplay.renderer.init();
 
       $("#field-size-width").val(this.width);
       $("#field-size-height").val(this.height);
