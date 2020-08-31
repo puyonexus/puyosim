@@ -155,9 +155,6 @@ export class Simulation extends EventTarget {
     this.sim.puyoDisplay.renderer.drawNuisanceTray(this.nuisance);
 
     this.dispatchEvent(new Event("statechange"));
-    $(
-      "#tab-simulator input, #tab-simulator select, #tab-simulator button"
-    ).prop("disabled", false); // Disable simulator options
 
     this.sim.field.map = this.sim.field.mapEditor;
     for (let y = 0; y < this.sim.field.totalHeight; y++) {
@@ -174,10 +171,6 @@ export class Simulation extends EventTarget {
   start() {
     // Starts the chain
     if (!this.running) {
-      $(
-        "#tab-simulator input, #tab-simulator select, #tab-simulator button"
-      ).prop("disabled", true); // Disable simulator options
-
       // Set all variables
       this.running = true;
       this.finished = false;
@@ -230,10 +223,6 @@ export class Simulation extends EventTarget {
   step() {
     // Advances a step in the chain
     if (!this.running) {
-      $(
-        "#tab-simulator input, #tab-simulator select, #tab-simulator button"
-      ).prop("disabled", true); // Disable simulator options
-
       // Set all variables
       this.running = true;
       this.finished = false;
@@ -267,10 +256,6 @@ export class Simulation extends EventTarget {
   skip() {
     // Skips right to the end of the chain
     if (!this.running) {
-      $(
-        "#tab-simulator input, #tab-simulator select, #tab-simulator button"
-      ).prop("disabled", true); // Disable simulator options
-
       // Set all variables
       this.running = true;
       this.finished = true;

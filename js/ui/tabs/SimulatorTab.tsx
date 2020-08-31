@@ -9,19 +9,44 @@ interface Props {
   sim: PuyoSim;
 }
 
-export class SimulatorTab extends Component<Props> {
+interface State {
+  disabled: boolean;
+}
+
+export class SimulatorTab extends Component<Props, State> {
+  constructor(props?: Props) {
+    super(props);
+    this.state = {
+      disabled: false,
+    };
+  }
+
+  updateSimulationState = () => {
+    this.setState({ disabled: this.props.sim.simulation.running });
+  };
+
+  componentDidMount() {
+    this.props.sim.simulation.addEventListener("statechange", this.updateSimulationState);
+    Promise.resolve().then(() => this.initLegacy());
+  }
+
+  componentWillUnmount() {
+    this.props.sim.simulation.removeEventListener("statechange", this.updateSimulationState);
+  }
+
   render() {
+    const { disabled } = this.state;
     return (
       <div id="tab-simulator" className="tab-content content-active">
         <dl>
           <dt>Scoring</dt>
           <dd>
             <label className="radio">
-              <input type="radio" name="score-mode" value="classic" />
+              <input type="radio" name="score-mode" value="classic" disabled={disabled} />
               Classic
             </label>
             <label className="radio">
-              <input type="radio" name="score-mode" value="fever" />
+              <input type="radio" name="score-mode" value="fever" disabled={disabled} />
               Fever
             </label>
           </dd>
@@ -29,19 +54,19 @@ export class SimulatorTab extends Component<Props> {
         <dl>
           <dt>Pop Limit</dt>
           <dd>
-            <select id="puyo-to-clear"></select>
+            <select id="puyo-to-clear" disabled={disabled}></select>
           </dd>
         </dl>
         <dl>
           <dt>Garbage Rate</dt>
           <dd>
-            <select id="target-points"></select>
+            <select id="target-points" disabled={disabled}></select>
           </dd>
         </dl>
         <dl>
           <dt>Point Puyo</dt>
           <dd>
-            <select id="point-puyo-bonus"></select>
+            <select id="point-puyo-bonus" disabled={disabled}></select>
           </dd>
         </dl>
         <dl>
@@ -51,6 +76,7 @@ export class SimulatorTab extends Component<Props> {
               <button
                 className="dropdown-toggle dropdown-toggle-block"
                 data-toggle="dropdown"
+                disabled={disabled}
               >
                 <div className="dropdown-toggle-inner">
                   <strong>
@@ -68,24 +94,20 @@ export class SimulatorTab extends Component<Props> {
         <dl>
           <dt>Board Size</dt>
           <dd>
-            <select id="field-size-width"></select>&nbsp;&times;&nbsp;
-            <select id="field-size-height"></select>&nbsp;&nbsp;
-            <button id="set-field-size">Set</button>
+            <select id="field-size-width" disabled={disabled}></select>&nbsp;&times;&nbsp;
+            <select id="field-size-height" disabled={disabled}></select>&nbsp;&nbsp;
+            <button id="set-field-size" disabled={disabled}>Set</button>
           </dd>
         </dl>
         <dl>
           <dt>Hidden Rows</dt>
           <dd>
-            <select id="field-hidden-rows"></select>&nbsp;&nbsp;
-            <button id="set-hidden-rows">Set</button>
+            <select id="field-hidden-rows" disabled={disabled}></select>&nbsp;&nbsp;
+            <button id="set-hidden-rows" disabled={disabled}>Set</button>
           </dd>
         </dl>
       </div>
     );
-  }
-
-  componentDidMount() {
-    Promise.resolve().then(() => this.initLegacy());
   }
 
   initLegacy() {
