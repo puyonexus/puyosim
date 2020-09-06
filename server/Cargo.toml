@@ -1,0 +1,12 @@
+[package]
+name = "server"
+version = "0.1.0"
+authors = ["John Chadwick <john@jchw.io>"]
+edition = "2018"
+
+[dependencies]
+rocket = { git = "https://github.com/SergioBenitez/Rocket.git", branch = "master" }
+rust-embed = { version = "5.6.0", features = ["debug-embed"] }
+image = "0.23.9"
+lazy_static = "1.4.0"
+bitflags = "1.2.1"
