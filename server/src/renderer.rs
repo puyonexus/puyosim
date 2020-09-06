@@ -1,6 +1,6 @@
 use crate::{assets, board, puyo::{Puyo, Type}};
 use image::{GenericImageView, SubImage, RgbaImage};
-use image::imageops::overlay;
+use image::{ImageBuffer, imageops::overlay, Rgba};
 
 pub struct Renderer {
     skin: assets::Skin,
@@ -76,7 +76,7 @@ impl Renderer {
         let total_height = height + hidden_rows;
         let width_px = assets::PUYO_WIDTH_PX * (width + 2);
         let height_px = assets::PUYO_HEIGHT_PX * (total_height + 1);
-        let mut image = RgbaImage::new(width_px, height_px);
+        let mut image = ImageBuffer::from_pixel(width_px, height_px, Rgba([48, 48, 48, 255]));
 
         for y in 0..total_height {
             if y > 0 {
