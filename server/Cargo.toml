@@ -7,6 +7,6 @@ edition = "2018"
 [dependencies]
 rocket = { git = "https://github.com/SergioBenitez/Rocket.git", branch = "master" }
 rust-embed = { version = "5.6.0", features = ["debug-embed"] }
-image = "0.23.9"
+image = "0.23.12"
 lazy_static = "1.4.0"
 bitflags = "1.2.1"
