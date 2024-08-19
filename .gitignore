@@ -5,3 +5,4 @@ temp/*
 vendor/
 composer.phar
 !.gitkeep
+*.sqlite3

@@ -5,7 +5,7 @@
 
 import $ from 'jquery';
 import Clipboard from 'clipboard';
-import * as attackPowersJson from './../json/attackPowers.json';
+import * as attackPowersJson from './../json/attackpowers.json';
 import * as chainsJson from './../json/chains.json';
 import * as contentHtml from './../html/content.html';
 import 'bootstrap/js/dropdown.js';
@@ -44,7 +44,7 @@ Constants.Puyo.Cleared = {
 	Blue:   15,
 	Yellow: 16,
 	Purple: 17,
-	
+
 	Nuisance: 18,
 	Point:    19,
 	Sun:      20
@@ -65,7 +65,7 @@ Constants.Simulation = {
 
 /*
  * Config
- * 
+ *
  * Contains configuration values used throughout the simulator
  */
 var Config = {
@@ -85,7 +85,7 @@ var Config = {
  * Contains methods dealing with Puyo, which include getting puyo state
  * and URL conversions.
  */
- 
+
 function Puyo(p) {
 	if (p !== undefined && this.isValid(p)) { // Is this a valid puyo?
 		this.puyo = p;
@@ -102,37 +102,37 @@ Puyo.prototype = {
 
 			p === Constants.Puyo.Nuisance || p === Constants.Puyo.Hard  || p === Constants.Puyo.Point ||
 			p === Constants.Puyo.Sun      || p === Constants.Puyo.Iron  || p === Constants.Puyo.Block ||
-			
+
 			p === Constants.Puyo.Cleared.Red    || p === Constants.Puyo.Cleared.Green  || p === Constants.Puyo.Cleared.Blue ||
 			p === Constants.Puyo.Cleared.Yellow || p === Constants.Puyo.Cleared.Purple ||
-			
+
 			p === Constants.Puyo.Cleared.Nuisance || p === Constants.Puyo.Cleared.Point ||
 			p === Constants.Puyo.Cleared.Sun
 		);
 	},
-	
+
 	isColored: function() { // Returns if puyo is a colored puyo (not nuisance or other type)
 		return (
 			this.puyo === Constants.Puyo.Red    || this.puyo === Constants.Puyo.Green  || this.puyo === Constants.Puyo.Blue ||
 			this.puyo === Constants.Puyo.Yellow || this.puyo === Constants.Puyo.Purple
 		);
 	},
-	
+
 	isNuisance: function() { // Returns if puyo is a nuisance puyo
 		return (this.puyo === Constants.Puyo.Nuisance || this.puyo === Constants.Puyo.Hard || this.puyo === Constants.Puyo.Point);
 	},
-	
+
 	isCleared: function() { // Returns if puyo has been cleared
 		return (
-			this.puyo === Constants.Puyo.Cleared.Red    || this.puyo === Constants.Puyo.Cleared.Green  || 
+			this.puyo === Constants.Puyo.Cleared.Red    || this.puyo === Constants.Puyo.Cleared.Green  ||
 			this.puyo === Constants.Puyo.Cleared.Blue   || this.puyo === Constants.Puyo.Cleared.Yellow ||
 			this.puyo === Constants.Puyo.Cleared.Purple ||
-			
+
 			this.puyo === Constants.Puyo.Cleared.Nuisance || this.puyo === Constants.Puyo.Cleared.Point ||
 			this.puyo === Constants.Puyo.Cleared.Sun
 		);
 	},
-	
+
 	hasAnimation: function() { // Returns if the current puyo can have animation (excludes sun puyo)
 		return (
 			this.puyo === Constants.Puyo.Red    || this.puyo === Constants.Puyo.Green  || this.puyo === Constants.Puyo.Blue ||
@@ -141,7 +141,7 @@ Puyo.prototype = {
 			this.puyo === Constants.Puyo.Nuisance || this.puyo === Constants.Puyo.Hard  || this.puyo === Constants.Puyo.Point
 		);
 	},
-	
+
 	setPuyo: function(p) { // Set the puyo
 		if (this.isValid(p)) {
 			this.puyo = p;
@@ -156,7 +156,7 @@ Puyo.prototype = {
  *
  * Controls the aspects of the field, but doesn't display it
  */
- 
+
 var Field = {
 	width      : Constants.Field.DefaultWidth,      // Field Width (Default = 6)
 	height     : Constants.Field.DefaultHeight,     // Field Height (Default = 12)
@@ -176,13 +176,13 @@ var Field = {
 			this.setChainFromURL();
 		}
 	},
-	
+
 	setChain: function(chain, w, h, hr) { // Sets the chain with the specified width and height
 		var pos;
 		w  = w  || Constants.Field.DefaultWidth;
 		h  = h  || Constants.Field.DefaultHeight;
 		hr = hr || Constants.Field.DefaultHiddenRows;
-		
+
 		if (Simulation.running) { // Stop the simulation
 			Simulation.back();
 		}
@@ -204,7 +204,7 @@ var Field = {
 				Tabs.fieldWidthChanged();
 				PuyoDisplay.renderer.init();
 			}
-			
+
 			$("#field-size-width").val(this.width);
 			$("#field-size-height").val(this.height);
 			$("#field-hidden-rows").val(this.hiddenRows);
@@ -218,11 +218,11 @@ var Field = {
 				} else {
 					this.map.set(x, y, parseInt(chain.charAt(pos), 36));
 					pos--;
-					
+
 					if (!PuyoDisplay.renderer) {
 						continue;
 					}
-					
+
 					PuyoDisplay.renderer.drawPuyo(x, y, this.map.get(x, y));
 					if (!PuyoDisplay.puyoAnimation.running) { // Redraw all puyo around us
 						if (y > 0) { PuyoDisplay.renderer.drawPuyo(x, y - 1, this.map.get(x, y - 1)); }
@@ -253,7 +253,7 @@ var Field = {
 
 		this.chainInURL = true;
 	},
-	
+
 	mapToString: function() { // Converts mapEditor to a string that can be shared
 		var
 			addZeros = false, // Add zeros to the front
@@ -263,14 +263,33 @@ var Field = {
 				if (this.mapEditor.puyo(x, y) === Constants.Puyo.None && !addZeros) {
 					continue; // Don't need to add zeros to the front of the string
 				}
-				
+
 				addZeros = true;
 				chainString += this.mapEditor.puyo(x, y).toString(16);
 			}
 		}
-		
+
 		return chainString;
-	}
+	},
+
+	mapToStringLegacy: function() {
+  	var
+      addZeros = false,
+      oldChars = "0475681BCA32",
+      chainString = "";
+    for (var y = 0; y < this.totalHeight; y++) {
+			for (var x = 0; x < this.width; x++) {
+				if (this.mapEditor.puyo(x, y) === Constants.Puyo.None && !addZeros) {
+					continue; // Don't need to add zeros to the front of the string
+				}
+
+				addZeros = true;
+				chainString += oldChars.charAt(this.mapEditor.puyo(x, y));
+			}
+		}
+
+		return chainString;
+  }
 };
 
 Field.Map = function(w, h, m) { // Creates a puyo map, either a new one or from an existing one
@@ -300,20 +319,20 @@ Field.Map.prototype = {
 	puyo: function(x, y) { // Returns puyo at position (x,y)
 		return this.map[x][y].puyo;
 	},
-	
+
 	get: function(x, y) { // Returns the puyo object at position (x,y)
 		return this.map[x][y];
 	},
-	
+
 	set: function(x, y, p) { // Sets the puyo at position (x,y)
 		this.map[x][y].setPuyo(p);
-		
+
 		if (!PuyoDisplay.renderer) {
 			return;
 		}
 
 		PuyoDisplay.renderer.drawPuyo(x, y, this.map[x][y]);
-		
+
 		if (!PuyoDisplay.puyoAnimation.running) { // Redraw all puyo around us
 			if (y > 0) { PuyoDisplay.renderer.drawPuyo(x, y - 1, this.map[x][y - 1]); }
 			if (x > 0) { PuyoDisplay.renderer.drawPuyo(x - 1, y, this.map[x - 1][y]); }
@@ -356,7 +375,7 @@ var Simulation = {
 	targetPoints:   Constants.Simulation.DefaultTargetPoints,   // Target Points (Default = 70)
 	speed: Constants.Simulation.DefaultSpeed, // Speed that the simulator runs at (lower = faster; Default = 500)
 	scoreMode: 0, // Score Mode (0 = Classic, 1 = Fever)
-	
+
 	back: function() { // Stops the chain
 		// Reset all variables
 		if (this.timer !== undefined) {
@@ -369,23 +388,23 @@ var Simulation = {
 		this.stepMode = false;
 		this.skipMode = false;
 		this.action = -1;
-		
+
 		this.chains = 0;
 		this.score = 0;
 		this.nuisance = 0;
 		this.leftoverNuisance = 0;
 		this.prevChainPower = 0;
-		
+
 		$("#field-chains").text(this.chains);
 		$("#field-score").text(this.score);
 		$("#field-nuisance").text(this.nuisance);
-		
+
 		PuyoDisplay.renderer.drawNuisanceTray(this.nuisance);
-		
+
 		// Display the "editor" chain on the puyo display and set the simulation buttons
 		ControlsDisplay.toggleSimulationButtons(false, true, false, true, true);
 		$("#tab-simulator input, #tab-simulator select, #tab-simulator button").prop("disabled", false); // Disable simulator options
-		
+
 		Field.map = Field.mapEditor;
 		for (var y = 0; y < Field.totalHeight; y++) {
 			for (var x = 0; x < Field.width; x++) {
@@ -393,7 +412,7 @@ var Simulation = {
 			}
 		}
 	},
-	
+
 	start: function() { // Starts the chain
 		if (!this.running) {
 			ControlsDisplay.toggleSimulationButtons(true, false, true, false, false); // Toggle simulation buttons
@@ -403,10 +422,10 @@ var Simulation = {
 			this.running = true;
 			Field.mapSimulation = new Field.Map(Field.width, Field.totalHeight, Field.mapEditor);
 			Field.map = Field.mapSimulation;
-			
+
 			// Check to see if the puyo can fall and go from there
 			this.action = 0;
-			
+
 			if (!this.dropPuyo()) { // No puyo dropped, start chaining
 				this.chain();
 			} else { // Puyo dropped, delay chaining
@@ -418,24 +437,24 @@ var Simulation = {
 
 			this.paused = false;
 			this.stepMode = false;
-			
+
 			this.chain();
 		}
 	},
-	
+
 	pause: function() { // Pauses the chain
 		if (this.running && !this.paused && !this.stepMode && !this.skipMode) {
 			if (this.timer !== undefined) {
 				clearTimeout(this.timer);
 				this.timer = undefined;
 			}
-		
+
 			this.paused = true;
-			
+
 			ControlsDisplay.toggleSimulationButtons(true, true, false, true, true); // Toggle simulation buttons
 		}
 	},
-	
+
 	step: function() { // Advances a step in the chain
 		if (!this.running) {
 			ControlsDisplay.toggleSimulationButtons(true, true, false, true, true); // Toggle simulation buttons
@@ -446,7 +465,7 @@ var Simulation = {
 			this.stepMode = true;
 			Field.mapSimulation = new Field.Map(Field.width, Field.totalHeight, Field.mapEditor);
 			Field.map = Field.mapSimulation;
-			
+
 			// Check to see if the puyo can fall and go from there
 			this.action = 0;
 			if (!this.dropPuyo()) { // No puyo dropped, start chaining
@@ -457,11 +476,11 @@ var Simulation = {
 
 			this.paused = false;
 			this.stepMode = true;
-			
+
 			this.chain();
 		}
 	},
-	
+
 	skip: function() { // Skips right to the end of the chain
 		if (!this.running) {
 			ControlsDisplay.toggleSimulationButtons(true, false, false, false, false); // Toggle simulation buttons
@@ -472,7 +491,7 @@ var Simulation = {
 			this.skipMode = true;
 			Field.mapSimulation = new Field.Map(Field.width, Field.totalHeight, Field.mapEditor);
 			Field.map = Field.mapSimulation;
-			
+
 			// Drop the puyo and start chaining
 			this.action = 0;
 			this.dropPuyo();
@@ -483,11 +502,11 @@ var Simulation = {
 			this.paused = false;
 			this.stepMode = false;
 			this.skipMode = true;
-			
+
 			this.chain();
 		}
 	},
-	
+
 	chain: function() { // This preforms the chain
 		var self = this, // References to this object
 		    i, j, x, y;  // Loop variables
@@ -508,7 +527,7 @@ var Simulation = {
 					check[x][y] = false;
 				}
 			}
-			
+
 			// Check to see which puyo have been cleared
 			for (y = Field.hiddenRows; y < Field.totalHeight; y++) { // Don't check the hidden row
 				for (x = 0; x < Field.width; x++) {
@@ -530,7 +549,7 @@ var Simulation = {
 								if (this.positions[i].x === -1 && pos.x <= 0)                     continue;
 								if (this.positions[i].y ===  1 && pos.y >= Field.totalHeight - 1) continue;
 								if (this.positions[i].x ===  1 && pos.x >= Field.width - 1)       continue;
-								
+
 								// Check to see if the puyo match
 								checkX = pos.x + this.positions[i].x; // Shortcuts
 								checkY = pos.y + this.positions[i].y; // Shortcuts
@@ -547,7 +566,7 @@ var Simulation = {
 						if (cleared >= this.puyoToClear) { // A chain was made
 							chainMade   = true;
 							puyoCleared += cleared;
-							
+
 							// Add the erased puyo to the group list
 							switch (puyo) {
 								case Constants.Puyo.Red:    groups[0].push(cleared); break;
@@ -566,7 +585,7 @@ var Simulation = {
 									case Constants.Puyo.Yellow: Field.map.set(pos.x, pos.y, Constants.Puyo.Cleared.Yellow); break;
 									case Constants.Puyo.Purple: Field.map.set(pos.x, pos.y, Constants.Puyo.Cleared.Purple); break;
 								}
-								
+
 								// Check the nuisance/point/hard puyo around the current puyo
 								for (j = 0; j < 4; j++) {
 									// Check for out of bounds
@@ -574,7 +593,7 @@ var Simulation = {
 									if (this.positions[j].x === -1 && pos.x <= 0)                        continue;
 									if (this.positions[j].y ===  1 && pos.y >= Field.totalHeight - 1)    continue;
 									if (this.positions[j].x ===  1 && pos.x >= Field.width - 1)          continue;
-									
+
 									// Check to see if the puyo match
 									checkX = pos.x + this.positions[j].x; // Shortcuts
 									checkY = pos.y + this.positions[j].y; // Shortcuts
@@ -619,7 +638,7 @@ var Simulation = {
 							}
 						}
 					}
-					
+
 					clearBonus += self.colorBonus[self.scoreMode][colors - 1]; // Add the color bonus
 
 					// Add the chain power now
@@ -629,7 +648,7 @@ var Simulation = {
 					} else {
 						power = self.chainPowers[self.chains];
 					}
-					
+
 					self.prevChainPower = power;
 					clearBonus += power;
 
@@ -637,18 +656,18 @@ var Simulation = {
 
 					return clearBonus;
 				})(groups, this);
-				
+
 				// Calculate the scoring
 				var bonus = ((puyoCleared * 10) * clearBonus);
 				bonus += (pointPuyoCleared * this.pointPuyoBonus);
 
 				this.chains++;
 				this.score += bonus;
-				
+
 				var nuisanceCalculated = (bonus / this.targetPoints) + this.leftoverNuisance; // Calculate nuisance
 				this.nuisance += Math.floor(nuisanceCalculated); // Round down and add to nuisance
 				this.leftoverNuisance = nuisanceCalculated % 1; // Save leftover nuisance for the next chain
-				
+
 				if (sunPuyoCleared > 0) { // If we cleared any sun puyo, we need to add nuisance
 					if (this.chains === 1) {
 						this.nuisance += (3 * sunPuyoCleared);
@@ -656,19 +675,19 @@ var Simulation = {
 						this.nuisance += (6 * (this.chains - 1) * sunPuyoCleared);
 					}
 				}
-				
+
 				// Now that we did that, move onto the next action
 				this.action = 1;
-				
+
 				if (this.skipMode) { // If we are in skip mode, move directly onto the next step of the chain
 					this.chain();
 				} else {
 					$("#field-chains").text(this.chains);
 					$("#field-score").text(((puyoCleared * 10) + (pointPuyoCleared * this.pointPuyoBonus)) + " x " + clearBonus);
 					$("#field-nuisance").text(this.nuisance);
-					
+
 					PuyoDisplay.renderer.drawNuisanceTray(this.nuisance);
-					
+
 					if (!this.stepMode) { // Set the timer if we aren't in step mode
 						this.timer = setTimeout(function() { self.chain(); }, this.speed);
 					}
@@ -682,11 +701,11 @@ var Simulation = {
 							PuyoDisplay.renderer.drawPuyo(x, y, Field.map.get(x, y));
 						}
 					}
-					
+
 					$("#field-chains").text(this.chains);
 					$("#field-score").text(this.score);
 					$("#field-nuisance").text(this.nuisance);
-					
+
 					PuyoDisplay.renderer.drawNuisanceTray(this.nuisance);
 				} else { // Just toggle the buttons
 					ControlsDisplay.toggleSimulationButtons(true, false, false, false, false);
@@ -695,7 +714,7 @@ var Simulation = {
 
 		} else if (this.action === 1) { // Erase & drop puyo
 			$("#field-score").text(this.score); // Set the score to it's real value now
-			
+
 			// Remove any cleared puyo
 			for (y = Field.hiddenRows; y < Field.totalHeight; y++) { // Can start at 1 since you can't clear puyo in the hidden row
 				for (x = 0; x < Field.width; x++) {
@@ -704,7 +723,7 @@ var Simulation = {
 					}
 				}
 			}
-			
+
 			// Drop the puyo and see if we can continue the chain
 			if (this.dropPuyo()) { // Puyo dropped, continue with the chain
 				this.action = 0;
@@ -723,11 +742,11 @@ var Simulation = {
 							PuyoDisplay.renderer.drawPuyo(x, y, Field.map.get(x, y));
 						}
 					}
-					
+
 					$("#field-chains").text(this.chains);
 					$("#field-score").text(this.score);
 					$("#field-nuisance").text(this.nuisance);
-					
+
 					PuyoDisplay.renderer.drawNuisanceTray(this.nuisance);
 				} else { // Just toggle the buttons
 					ControlsDisplay.toggleSimulationButtons(true, false, false, false, false);
@@ -735,7 +754,7 @@ var Simulation = {
 			}
 		}
 	},
-	
+
 	dropPuyo: function() { // Makes the puyo fall in place and returns if any puyo changed position
 		var dropped = false;
 
@@ -744,12 +763,12 @@ var Simulation = {
 				if (Field.map.puyo(x, y) !== Constants.Puyo.None && Field.map.puyo(x, y) !== Constants.Puyo.Block &&
 				    Field.map.puyo(x, y + 1) === Constants.Puyo.None) { // There's an empty space below this puyo!
 					dropped = true;
-					
+
 					var y2 = y;
 					while (y2 < Field.totalHeight - 1 && Field.map.puyo(x, y2 + 1) === Constants.Puyo.None) {
 						y2++;
 					}
-					
+
 					Field.map.set(x, y2, Field.map.puyo(x, y));
 					Field.map.set(x, y, Constants.Puyo.None);
 				}
@@ -770,23 +789,23 @@ var FieldDisplay = {
 	fieldContent: undefined,           // A reference to the content of the field
 	selectedPuyo: Constants.Puyo.None, // Current Puyo that is selected
 	insertPuyo  : false,               // Indicates if we are going to insert Puyo (the insert box is checked)
-		
+
 	init: function() { // Initalize
 		PuyoDisplay.init();
 		this.load(localStorage.getItem("chainsim.fieldStyle") || "standard", true);
 	},
-	
+
 	load: function(style, init) { // Loads the display and the style (need to do this after DOM ready)
 		// Init specifies if this is the simulator is being loaded (aka style isn't being changed)
 		init = init || false;
-		
+
 		// Set the field content reference
 		switch (style) {
 			case "standard": this.fieldContent = Content.Field.Standard; break;
 			case "eyecandy": this.fieldContent = Content.Field.EyeCandy; break;
 			default:         this.fieldContent = Content.Field.Basic;    break;
 		}
-		
+
 		if (!init) { // Only fade out & fade in if we are switching styles
 			var self = this;
 			$("#simulator-field, #nuisance-tray").fadeOut(200, function() { // Fade out the simulator and display the new one
@@ -802,13 +821,13 @@ var FieldDisplay = {
 				$("#field-bg-2").css("top", Field.hiddenRows * PuyoDisplay.puyoSize + "px");
 				$("#field-bg-3").css("height", Field.hiddenRows * PuyoDisplay.puyoSize + "px");
 				Tabs.fieldWidthChanged();
-				
+
 				$("#simulator-field, #nuisance-tray").fadeIn(200);
 				$("#field-style").prop("disabled", false);
 			});
 		}
 	},
-	
+
 	display: function() { // Displays the field
 		$("#simulator").removeClass("field-basic field-standard field-eyecandy");
 		$("#simulator").addClass(this.fieldContent.CSSClass);
@@ -816,12 +835,12 @@ var FieldDisplay = {
 		if (this.fieldContent.Script !== undefined) {
 			this.fieldContent.Script.call(this);
 		}
-		
+
 		$("#field").css({ width: Field.width * PuyoDisplay.puyoSize + "px", height: (Field.totalHeight) * PuyoDisplay.puyoSize + "px" });
 		$("#field-bg-2").css("top", Field.hiddenRows * PuyoDisplay.puyoSize + "px");
 		$("#field-bg-3").css("height", Field.hiddenRows * PuyoDisplay.puyoSize + "px");
 		Tabs.fieldWidthChanged();
-		
+
 		// Set up the field cursor
 		var self = this;
 		(function() { // Wrap in a function call
@@ -857,15 +876,15 @@ var FieldDisplay = {
 				var newFieldX, newFieldY;
 				offsetX = e.pageX - $(this).offset().left;
 				offsetY = e.pageY - $(this).offset().top;
-				
+
 				if (offsetX < 0 || offsetX >= $(this).width() || offsetY < 0 || offsetY >= $(this).height()) { // Check for out of bounds before continuing
 					$(this).mouseleave();
 					return;
 				}
-				
+
 				newFieldX = Math.floor(offsetX / PuyoDisplay.puyoSize);
 				newFieldY = Math.floor(offsetY / PuyoDisplay.puyoSize);
-				
+
 				if (newFieldX !== fieldX || newFieldY !== fieldY) { // Are we hovering over another puyo now?
 					fieldX = newFieldX;
 					fieldY = newFieldY;
@@ -888,7 +907,7 @@ var FieldDisplay = {
 				if (Simulation.running) { // Don't allow placing puyo when the simulator is running
 					return;
 				}
-				
+
 				if (!mouseDown && (e.which === 1 || e.which === 3)) {
 					mouseDown = true;
 					if (e.which === 1) {
@@ -945,20 +964,20 @@ var PuyoDisplay = {
 	// We're going to start out with our constants
 	puyoSize     : 32, // Puyo size in pixels (always 32)
 	puyoSkinsPath: "images/puyo/32x32", // Path the puyo skins are located in
-	
+
 	// Next we're going to set up our variables
 	renderer         : undefined, // The renderer object to use to display the puyo (Will always be set to CanvasRenderer)
 	puyoSkin         : undefined, // The current puyo skin
 	nuisanceTrayTimer: undefined, // The timer for the nuisance tray
 	puyoAnimation    : undefined, // Puyo animation
 	sunPuyoAnimation : undefined, // Sun Puyo animation
-	
+
 	animate: { // Animation settings
 		puyo        : true, // Animate Puyo (only the chalk puyo skin is animated)
 		sunPuyo     : true, // Animate Sun Puyo
 		nuisanceTray: true  // Animate the nuisance tray
 	},
-	
+
 	// Finally, we will list the available puyo skins here
 	puyoSkins: [
 		{ id : "classic",   image : "classic.png"   },
@@ -988,7 +1007,7 @@ var PuyoDisplay = {
 		{ id : "shiki2",    image : "shiki2.png"    },
 		{ id : "sonic",     image : "sonic.png"     }
 	],
-	
+
 	init: function() { // Initalize the puyo display
 		// Set the parents of our children
 		this.CanvasRenderer.parent   = this;
@@ -997,10 +1016,10 @@ var PuyoDisplay = {
 
 		// Set the renderer
 		this.renderer = this.CanvasRenderer;
-		
+
 		// Set the puyo skin
 		this.setPuyoSkin(localStorage.getItem("chainsim.puyoSkin") || "classic");
-		
+
 		// Set our animation settings
 		this.animate.puyo         = ((localStorage.getItem("chainsim.animate.puyo")         || "yes") === "yes");
 		this.animate.sunPuyo      = ((localStorage.getItem("chainsim.animate.sunPuyo")      || "yes") === "yes");
@@ -1030,30 +1049,30 @@ var PuyoDisplay = {
 
 			if (y < Field.hiddenRows) return 0;
 			if (p === Constants.Puyo.Nuisance || p === Constants.Puyo.Point) return 0;
-			
+
 			var L = (x > 0                     && Field.map.puyo(x - 1, y) === p),
 			    R = (x < Field.width - 1       && Field.map.puyo(x + 1, y) === p),
 			    U = (y > Field.hiddenRows      && Field.map.puyo(x, y - 1) === p),
 				D = (y < Field.totalHeight - 1 && Field.map.puyo(x, y + 1) === p);
-			
+
 			if (L) pos += 8;
 			if (R) pos += 4;
 			if (U) pos += 2;
 			if (D) pos += 1;
-			
+
 			return pos;
 		}
 
 		switch (p) {
 			case Constants.Puyo.None:   posX = 0; posY = 0; break;
 			case Constants.Puyo.Delete: posX = 0; posY = 0; break;
-			
+
 			case Constants.Puyo.Red:    posX = getXPosition(x, y, p); posY = 0; break;
 			case Constants.Puyo.Green:  posX = getXPosition(x, y, p); posY = 1; break;
 			case Constants.Puyo.Blue:   posX = getXPosition(x, y, p); posY = 2; break;
 			case Constants.Puyo.Yellow: posX = getXPosition(x, y, p); posY = 3; break;
 			case Constants.Puyo.Purple: posX = getXPosition(x, y, p); posY = 4; break;
-			
+
 			case Constants.Puyo.Nuisance: posX = getXPosition(x, y, p); posY = 5; break;
 			case Constants.Puyo.Point:    posX = getXPosition(x, y, p); posY = 6; break;
 			case Constants.Puyo.Sun:      posX = getXPosition(x, y, p); posY = 7; break;
@@ -1074,28 +1093,28 @@ var PuyoDisplay = {
 
 		return {x: posX, y: posY};
 	},
-	
+
 	display: function() { // Display (in other words, initalize the renderer)
 		this.renderer.init();
-		
+
 		// Display the Puyo selection
 		this.displayPuyoSelection();
 	},
-	
+
 	setPuyoSkin: function(skin) { // Sets the puyo skin
 		for (var i = 0; i < this.puyoSkins.length; i++) {
 			if (this.puyoSkins[i].id === skin) {
 				this.puyoSkin = this.puyoSkins[i];
 				this.renderer.setPuyoSkin();
-				
+
 				return;
 			}
 		}
-		
+
 		this.puyoSkin = this.puyoSkins[0];
 		this.renderer.setPuyoSkin();
 	},
-	
+
 	displayPuyoSelection: function() {
 		$("#puyo-selection .puyo").not(".puyo-none, .puyo-delete").css("background-image", "url('" + Config.assetsPath + "/" + this.puyoSkinsPath + "/" + this.puyoSkin.image + "')");
 	},
@@ -1105,7 +1124,7 @@ var PuyoDisplay = {
 			if (this.puyoSkins[i].id === id)
 				return i;
 		}
-		
+
 		return -1;
 	}
 };
@@ -1123,7 +1142,7 @@ PuyoDisplay.CanvasRenderer = { // CanvasRenderer (uses HTML5 Canvas to display t
 		} else if (Field.width === Constants.Field.DefaultWidth && Field.height === Constants.Field.DefaultHeight && $("#field-content").hasClass("alternate")) {
 			$("#field-content").removeClass("alternate");
 		}
-		
+
 		if (Field.hiddenRows !== Constants.Field.DefaultHiddenRows && !$("#field-bg-1").hasClass("alternate")) {
 			$("#field-bg-1").addClass("alternate");
 		} else if (Field.hiddenRows === Constants.Field.DefaultHiddenRows && $("#field-bg-1").hasClass("alternate")) {
@@ -1132,14 +1151,14 @@ PuyoDisplay.CanvasRenderer = { // CanvasRenderer (uses HTML5 Canvas to display t
 
 		$("<canvas>").attr({ id: "field-canvas", width: Field.width * this.parent.puyoSize, height: (Field.totalHeight) * this.parent.puyoSize }).appendTo("#field");
 		this.ctx = document.getElementById("field-canvas").getContext("2d");
-		
+
 		// Now draw everything
 		for (var y = 0; y < Field.totalHeight; y++) {
 			for (var x = 0; x < Field.width; x++) {
 				this.drawPuyo(x, y, Field.map.get(x, y));
 			}
 		}
-		
+
 		// Set up the nuisance tray
 		$("<canvas>").attr({
 			id    : "nuisance-tray-canvas",
@@ -1150,14 +1169,14 @@ PuyoDisplay.CanvasRenderer = { // CanvasRenderer (uses HTML5 Canvas to display t
 			"margin-top" : "-15px"
 		}).appendTo("#nuisance-tray");
 		this.nuisanceTrayCtx = document.getElementById("nuisance-tray-canvas").getContext("2d");
-		
+
 		this.drawNuisanceTray(Simulation.nuisance, false);
 	},
 
 	uninit: function() { // Uninitalize the Canvas Renderer
 		$("#field-canvas").remove();
 		$("#nuisance-tray-canvas").remove();
-		
+
 		if (this.parent.nuisanceTrayTimer !== undefined) { // Stop the timer if it is running
 			clearTimeout(this.parent.nuisanceTrayTimer);
 		}
@@ -1195,14 +1214,14 @@ PuyoDisplay.CanvasRenderer = { // CanvasRenderer (uses HTML5 Canvas to display t
 			}
 
 			self.puyoImage = newPuyoImage;
-			
+
 			if (self.parent.animate.puyo && self.parent.puyoSkin.frames !== undefined && self.parent.puyoSkin.frames > 0) { // Is this puyo skin animated?
 				self.parent.puyoAnimation.start(self.parent.puyoSkin.frames);
 			}
 			if (self.parent.animate.sunPuyo) { // Animate sun puyo?
 				self.parent.sunPuyoAnimation.start();
 			}
-			
+
 			if ($("#field-canvas").length > 0) { // Can we draw the puyo?
 				for (var y = 0; y < Field.totalHeight; y++) {
 					for (var x = 0; x < Field.width; x++) {
@@ -1212,13 +1231,13 @@ PuyoDisplay.CanvasRenderer = { // CanvasRenderer (uses HTML5 Canvas to display t
 			}
 
 			$("#puyo-selection .puyo").not(".puyo-none, .puyo-delete").css("background-image", "url('" + Config.assetsPath + "/" + self.parent.puyoSkinsPath + "/" + self.parent.puyoSkin.image + "')");
-			
+
 			if (self.parent.nuisanceTrayTimer === undefined) {
 				self.drawNuisanceTray(Simulation.nuisance, false);
 			}
 		};
 	},
-	
+
 	drawNuisanceTray: function(n, animate) { // Draws nuisance in the nuisance tray
 		var
 			amounts = [1, 6, 30, 180, 360, 720, 1440],
@@ -1239,7 +1258,7 @@ PuyoDisplay.CanvasRenderer = { // CanvasRenderer (uses HTML5 Canvas to display t
 				}
 			}
 		}
-		
+
 		if (this.parent.animate.nuisanceTray && animate !== false && n !== 0) { // Make it nice and animate it
 			this.animateNuisanceTray(0, pos);
 		} else {
@@ -1256,7 +1275,7 @@ PuyoDisplay.CanvasRenderer = { // CanvasRenderer (uses HTML5 Canvas to display t
 			}
 		}
 	},
-	
+
 	animateNuisanceTray: function(step, pos) { // Animates the nuisance tray
 		if (step === 0) { // Step not initalized, so we are just starting the animation
 			if (this.parent.nuisanceTrayTimer !== undefined) { // Stop the timer if it is running
@@ -1277,7 +1296,7 @@ PuyoDisplay.CanvasRenderer = { // CanvasRenderer (uses HTML5 Canvas to display t
 		}
 
 		this.nuisanceTrayCtx.globalAlpha = 1;
-		
+
 		var self = this;
 		this.parent.nuisanceTrayTimer = setTimeout(function() { self.animateNuisanceTray(step + 5, pos); }, 1000 / 60);
 	}
@@ -1304,7 +1323,7 @@ PuyoDisplay.puyoAnimation = { // Puyo animation object
 				}
 			}
 		}
-		
+
 		$("#puyo-selection .puyo.puyo-red"     ).css("background-position", "-" + (this.frame * this.parent.puyoSize) + "px 0");
 		$("#puyo-selection .puyo.puyo-green"   ).css("background-position", "-" + (this.frame * this.parent.puyoSize) + "px -" + (1 * this.parent.puyoSize) + "px");
 		$("#puyo-selection .puyo.puyo-blue"    ).css("background-position", "-" + (this.frame * this.parent.puyoSize) + "px -" + (2 * this.parent.puyoSize) + "px");
@@ -1316,7 +1335,7 @@ PuyoDisplay.puyoAnimation = { // Puyo animation object
 		var self = this;
 		this.timer = setTimeout(function() { self.animate(); }, 200);
 	},
-		
+
 	start: function(n) { // Starts the animation (n = total number of frames)
 		this.running = true;
 
@@ -1417,11 +1436,11 @@ var ControlsDisplay = {
 		$("#puyo-insertion").change(function() {
 			FieldDisplay.insertPuyo = $(this).prop("checked");
 		});
-		
+
 		$("#field-erase-all").click(function() {
 			Field.setChain("", Field.width, Field.height, Field.hiddenRows);
 		});
-		
+
 		if (Field.chainInURL) { // Make the "Set from URL" button function if a chain can be set from the URL
 			$("#field-set-from-url").click(function() {
 				Field.setChainFromURL();
@@ -1448,7 +1467,7 @@ var ControlsDisplay = {
 			$(this).parent().addClass("selected");
 		});
 		$("#puyo-selection .puyo.puyo-none").parent().addClass("selected");
-		
+
 		$("#simulation-back" ).click(function() { Simulation.back();  });
 		$("#simulation-start").click(function() { Simulation.start(); });
 		$("#simulation-pause").click(function() { Simulation.pause(); });
@@ -1461,14 +1480,14 @@ var ControlsDisplay = {
 		$("#simulation-speed").change(function() {
 			Simulation.speed = parseInt($(this).val(), 10);
 		}).val(Constants.Simulation.DefaultSpeed);
-		
+
 		this.toggleSimulationButtons(false, true, false, true, true);
 
 		$("#field-score").text("0");
 		$("#field-chains").text("0");
 		$("#field-nuisance").text("0");
 	},
-	
+
 	toggleSimulationButtons: function(back, start, pause, step, skip) { // Controls the display of the simulator control buttons
 		$("#simulation-back" ).prop("disabled", !back);
 		$("#simulation-start").prop("disabled", !start);
@@ -1494,7 +1513,7 @@ var Tabs = {
 
 			$("#simulator-tabs-select > li.tab-active").removeClass("tab-active");
 			$("#simulator-tabs .content-active").removeClass("content-active");
-			
+
 			if (!$("#simulator-tabs").hasClass("float") || !$parent.hasClass("tab-active")) {
 				$parent.addClass("tab-active");
 				$($dataTarget).addClass("content-active");
@@ -1519,7 +1538,7 @@ var Tabs = {
 		this.Links.init();
 		this.Settings.init();
 	},
-	
+
 	fieldWidthChanged: function() { // Called when the field width changes
 		var $simulatorTabs = $("#simulator-tabs"),
 		    $simulatorTabsWidth = $simulatorTabs.outerWidth(true),
@@ -1527,7 +1546,7 @@ var Tabs = {
 
 		if ($simulatorTabsWidth <= $simulatorTabsMinWidth && !$simulatorTabs.hasClass("float")) {
 			$simulatorTabs.addClass("float");
-			
+
 			$(document).on("click.simulatorTabs", function(e) {
 				var clicked = $(e.target);
 				if (!clicked.parents().is("#simulator-tabs, #simulator-tabs-select")) {
@@ -1573,13 +1592,13 @@ Tabs.SavedChains = {
 				this.chains = [];
 			}
 		}
-		
+
 		this.display();
 	},
-	
+
 	load: function(index) { // Load a chain
 		var chain = this.chains[index].chain;
-		
+
 		// If this chain is saved in a legacy format, convert it to base36
 		if ((this.chains[index].format || "legacy") === "legacy") {
 			var oldChars = "0475681BCA32";
@@ -1601,12 +1620,12 @@ Tabs.SavedChains = {
 			this.chains[index].hiddenRows || Constants.Field.DefaultHiddenRows
 		);
 	},
-	
+
 	add: function(name) { // Add a chain to the chains list
 		if (name === "") { // No name was set
 			return;
 		}
-		
+
 		this.chains.push({
 			name:       name,
 			width:      Field.width,
@@ -1615,18 +1634,18 @@ Tabs.SavedChains = {
 			chain:      Field.mapToString(),
 			format:     "base36"
 		});
-		
+
 		this.saveChains();
 		this.addToDisplay(this.chains.length - 1);
 	},
-	
+
 	remove: function(index) { // Removes the chain at the specified index
 		this.chains.splice(index, 1);
-		
+
 		this.saveChains();
 		this.removeFromDisplay(index);
 	},
-	
+
 	saveChains: function() { // Saves the chains
 		localStorage.setItem("chainsim.savedChains", JSON.stringify(this.chains));
 	},
@@ -1635,7 +1654,7 @@ Tabs.SavedChains = {
 		var self = this;
 
 		$("#saved-chains-list").empty(); // Delete any entries that might be displayed
-		
+
 		if (this.chains.length === 0) { // No saved chains
 			$(".hide-on-saved-chains").show();
 		} else {
@@ -1643,14 +1662,14 @@ Tabs.SavedChains = {
 				this.addToDisplay(i);
 			}
 		}
-		
+
 		$("#saved-chains-list").on("click", "li .chain-name a", function() {
 			self.load(parseInt($(this).parents("#saved-chains-list li").attr("data-value"), 10));
 		}).on("click", "li .icon-delete", function() {
 			self.remove(parseInt($(this).parents("#saved-chains-list li").attr("data-value"), 10));
 		});
 	},
-	
+
 	addToDisplay: function(index) { // Adds the chain with the specified index to the end of the displayed list
 		if ($("#saved-chains-list").children("li[data-value]").length === 0) { // Remove the "You have no saved chains" message
 			$(".hide-on-saved-chains").hide();
@@ -1661,10 +1680,10 @@ Tabs.SavedChains = {
 			.html("<a class=\"icon-delete\" title=\"Delete Chain\"></a><span class=\"chain-name\"><a class=\"link\">" + Utils.escape(this.chains[index].name) + "</a></span>")
 			.appendTo("#saved-chains-list");
 	},
-	
+
 	removeFromDisplay: function(index) { // Removes the chain with the specified index from the list
 		$("#saved-chains-list li[data-value='" + index + "']").remove();
-		
+
 		if ($("#saved-chains-list").children("li[data-value]").length === 0) { // If there is nothing left then display the "You have no saved chains" message
 			$(".show-on-saved-chains").hide();
 			$(".hide-on-saved-chains").show();
@@ -1679,12 +1698,12 @@ Tabs.Chains = {
 		var self = this;
 
 		this.chains = chainsJson;
-		
+
 		// Categories
 		for (var i = 0; i < this.chains.length; i++) {
 			$("#preset-chains .dropdown-menu").append("<h3>" + this.chains[i].name + "</h3>");
 			var category = $("<ul>");
-			
+
 			// Sub-categories
 			for (var j = 0; j < this.chains[i].categories.length; j++) {
 				$("<li>")
@@ -1693,20 +1712,20 @@ Tabs.Chains = {
 					.html("<a>" + this.chains[i].categories[j].name + "</a>")
 					.appendTo(category);
 			}
-			
+
 			$("#preset-chains .dropdown-menu").append(category);
 		}
-			
+
 		$("#preset-chains .dropdown-menu a").click(function() {
 			var category = parseInt($(this).parent().attr("data-category"), 10),
 				value    = parseInt($(this).parent().attr("data-value"),    10);
-			
+
 			$("#preset-chains .dropdown-menu li.selected").removeClass("selected");
 			$(this).parent().addClass("selected");
 
 			$("#preset-chains-series").text(self.chains[category].name);
 			$("#preset-chains-group").text(self.chains[category].categories[value].name);
-			
+
 			self.displaySubCategory(category, value);
 		});
 
@@ -1714,51 +1733,51 @@ Tabs.Chains = {
 			if ($(this).prop("selectedIndex") === 0) {
 				return;
 			}
-			
+
 			var category    = parseInt($("#preset-chains .dropdown-menu .selected").attr("data-category"), 10),
 			    subCategory = parseInt($("#preset-chains .dropdown-menu .selected").attr("data-value"),    10),
 				type        = parseInt($(this).attr("data-type"),   10),
 				colors      = parseInt($(this).attr("data-colors"), 10),
 				length      = parseInt($(this).val(), 10);
-			
+
 			Field.setChain(
 				self.chains[category].categories[subCategory].types[type].colors[colors].chains[length].chain, // Chain
 				self.chains[category].categories[subCategory].fieldWidth  || Constants.Field.DefaultWidth,     // Field width
 				self.chains[category].categories[subCategory].fieldHeight || Constants.Field.DefaultHeight,    // Field height
 				Constants.Field.DefaultHiddenRows // Hidden rows (It's always 1 with these chains)
 			);
-			
+
 			Simulation.puyoToClear = self.chains[category].categories[subCategory].puyoToClear || Constants.Simulation.DefaultPuyoToClear;
 			$("#puyo-to-clear").val(Simulation.puyoToClear);
 
 			$(this).prop("selectedIndex", 0);
 		});
-		
+
 		$("#preset-chains .dropdown-menu li[data-category='0'][data-value='1'] a").click();
 	},
 
 	displaySubCategory: function(category, subCategory) {
 		$("#preset-chains-list").empty(); // Empty the list so we can put new stuff in it
-		
+
 		// Chain types
 		for (var i = 0; i < this.chains[category].categories[subCategory].types.length; i++) {
 			var row = $("<dl>"),
 				dd  = $("<dd>");
-			
+
 			// Name of the chain type
 			$("<dt>")
 				.text(this.chains[category].categories[subCategory].types[i].name)
 				.appendTo(row);
-			
+
 			// Select boxes for each color
 			for (var j = 0; j < this.chains[category].categories[subCategory].types[i].colors.length; j++) {
 				var select = $("<select>").attr("data-type", i).attr("data-colors", j);
-				
+
 				// Add color amount as the first index
 				$("<option>")
 					.text(this.chains[category].categories[subCategory].types[i].colors[j].amount + " Col")
 					.appendTo(select);
-				
+
 				// Add the list of chains
 				for (var k = 0; k < this.chains[category].categories[subCategory].types[i].colors[j].chains.length; k++) {
 					$("<option>")
@@ -1766,11 +1785,11 @@ Tabs.Chains = {
 						.text(this.chains[category].categories[subCategory].types[i].colors[j].chains[k].length)
 						.appendTo(select);
 				}
-				
+
 				select.appendTo(dd);
 				dd.appendTo(row);
 			}
-			
+
 			$("<li>")
 				.append(row)
 				.appendTo("#preset-chains-list");
@@ -1789,7 +1808,7 @@ Tabs.Simulator = {
 				}
 			})
 			.filter("[value='classic']").prop("checked", true); // Default to classic scoring
-		
+
 		// Puyo to Clear
 		$("#puyo-to-clear")
 			.change(function() {
@@ -1797,7 +1816,7 @@ Tabs.Simulator = {
 			})
 			.html(Utils.createDropDownListOptions(Utils.range(2, 6, 1)))
 			.val(Simulation.puyoToClear); // Default to 4
-			
+
 		// Target Points
 		$("#target-points")
 			.change(function() {
@@ -1805,7 +1824,7 @@ Tabs.Simulator = {
 			})
 			.html(Utils.createDropDownListOptions(Utils.range(10, 990, 10)))
 			.val(Simulation.targetPoints); // Default to 70
-		
+
 		// Point Puyo bonus
 		$("#point-puyo-bonus")
 			.change(function() {
@@ -1823,7 +1842,7 @@ Tabs.Simulator = {
 				1000000: "1M"
 			}))
 			.val(Simulation.pointPuyoBonus); // Default to 50
-		
+
 		// Field Size
 		$("#field-size-width")
 			.html(Utils.createDropDownListOptions(Utils.range(3, 16, 1)))
@@ -1840,7 +1859,7 @@ Tabs.Simulator = {
 				Field.setChain("", w, h, Field.hiddenRows);
 			}
 		});
-		
+
 		// Hidden Rows
 		$("#field-hidden-rows")
 			.html(Utils.createDropDownListOptions(Utils.range(1, 2, 1)))
@@ -1853,16 +1872,16 @@ Tabs.Simulator = {
 				Field.setChain("", Field.width, Field.height, hr);
 			}
 		});
-		
+
 		// Attack Powers
 		(function () {
 			var attackPowers = attackPowersJson;
-			
+
 			// Loop through each of the powers
 			for (var i = 0; i < attackPowers.length; i++) {
 				$("#attack-powers .dropdown-menu").append("<h3>" + attackPowers[i].name + "</h3>");
 				var category = $("<ul>");
-				
+
 				// Loop through each of the powers in the category
 				for (var j = 0; j < attackPowers[i].powers.length; j++) {
 					$("<li>")
@@ -1871,7 +1890,7 @@ Tabs.Simulator = {
 						.html("<a>" + attackPowers[i].powers[j].name + "</a>")
 						.appendTo(category);
 				}
-				
+
 				$("#attack-powers .dropdown-menu").append(category);
 			}
 
@@ -1881,13 +1900,13 @@ Tabs.Simulator = {
 
 				$("#attack-powers .dropdown-menu li.selected").removeClass("selected");
 				$(this).parent().addClass("selected");
-				
+
 				Simulation.chainPowers   = attackPowers[category].powers[value].values;
 				Simulation.chainPowerInc = attackPowers[category].powers[value].increment || 0;
 
 				$("#attack-powers-game").text(attackPowers[category].name);
 				$("#attack-powers-character").text(attackPowers[category].powers[value].name);
-				
+
 				$("input[name='score-mode'][value='" + (attackPowers[category].scoreMode || "classic") + "']").prop("checked", true).change();
 				$("#target-points").val((attackPowers[category].targetPoints || Constants.Simulator.DefaultTargetPoints)).change();
 			});
@@ -1909,18 +1928,23 @@ Tabs.Links = {
 				hiddenRows: Field.hiddenRows,
 				popLimit: Simulation.puyoToClear,
 			};
+			var legacyChain = Field.mapToStringLegacy();
+			var legacyQuery = "w=" + Field.width + "&h=" + Field.height + "&hr=" + Field.hiddenRows + "&chain=" + legacyChain;
+			$("#share-link").val(Config.baseUrl + Utils.stringFormat(Config.shareLegacyLinkUrl, legacyQuery));
+			$("#share-image").val(Config.baseUrl + Utils.stringFormat(Config.shareLegacyImageUrl, legacyQuery));
+			$("#share-animated-image").val("Error");
+			$("#share-wiki").val("<puyochain>" + legacyChain + "</puyochain>");
 
 			$.post(Config.basePath + "/api/save", data, function (response) {
 				if (response.success) {
 					$("#share-link").val(Config.baseUrl + Utils.stringFormat(Config.shareLinkUrl, response.data.id));
 					$("#share-image").val(Config.baseUrl + Utils.stringFormat(Config.shareImageUrl, response.data.id));
 					$("#share-animated-image").val(Config.baseUrl + Utils.stringFormat(Config.shareAnimatedImageUrl, response.data.id));
-
-					// Hide elements that shouldn't be shown for shared chains, and show elements that should
-					$(".hide-on-shared-chain").hide();
-					$(".show-on-shared-chain").show();
 				}
-			}, "json");
+			}, "json").always(function() {
+			  $(".hide-on-shared-chain").hide();
+  		  $(".show-on-shared-chain").show();
+			});
 		});
 
 		if (window.chainData !== undefined) {
@@ -1942,10 +1966,10 @@ Tabs.Settings = {
 		$("#animate-puyo") // Puyo animation
 			.click(function() {
 				var checked = $(this).prop("checked");
-				
+
 				PuyoDisplay.animate.puyo = checked;
 				localStorage.setItem("chainsim.animate.puyo", (checked ? "yes" : "no"));
-				
+
 				// See if we need to enable or disable the animation
 				if (checked && !PuyoDisplay.puyoAnimation.running && PuyoDisplay.puyoSkin.frames !== undefined && PuyoDisplay.puyoSkin.frames > 0) {
 					PuyoDisplay.puyoAnimation.start(PuyoDisplay.puyoSkin.frames);
@@ -1954,11 +1978,11 @@ Tabs.Settings = {
 				}
 			})
 			.prop("checked", PuyoDisplay.animate.puyo);
-		
+
 		$("#animate-sun-puyo") // Sun Puyo animation
 			.click(function() {
 				var checked = $(this).prop("checked");
-				
+
 				PuyoDisplay.animate.sunPuyo = checked;
 				localStorage.setItem("chainsim.animate.sunPuyo", (checked ? "yes" : "no"));
 
@@ -1974,12 +1998,12 @@ Tabs.Settings = {
 		$("#animate-nuisance-tray") // Nuisance Tray animation
 			.click(function() {
 				var checked = $(this).prop("checked");
-				
+
 				PuyoDisplay.animate.nuisanceTray = checked;
 				localStorage.setItem("chainsim.animate.nuisanceTray", (checked ? "yes" : "no"));
 			})
 			.prop("checked", PuyoDisplay.animate.puyo);
-		
+
 		// Field Style
 		$("#field-style")
 			.change(function() {
@@ -1996,7 +2020,7 @@ Tabs.Settings = {
 			for (var i = 0; i < Content.Field.EyeCandy.CharacterBackgrounds.length; i++) {
 				$("#character-background .dropdown-menu").append("<h3>" + Content.Field.EyeCandy.CharacterBackgrounds[i].name + "</h3>");
 				var category = $("<ul>");
-				
+
 				// Loop through each of the powers in the category
 				for (var j = 0; j < Content.Field.EyeCandy.CharacterBackgrounds[i].backgrounds.length; j++) {
 					$("<li>")
@@ -2007,7 +2031,7 @@ Tabs.Settings = {
 						.appendTo(category);
 					index++;
 				}
-				
+
 				$("#character-background .dropdown-menu").append(category);
 			}
 
@@ -2055,14 +2079,14 @@ Tabs.Settings = {
 					)
 				).appendTo("#puyo-skins .dropdown-menu");
 		});
-		
+
 		$("#puyo-skins .dropdown-menu a").click(function() {
 			$("#puyo-skins li.selected").removeClass("selected");
 			$($(this).parent()).addClass("selected");
 
 			PuyoDisplay.setPuyoSkin($(this).parent().attr("data-value"));
 			localStorage.setItem("chainsim.puyoSkin", $(this).parent().attr("data-value"));
-			
+
 			$("#puyo-skins .dropdown-toggle .puyo-skin").css("background-position", "0px -" + (PuyoDisplay.getSkinIndex(PuyoDisplay.puyoSkin.id) * PuyoDisplay.puyoSize) + "px");
 		});
 		$("#puyo-skins li[data-value='" + PuyoDisplay.puyoSkin.id + "']").addClass("selected");
@@ -2082,11 +2106,11 @@ var Content = {
 		Basic: {
 			CSSClass: "field-basic"
 		},
-		
+
 		Standard: {
 			CSSClass: "field-standard"
 		},
-		
+
 		EyeCandy: {
 			CSSClass: "field-eyecandy",
 
@@ -2114,14 +2138,14 @@ var Content = {
 				"pp7/risukuma.png", "pp7/arle.png", "pp7/dark_arle.png", "pp7/carbuncle.png",
 				"pp7/skeleton_t.png", "pp7/suketoudara.png", "pp7/draco.png", "pp7/schezo.png",
 				"pp7/rulue.png", "pp7/satan.png", "pp7/trio.png", "pp7/ecolo.png",
-				
+
 				"pp20th/accord.png", "pp20th/amitie.png", "pp20th/arle.png", "pp20th/black_sig.png",
 				"pp20th/carbuncle.png", "pp20th/dongurigaeru.png", "pp20th/draco.png", "pp20th/ecolo.png",
 				"pp20th/feli.png", "pp20th/klug.png", "pp20th/lemres.png", "pp20th/maguro.png",
 				"pp20th/ocean_prince.png", "pp20th/onion_pixy.png", "pp20th/raffine.png", "pp20th/red_amitie.png",
 				"pp20th/rider.png", "pp20th/ringo.png", "pp20th/risukuma.png", "pp20th/rulue.png",
 				"pp20th/satan.png", "pp20th/schezo.png", "pp20th/sig.png", "pp20th/strange_klug.png",
-				"pp20th/suketoudara.png", "pp20th/unusual_ecolo.png", "pp20th/white_feli.png", "pp20th/witch.png", 
+				"pp20th/suketoudara.png", "pp20th/unusual_ecolo.png", "pp20th/white_feli.png", "pp20th/witch.png",
 				"pp20th/yellow_satan.png", "pp20th/yu_rei.png",
 
 				"ppt/ai.png", "ppt/amitie.png", "ppt/arle.png", "ppt/draco.png",
@@ -2131,7 +2155,7 @@ var Content = {
 				"ppt/rulue.png", "ppt/satan.png", "ppt/schezo.png", "ppt/sig.png",
 				"ppt/suketoudara.png", "ppt/tee.png", "ppt/witch.png", "ppt/zed.png"
 			],
-			
+
 			Script: function() {
 				$("#field-bg-1").css("background-image", "url('" + Config.assetsPath + "/images/eyecandy/field_stage_bg/" + Content.Field.EyeCandy.StageBGs[Math.floor(Math.random() * Content.Field.EyeCandy.StageBGs.length)] + "')");
 
@@ -2208,9 +2232,9 @@ var Content = {
 var Utils = {
 	stringFormat: function (format) {
     	var args = Array.prototype.slice.call(arguments, 1);
-    	return format.replace(/{(\d+)}/g, function(match, number) { 
+    	return format.replace(/{(\d+)}/g, function(match, number) {
      		return typeof args[number] != 'undefined'
-        		? args[number] 
+        		? args[number]
         		: match;
     		});
 	},
@@ -2279,7 +2303,7 @@ $(document).ready(function() {
 
 	Field.init();            // Initalize the Field
 	FieldDisplay.init();     // Initalize the Field Display
-	
+
 	// Display the contents of the simulator
 	$("#simulator").html(Utils.stringFormat(contentHtml, Config.assetsPath));
 
@@ -2310,7 +2334,7 @@ $(document).ready(function() {
 	(function() { // Easter eggs :D
 		function easteregg(keys, surprise) { // Set up the main easter egg function
 			var key = 0;
-			
+
 			$(document).keydown(function(e) {
 				if (e.which === keys[key]) {
 					key++;
@@ -2323,7 +2347,7 @@ $(document).ready(function() {
 				}
 			});
 		}
-		
+
 		// Puyo Puyo~n 108 chain secret
 		// It's simply the Konami code, silly!
 		// Code: Up, Up, Down, Down, Left, Right, B, A, Enter
