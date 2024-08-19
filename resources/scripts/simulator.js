@@ -1930,10 +1930,13 @@ Tabs.Links = {
 			};
 			var legacyChain = Field.mapToStringLegacy();
 			var legacyQuery = "w=" + Field.width + "&h=" + Field.height + "&hr=" + Field.hiddenRows + "&chain=" + legacyChain;
+			var wikiAttrs = "";
+			if (Field.width != 6) { wikiAttrs += " w=" + Field.width; }
+			if (Field.height != 12) { wikiAttrs += " h=" + Field.height; }
 			$("#share-link").val(Config.baseUrl + Utils.stringFormat(Config.shareLegacyLinkUrl, legacyQuery));
 			$("#share-image").val(Config.baseUrl + Utils.stringFormat(Config.shareLegacyImageUrl, legacyQuery));
 			$("#share-animated-image").val("Error");
-			$("#share-wiki").val("<puyochain>" + legacyChain + "</puyochain>");
+			$("#share-wiki").val("<puyochain" + wikiAttrs + ">" + legacyChain + "</puyochain>");
 
 			$.post(Config.basePath + "/api/save", data, function (response) {
 				if (response.success) {
