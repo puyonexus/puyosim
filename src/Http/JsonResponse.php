@@ -15,10 +15,11 @@ class JsonResponse
      */
     public static function success(Response $response, $data): Response
     {
-        return $response->withJson([
+        $response->getBody()->write(json_encode([
             'success' => true,
             'data' => $data,
-        ]);
+        ]));
+        return $response->withHeader('Content-Type', 'application/json');
     }
 
     /**
@@ -32,9 +33,12 @@ class JsonResponse
      */
     public static function error(Response $response, int $errorCode, string $message = null): Response
     {
-        return $response->withJson([
+        $response->getBody()->write(json_encode([
             'success' => false,
             'message' => $message,
-        ], $errorCode);
+        ]));
+        return $response
+            ->withHeader('Content-Type', 'application/json')
+            ->withStatus($errorCode);
     }
 }

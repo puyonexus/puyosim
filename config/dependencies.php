@@ -1,4 +1,8 @@
 <?php
+declare(strict_types=1);
+
+use DI\ContainerBuilder;
+use Psr\Container\ContainerInterface;
 use PuyoSim\Controller\ApiController;
 use PuyoSim\Controller\HomeController;
 use FaaPz\PDO\Database;
@@ -6,38 +10,39 @@ use PuyoSim\Repository\ChainRepository;
 use Slim\Handlers\Strategies\RequestResponseArgs;
 use Slim\Views\PhpRenderer;
 
-$container = $app->getContainer();
+return function (ContainerBuilder $containerBuilder) {
+    $containerBuilder->addDefinitions([
+        'view' => function (ContainerInterface $c) {
+            $settings = $c->get('settings')['views'];
+            return new PhpRenderer($settings['path']);
+        },
 
-// View renderer
-$container['view'] = function ($c) {
-    $settings = $c->get('settings')['views'];
-    return new PhpRenderer($settings['path']);
-};
+        // Allows arguments to be passed to the route action as seperate parameters
+        'foundHandler' => function () {
+            return new RequestResponseArgs();
+        },
 
-// Allows arguments to be passed to the route action as seperate parameters
-$container['foundHandler'] = function () {
-    return new RequestResponseArgs();
-};
+        'database' => function (ContainerInterface $c) {
+            $db = $c->get('settings')['database'];
+            return new Database($db['dsn'], $db['username'], $db['password']);
+        },
 
-$container['database'] = function ($c) {
-    $settings = $c->get('settings')['database'];
-    return new Database($settings['dsn'], $settings['username'], $settings['password'], []);
-};
+        HomeController::class => function (ContainerInterface $c) {
+            $view = $c->get('view');
+            $chainRepository = $c->get(ChainRepository::class);
+            $siteSettings = $c->get('settings')['site'];
+            return new HomeController($view, $chainRepository, $siteSettings);
+        },
 
-$container[HomeController::class] = function ($c) {
-    $view = $c->get('view');
-    $chainRepository = $c->get(ChainRepository::class);
-    $siteSettings = $c->get('settings')['site'];
-    return new HomeController($view, $chainRepository, $siteSettings);
-};
+        ApiController::class => function (ContainerInterface $c) {
+            $chainRepository = $c->get(ChainRepository::class);
+            $siteSettings = $c->get('settings')['site'];
+            return new ApiController($chainRepository, $siteSettings);
+        },
 
-$container[ApiController::class] = function ($c) {
-    $chainRepository = $c->get(ChainRepository::class);
-    $siteSettings = $c->get('settings')['site'];
-    return new ApiController($chainRepository, $siteSettings);
-};
-
-$container[ChainRepository::class] = function ($c) {
-    $database = $c->get('database');
-    return new ChainRepository($database);
+        ChainRepository::class => function (ContainerInterface $c) {
+            $database = $c->get('database');
+            return new ChainRepository($database);
+        },
+    ]);
 };

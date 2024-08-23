@@ -13,13 +13,24 @@ if (PHP_SAPI == 'cli-server')
 
 require __DIR__ . '/../vendor/autoload.php';
 
+use DI\ContainerBuilder;
+use Slim\Factory\AppFactory;
+
+$containerBuilder = new ContainerBuilder();
+
 // Load settings
 $settings = require __DIR__ . '/../config/settings.php';
+$settings($containerBuilder);
+
+$dependencies = require __DIR__ . '/../config/dependencies.php';
+$dependencies($containerBuilder);
 
 // Initalize & run the app
-$app = new \Slim\App($settings);
+$container = $containerBuilder->build();
+AppFactory::setContainer($container);
+$app = AppFactory::create();
 
-require __DIR__ . '/../config/dependencies.php';
-require __DIR__ . '/../config/routes.php';
+$routes = require __DIR__ . '/../config/routes.php';
+$routes($app);
 
 $app->run();

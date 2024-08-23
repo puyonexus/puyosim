@@ -23,8 +23,9 @@ class ApiController
         $this->siteSettings = $siteSettings;
     }
 
-    public function info(Request $request, Response $response, string $id)
+    public function info(Request $request, Response $response, array $args)
     {
+        $id = $args['id'];
         $entity = $this->chainRepository->findByUrl($id);
         if ($entity === null)
         {
@@ -80,7 +81,7 @@ class ApiController
 
     public function oembed(Request $request, Response $response)
     {
-        $baseUrl = $request->getUri()->getBaseUrl();
+        $baseUrl = $this->siteSettings['baseUrl'];
 
         $oembed = [
             'version' => '1.0',
@@ -92,7 +93,8 @@ class ApiController
         // Get the response format, and make sure it's either json or xml.
         // If none was supplied, assume json.
         // If an invalid one was supplied, return a 501 Not Implemented error per the spec.
-        $format = $request->getQueryParam('format', 'json');
+        $query = $request->getQueryParams();
+        $format = $query['format'] ?? 'json';
         if ($format !== 'json' && $format !== 'xml')
         {
             return $response->withStatus(501);
@@ -100,7 +102,7 @@ class ApiController
 
         // Make sure the beginning of the URL parameter that was passed matches the base URL
         // If it matches, then we can trim out the base url
-        $url = $request->getQueryParam('url');
+        $url = $query['url'] ?? '';
         if (strpos($url, $baseUrl) !== 0)
         {
             return $response->withStatus(404);
@@ -201,6 +203,6 @@ class ApiController
             return $response->withHeader('Content-Type', 'text/xml');
         }
 
-        return $response->withJson($oembed);
+        return JsonResponse::success($response, $oembed);
     }
 }

@@ -31,7 +31,7 @@ class HomeController
 
     public function index(Request $request, Response $response)
     {
-        $baseUrl = $request->getUri()->getBaseUrl();
+        $baseUrl = $this->siteSettings['baseUrl'];
 
         // Check to see if we are handling a legacy chain format
         $isLegacy = false;
@@ -53,14 +53,13 @@ class HomeController
         }
 
         // Type 2 - ?w=<width>&h=<height>&hr=<hiddenRows>&chain=<chain>
-        $chain = $request->getQueryParam('chain');
-        if ($chain !== null)
+        $query = $request->getQueryParams();
+        if (isset($query['chain']))
         {
             $isLegacy = true;
-
             try
             {
-                $chainParser = new LegacyChainParser($chain, $request->getQueryParam('w'), $request->getQueryParam('h'), $request->getQueryParam('hr'));
+                $chainParser = new LegacyChainParser($query['chain'], $query['w'] ?? null, $query['h'] ?? null, $query['hr'] ?? null);
             }
             catch (InvalidChainException $e)
             {
@@ -89,7 +88,7 @@ class HomeController
             return $this->chainResponse($request, $response, $viewArgs, $chainParser->getChain(), $chainParser->getWidth(), $chainParser->getHeight(), $chainParser->getHiddenRows());
         }
 
-        $basePath = $request->getUri()->getBasePath();
+        $basePath = $this->siteSettings['basePath'];
 
         // This is not a legacy chain, so just show the page with an empty chain
         return $this->view->render($response, 'home/index.php', [
@@ -102,15 +101,16 @@ class HomeController
         ]);
     }
 
-    public function chain(Request $request, Response $response, string $id)
+    public function chain(Request $request, Response $response, array $args)
     {
+        $id = $args['id'];
         $entity = $this->chainRepository->findByUrl($id);
         if ($entity === null)
         {
             return $response->withStatus(404);
         }
 
-        $baseUrl = $request->getUri()->getBaseUrl();
+        $baseUrl = $this->siteSettings['baseUrl'];
         $pageUrl = "{$baseUrl}/chain/{$entity->url}";
 
         // Set the view arguments
@@ -134,8 +134,9 @@ class HomeController
         return $this->chainResponse($request, $response, $viewArgs, $entity->chain, $entity->width, $entity->height, $entity->hidden_rows, $entity->pop_limit);
     }
 
-    public function image(Request $request, Response $response, string $id)
+    public function image(Request $request, Response $response, array $args)
     {
+        $id = $args['id'];
         $entity = $this->chainRepository->findByUrl($id);
         if ($entity === null)
         {
@@ -145,8 +146,9 @@ class HomeController
         return $this->imageResponse($request, $response, $entity->chain, $entity->width, $entity->height, $entity->hidden_rows);
     }
 
-    public function animatedImage(Request $request, Response $response, string $id)
+    public function animatedImage(Request $request, Response $response, array $args)
     {
+        $id = $args['id'];
         $entity = $this->chainRepository->findByUrl($id);
         if ($entity === null)
         {
@@ -158,14 +160,14 @@ class HomeController
 
     public function legacyImage(Request $request, Response $response)
     {
-        $chain = $request->getQueryParam('chain');
-        if ($chain === null)
+        $query = $request->getQueryParams();
+        if (!isset($query['chain']))
         {
             return $response->withStatus(400);
         }
 
         // Check to see if the width, height, and hidden rows are embedded in the chain parameter
-        if (preg_match('/(?:\((?<width>\d+),(?<height>\d+)(?:,(?<hiddenRows>\d+))?\))(?<chain>\w*)/', $chain, $matches) === 1)
+        if (preg_match('/(?:\((?<width>\d+),(?<height>\d+)(?:,(?<hiddenRows>\d+))?\))(?<chain>\w*)/', $query['chain'], $matches) === 1)
         {
             try
             {
@@ -180,7 +182,7 @@ class HomeController
         {
             try
             {
-                $chainParser = new LegacyChainParser($chain, $request->getQueryParam('w'), $request->getQueryParam('h'), $request->getQueryParam('hr'));
+                $chainParser = new LegacyChainParser($query['chain'], $query['w'] ?? null, $query['h'] ?? null, $query['hr'] ?? null);
             }
             catch (InvalidChainException $e)
             {
@@ -193,7 +195,7 @@ class HomeController
 
     private function chainResponse(Request $request, Response $response, array $viewArgs, string $chain, int $width = 6, int $height = 12, int $hiddenRows = 1, int $popLimit = 4)
     {
-        $basePath = $request->getUri()->getBasePath();
+        $basePath = $this->siteSettings['basePath'];
 
         // Merge the provided view arguments with the view arguments we should be using
         // Override arguments with ones passed by viewArgs.
@@ -247,7 +249,8 @@ class HomeController
         }
 
         // Get the for parameter and the user agent
-        $imageIsFor = $request->getQueryParam('for');
+        $query = $request->getQueryParams();
+        $imageIsFor = $query['for'] ?? '';
         $userAgent = $request->getHeaderLine('User-Agent');
 
         // If Facebook is requesting the OpenGraph image, then resize it to at least 200x200.
