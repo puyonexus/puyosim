@@ -42,13 +42,6 @@
 	<link rel="icon" href="/assets/images/favicon.ico">
 	<link rel="apple-touch-icon-precomposed" href="/assets/images/apple-touch-icon-precomposed.png">
 
-	<script>
-		window.ga=window.ga||function(){(ga.q=ga.q||[]).push(arguments)};ga.l=+new Date;
-		ga('create', 'UA-8256078-1', 'auto');
-		ga('send', 'pageview');
-	</script>
-	<script async src="https://www.google-analytics.com/analytics.js"></script>
-
 	<link rel="stylesheet" href="/assets/css/common.css">
 	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
 	<link rel="stylesheet" href="<?= htmlspecialchars($assetsPath) ?>/css/simulator.css">
