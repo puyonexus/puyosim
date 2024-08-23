@@ -4,7 +4,10 @@ namespace PuyoSim\Repository;
 use PuyoSim\Common\NumberBase;
 use PuyoSim\Common\StringUtils;
 use PuyoSim\Entity\Chain;
-use PuyoSim\PDO\Database;
+use FaaPz\PDO\Database;
+use FaaPz\PDO\Statement\Insert;
+use FaaPz\PDO\Clause\Conditional;
+use FaaPz\PDO\Clause\Limit;
 
 class ChainRepository
 {
@@ -28,9 +31,9 @@ class ChainRepository
         $statement = $this->db
             ->select()
             ->from('chain')
-            ->where('id', '=', $id)
-            ->limit(1, 0);
-        
+            ->where(new Conditional('id', '=', $id))
+            ->limit(new Limit(1, 0));
+
         $rows = $statement->execute()->fetchAll(\PDO::FETCH_CLASS, Chain::class);
         if (count($rows) === 0)
         {
@@ -52,8 +55,8 @@ class ChainRepository
         $statement = $this->db
             ->select()
             ->from('chain')
-            ->where('url', '=', $url)
-            ->limit(1, 0);
+            ->where(new Conditional('url', '=', $url))
+            ->limit(new Limit(1, 0));
 
         $rows = $statement->execute()->fetchAll(\PDO::FETCH_CLASS, Chain::class);
         if (count($rows) === 0)
@@ -76,9 +79,9 @@ class ChainRepository
         $statement = $this->db
             ->select()
             ->from('chain')
-            ->where('hash', '=', $hash)
-            ->limit(1, 0);
-        
+            ->where(new Conditional('hash', '=', $hash))
+            ->limit(new Limit(1, 0));
+
         $rows = $statement->execute()->fetchAll(\PDO::FETCH_CLASS, Chain::class);
         if (count($rows) === 0)
         {
@@ -128,20 +131,18 @@ class ChainRepository
             }
         }
 
-        $statement = $this->db
-            ->insert()
-            ->into('chain')
-            ->columns([
-                'url',
-                'title',
-                'chain',
-                'width',
-                'height',
-                'hidden_rows',
-                'pop_limit',
-                'hash',
-            ])
-            ->values([
+        $insert = new Insert($this->db, [
+            'url',
+            'title',
+            'chain',
+            'width',
+            'height',
+            'hidden_rows',
+            'pop_limit',
+            'hash',
+        ]);
+        $insert->into('chain')
+            ->values(
                 $url,
                 $entity->title,
                 $entity->chain,
@@ -150,9 +151,9 @@ class ChainRepository
                 $entity->hidden_rows,
                 $entity->pop_limit,
                 $hash,
-            ]);
-        
-        $insertId = $statement->execute(true);
+            );
+
+        $insertId = $insert->execute(true);
 
         $entity->id = $insertId;
         $entity->url = $url;
@@ -172,11 +173,11 @@ class ChainRepository
     {
         $statement = $this->db
             ->select()
-            ->count()
+            ->columns(['count' => 'COUNT(id)'])
             ->from('chain')
-            ->where('url', '=', $url)
-            ->limit(1, 0);
-        
+            ->where(new Conditional('url', '=', $url))
+            ->limit(new Limit(1, 0));
+
         $count = $statement->execute()->fetchColumn();
         return $count > 0;
     }

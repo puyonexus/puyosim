@@ -22,7 +22,6 @@ $settings = [
             'dsn' => '',
             'username' => '',
             'password' => '',
-            'tablePrefix' => '',
         ],
     ]
 ];

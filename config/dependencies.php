@@ -1,7 +1,7 @@
 <?php
 use PuyoSim\Controller\ApiController;
 use PuyoSim\Controller\HomeController;
-use PuyoSim\PDO\Database;
+use FaaPz\PDO\Database;
 use PuyoSim\Repository\ChainRepository;
 use Slim\Handlers\Strategies\RequestResponseArgs;
 use Slim\Views\PhpRenderer;
@@ -21,7 +21,7 @@ $container['foundHandler'] = function () {
 
 $container['database'] = function ($c) {
     $settings = $c->get('settings')['database'];
-    return new Database($settings['dsn'], $settings['username'], $settings['password'], [], $settings['tablePrefix']);
+    return new Database($settings['dsn'], $settings['username'], $settings['password'], []);
 };
 
 $container[HomeController::class] = function ($c) {

@@ -14,8 +14,9 @@
     "require": {
         "php": ">= 7.0.0",
         "slim/slim": "^3.8",
-        "slim/pdo": "^1.10",
-        "slim/php-view": "^2.2"
+        "slim/php-view": "^2.2",
+        "faapz/pdo": "^2.2",
+        "viicslen/anim-gif": "^1.4"
     },
     "autoload": {
         "psr-4": {
