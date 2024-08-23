@@ -15,15 +15,13 @@ return function (ContainerBuilder $containerBuilder) {
                 'twitter' => '@puyonexus',
                 'baseUrl' => 'http://localhost:8080',
                 'basePath' => '',
+                'cacheDir' => __DIR__ . '/../../temp/cache',
             ],
 
             // View settings for PhpRenderer
             'views' => [
                 'path' => __DIR__ . '/../views/',
             ],
-
-            // Router cache
-            'routerCacheFile' => __DIR__ . '/../temp/cache/routes.php',
 
             // Database settings
             'database' => [

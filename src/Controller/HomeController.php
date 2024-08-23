@@ -218,7 +218,7 @@ class HomeController
     private function imageResponse(Request $request, Response $response, string $chain, int $width = 6, int $height = 12, int $hiddenRows = 1)
     {
         $hash = substr(hash('sha256', "png,{$chain},{$width},{$height},{$hiddenRows}"), 0, 32);
-        $cacheDir = __DIR__ . '/../../temp/cache/images/' . substr($hash, 0, 1) . '/' . substr($hash, 0, 2);
+        $cacheDir = $this->siteSettings['cacheDir'] . '/images/' . substr($hash, 0, 1) . '/' . substr($hash, 0, 2);
 
         // Set the response headers
         $response = $response
@@ -266,7 +266,7 @@ class HomeController
     private function animatedImageResponse(Request $request, Response $response, string $chain, int $width = 6, int $height = 12, int $hiddenRows = 1, int $popLimit = 4)
     {
         $hash = substr(hash('sha256', "gif,{$chain},{$width},{$height},{$hiddenRows},{$popLimit}"), 32);
-        $cacheDir = __DIR__ . '/../../temp/cache/images/' . substr($hash, 0, 1) . '/' . substr($hash, 0, 2);
+        $cacheDir = $this->siteSettings['cacheDir'] . '/images/' . substr($hash, 0, 1) . '/' . substr($hash, 0, 2);
 
         // Set the response headers
         $response = $response
