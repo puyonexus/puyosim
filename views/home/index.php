@@ -43,7 +43,7 @@
 	<link rel="apple-touch-icon-precomposed" href="/assets/images/apple-touch-icon-precomposed.png">
 
 	<link rel="stylesheet" href="/assets/css/common.css">
-	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+	<link rel="stylesheet" href="<?= htmlspecialchars($assetsPath) ?>/assets/css/font-awesome.min.css">
 	<link rel="stylesheet" href="<?= htmlspecialchars($assetsPath) ?>/css/simulator.css">
 </head>
 <body data-base-path="<?= htmlspecialchars($basePath) ?>" data-assets-path="<?= htmlspecialchars($assetsPath) ?>">
@@ -79,7 +79,7 @@
 			</ul>
 		</div>
 	</footer>
-	
+
 	<script src="/assets/js/common.min.js"></script>
 	<script src="<?= htmlspecialchars($assetsPath) ?>/js/clipboard.min.js"></script>
 	<script src="<?= htmlspecialchars($assetsPath) ?>/js/jquery.min.js"></script>
