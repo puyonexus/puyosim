@@ -1,7 +1,6 @@
 {
     "name": "puyonexus/puyosim",
     "description": "The code behind the best Puyo Puyo chain simulator.",
-    "version": "4.3.0",
     "type": "project",
     "homepage": "https://github.com/puyonexus/puyosim",
     "license": "MIT",
