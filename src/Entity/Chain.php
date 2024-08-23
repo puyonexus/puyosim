@@ -47,4 +47,8 @@ class Chain
      * @var string The hash. This variable is set when inserting into the database.
      */
     public $hash;
+
+    public $created_at;
+
+    public $updated_at;
 }
