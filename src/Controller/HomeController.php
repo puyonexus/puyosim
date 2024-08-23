@@ -1,9 +1,9 @@
 <?php
 namespace PuyoSim\Controller;
 
-use GifCreator\AnimGif;
 use Psr\Http\Message\ServerRequestInterface as Request;
 use Psr\Http\Message\ResponseInterface as Response;
+use PuyoSim\Common\AnimGif;
 use PuyoSim\Common\ImageUtils;
 use PuyoSim\Common\StringUtils;
 use PuyoSim\Exception\InvalidChainException;
