@@ -5,8 +5,14 @@ use Slim\App;
 use Slim\Routing\RouteCollectorProxy;
 use PuyoSim\Controller\ApiController;
 use PuyoSim\Controller\HomeController;
+use PuyoSim\Exception\ErrorHandler;
 
 return function (App $app) {
+    $app->addRoutingMiddleware();
+    $errorMiddleware = $app->addErrorMiddleware(PHP_SAPI == 'cli-server', true, true);
+    $errorHandler = $errorMiddleware->getDefaultErrorHandler();
+    $errorMiddleware->setDefaultErrorHandler(ErrorHandler::class);
+
     // / (Root)
     $app->group('', function (RouteCollectorProxy $group) {
         $group->get('/', HomeController::class . ':index');

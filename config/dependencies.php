@@ -2,10 +2,11 @@
 declare(strict_types=1);
 
 use DI\ContainerBuilder;
+use FaaPz\PDO\Database;
 use Psr\Container\ContainerInterface;
 use PuyoSim\Controller\ApiController;
 use PuyoSim\Controller\HomeController;
-use FaaPz\PDO\Database;
+use PuyoSim\Exception\ErrorHandler;
 use PuyoSim\Repository\ChainRepository;
 use Slim\Handlers\Strategies\RequestResponseArgs;
 use Slim\Views\PhpRenderer;
@@ -38,6 +39,12 @@ return function (ContainerBuilder $containerBuilder) {
             $chainRepository = $c->get(ChainRepository::class);
             $siteSettings = $c->get('settings')['site'];
             return new ApiController($chainRepository, $siteSettings);
+        },
+
+        ErrorHandler::class => function (ContainerInterface $c) {
+            $view = $c->get('view');
+            $siteSettings = $c->get('settings')['site'];
+            return new ErrorHandler($view, $siteSettings);
         },
 
         ChainRepository::class => function (ContainerInterface $c) {
