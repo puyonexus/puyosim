@@ -1520,7 +1520,11 @@ var Tabs = {
 				localStorage.setItem("chainsim.lastTab", $dataTarget.substr(1)); // Don't need to get the #
 			}
 		});
-		$("#simulator-tabs-select > li a[data-target='#" + (localStorage.getItem("chainsim.lastTab") || "tab-share") + "']").click();
+		// Had to rename tab-share due to broken cosmetic filter in adblockers. Sigh.
+		if (localStorage.getItem("chainsim.lastTab") === "tab-share") {
+		  localStorage.setItem("chainsim.lastTab", "tab-share-chain");
+		}
+		$("#simulator-tabs-select > li a[data-target='#" + (localStorage.getItem("chainsim.lastTab") || "tab-share-chain") + "']").click();
 
 		$(".simulator-tabs-toggle").click(function () {
 			var $simulatorTabs = $("#simulator-tabs");
