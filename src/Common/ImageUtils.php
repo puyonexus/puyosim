@@ -52,7 +52,7 @@ class ImageUtils
      *
      * @return string The image as a GIF
      */
-    public function toGif($image)
+    public static function toGif($image)
     {
         ob_start();
         imagegif($image);
@@ -66,7 +66,7 @@ class ImageUtils
      *
      * @return string The image as a PNG
      */
-    public function toPng($image)
+    public static function toPng($image)
     {
         ob_start();
         imagepng($image);
