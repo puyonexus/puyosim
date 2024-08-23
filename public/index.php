@@ -29,6 +29,7 @@ $dependencies($containerBuilder);
 $container = $containerBuilder->build();
 AppFactory::setContainer($container);
 $app = AppFactory::create();
+$app->setBasePath($container->get('settings')['site']['basePath']);
 
 $routes = require __DIR__ . '/../config/routes.php';
 $routes($app);
