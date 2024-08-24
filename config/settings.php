@@ -25,7 +25,7 @@ return function (ContainerBuilder $containerBuilder) {
 
             // Database settings
             'database' => [
-                'dsn' => '',
+                'dsn' => 'sqlite:' . __DIR__ . '/../db.sqlite3',
                 'username' => '',
                 'password' => '',
             ],
