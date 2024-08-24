@@ -69,7 +69,7 @@ Constants.Simulation = {
  * Contains configuration values used throughout the simulator
  */
 var Config = {
-	baseUrl: "https://puyonexus.com/chainsim",
+	baseUrl: window.baseUrl,
 	shareLinkUrl: "/chain/{0}",
 	shareImageUrl: "/image/{0}.png",
 	shareAnimatedImageUrl: "/image/{0}.gif",

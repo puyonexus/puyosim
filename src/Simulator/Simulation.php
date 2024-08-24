@@ -11,6 +11,7 @@ class Simulation
     const ACTION_DROP_PUYOS = 2;
 
     private $popLimit;
+    private $puyoToClear;
 
     private $board;
 
@@ -161,7 +162,7 @@ class Simulation
                     {
                         // We've made a chain!
                         $puyosCleared += count($points);
-                        
+
                         $clearGarbageAt = function ($x, $y) {
                             $puyo = $this->board->get($x, $y);
 

@@ -80,6 +80,9 @@
 		</div>
 	</footer>
 
+	<script>
+		window.baseUrl = <?= json_encode($site['baseUrl']) ?>;
+	</script>
 	<script src="/assets/js/common.min.js"></script>
 	<script src="<?= htmlspecialchars($assetsPath) ?>/js/clipboard.min.js"></script>
 	<script src="<?= htmlspecialchars($assetsPath) ?>/js/jquery.min.js"></script>
