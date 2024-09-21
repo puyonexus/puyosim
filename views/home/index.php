@@ -1,9 +1,6 @@
 <?php
 	// Set the embed title and description
 	$embedTitle = $title ?? $site['name'];
-	$embedDescription = isset($title)
-		? $site['titledChainDescription']
-		: $site['description'];
 ?><!DOCTYPE html>
 <html lang="en" prefix="og: http://ogp.me/ns/article#">
 <head>
@@ -21,14 +18,13 @@
 	<meta property="og:type" content="article">
 	<meta property="og:site_name" content="<?= htmlspecialchars($site['name']) ?>">
 	<meta property="og:title" content="<?= htmlspecialchars($embedTitle) ?>">
-	<meta property="og:description" content="<?= htmlspecialchars($embedDescription) ?>">
+	<meta property="og:description" content="<?= htmlspecialchars($site['description']) ?>">
 	<meta property="og:image" content="<?= htmlspecialchars($ogEmbedImage) ?>">
 	<meta property="og:url" content="<?= htmlspecialchars($pageUrl) ?>">
 
 	<meta property="twitter:card" content="summary_large_image">
 	<meta property="twitter:site" content="<?= htmlspecialchars($site['twitter']) ?>">
 	<meta property="twitter:title" content="<?= htmlspecialchars($embedTitle) ?>">
-	<meta property="twitter:description" content="<?= htmlspecialchars($embedDescription) ?>">
 	<meta property="twitter:image" content="<?= htmlspecialchars($embedImage) ?>">
 
 	<?php
