@@ -18,7 +18,6 @@
 	<meta property="og:type" content="article">
 	<meta property="og:site_name" content="<?= htmlspecialchars($site['name']) ?>">
 	<meta property="og:title" content="<?= htmlspecialchars($embedTitle) ?>">
-	<meta property="og:description" content="<?= htmlspecialchars($site['description']) ?>">
 	<meta property="og:image" content="<?= htmlspecialchars($ogEmbedImage) ?>">
 	<meta property="og:url" content="<?= htmlspecialchars($pageUrl) ?>">
 
