@@ -25,7 +25,7 @@
 	<meta property="og:image" content="<?= htmlspecialchars($ogEmbedImage) ?>">
 	<meta property="og:url" content="<?= htmlspecialchars($pageUrl) ?>">
 
-	<meta property="twitter:card" content="summary">
+	<meta property="twitter:card" content="summary_large_image">
 	<meta property="twitter:site" content="<?= htmlspecialchars($site['twitter']) ?>">
 	<meta property="twitter:title" content="<?= htmlspecialchars($embedTitle) ?>">
 	<meta property="twitter:description" content="<?= htmlspecialchars($embedDescription) ?>">
