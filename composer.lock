@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "6d9107dcd530fd047a0ff13638cb3097",
+    "content-hash": "57ff4a17a0f2682789ce95152588744d",
     "packages": [
         {
             "name": "faapz/pdo",
@@ -1066,28 +1066,28 @@
         },
         {
             "name": "viicslen/anim-gif",
-            "version": "1.4",
+            "version": "dev-master",
             "source": {
                 "type": "git",
-                "url": "https://github.com/viicslen/AnimGif.git",
-                "reference": "a2051f0eb26c8d612650d2c1d97341d2f6e52ee9"
+                "url": "https://github.com/puyonexus/anim-gif.git",
+                "reference": "2dfaf9d2a44f02a48448d931594378acb68ff47b"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/viicslen/AnimGif/zipball/a2051f0eb26c8d612650d2c1d97341d2f6e52ee9",
-                "reference": "a2051f0eb26c8d612650d2c1d97341d2f6e52ee9",
+                "url": "https://api.github.com/repos/puyonexus/anim-gif/zipball/2dfaf9d2a44f02a48448d931594378acb68ff47b",
+                "reference": "2dfaf9d2a44f02a48448d931594378acb68ff47b",
                 "shasum": ""
             },
             "require": {
                 "php": ">=5.3.0"
             },
+            "default-branch": true,
             "type": "library",
             "autoload": {
                 "psr-0": {
                     "GifCreator": "src"
                 }
             },
-            "notification-url": "https://packagist.org/downloads/",
             "license": [
                 "MIT"
             ],
@@ -1106,27 +1106,30 @@
             "description": "PHP class to create an animated GIF from multiple images",
             "homepage": "https://github.com/viicslen/AnimGif",
             "keywords": [
+                "PHP",
                 "animated",
                 "creation",
                 "encode",
-                "gif",
-                "php"
+                "gif"
             ],
             "support": {
-                "source": "https://github.com/viicslen/AnimGif/tree/1.4"
+                "source": "https://github.com/puyonexus/anim-gif/tree/master",
+                "issues": "https://github.com/puyonexus/anim-gif/issues"
             },
-            "time": "2020-12-04T21:26:27+00:00"
+            "time": "2026-02-04T02:06:01+00:00"
         }
     ],
     "packages-dev": [],
     "aliases": [],
     "minimum-stability": "stable",
-    "stability-flags": [],
+    "stability-flags": {
+        "viicslen/anim-gif": 20
+    },
     "prefer-stable": false,
     "prefer-lowest": false,
     "platform": {
         "php": ">= 7.0.0"
     },
-    "platform-dev": [],
+    "platform-dev": {},
     "plugin-api-version": "2.6.0"
 }

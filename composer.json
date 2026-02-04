@@ -10,10 +10,16 @@
             "homepage": "https://github.com/nickworonekin"
         }
     ],
+    "repositories": [
+        {
+            "type": "vcs",
+            "url": "https://github.com/puyonexus/anim-gif.git"
+        }
+    ],
     "require": {
         "php": ">= 7.0.0",
         "faapz/pdo": "^2.2",
-        "viicslen/anim-gif": "^1.4",
+        "viicslen/anim-gif": "dev-master",
         "slim/php-view": "^3.3",
         "slim/slim": "^4.14",
         "slim/psr7": "^1.7",
